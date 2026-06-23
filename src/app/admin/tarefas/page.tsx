@@ -51,6 +51,7 @@ function getDueInfo(dueDate: string | null): { label: string; color: string } | 
 export default function TarefasPage() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [editingTask, setEditingTask] = useState<Task | null>(null)
   const [form, setForm] = useState({ ...EMPTY_FORM })
@@ -60,9 +61,23 @@ export default function TarefasPage() {
   const dragId = useRef<string | null>(null)
 
   const load = useCallback(async () => {
-    const res = await fetch('/api/tarefas')
-    setTasks(await res.json())
-    setLoading(false)
+    try {
+      const res = await fetch('/api/tarefas')
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        setLoadError(`Erro ${res.status}: ${(err as { error?: string }).error ?? 'falha ao carregar tarefas'}`)
+        setTasks([])
+        return
+      }
+      const data = await res.json()
+      setTasks(Array.isArray(data) ? data : [])
+      setLoadError(null)
+    } catch {
+      setLoadError('Erro de rede ao carregar tarefas')
+      setTasks([])
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => { load() }, [load])
@@ -220,6 +235,11 @@ export default function TarefasPage() {
 
       {/* Board */}
       <div className="flex-1 overflow-x-auto p-6">
+        {loadError && (
+          <div className="mb-4 px-4 py-3 rounded-xl text-sm text-red-300 border border-red-500/30" style={{ background: '#3a1a1a' }}>
+            ⚠️ {loadError} — verifique se a tabela Task existe no banco (rode migration_v4.sql no DbGate)
+          </div>
+        )}
         {loading ? (
           <div className="text-center py-16 text-[#555]">Carregando…</div>
         ) : (
