@@ -3,6 +3,7 @@ import { db } from '@/lib/db'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import Link from 'next/link'
 import { DeleteQuoteButton } from '@/components/orcamentos/DeleteQuoteButton'
+import { DuplicateQuoteButton } from '@/components/orcamentos/DuplicateQuoteButton'
 
 export default async function OrcamentosPage() {
   const session = await auth()
@@ -95,6 +96,7 @@ export default async function OrcamentosPage() {
                         >
                           Abrir
                         </Link>
+                        <DuplicateQuoteButton quoteId={q.id} />
                         <DeleteQuoteButton quoteId={q.id} />
                       </div>
                     </td>

@@ -15,6 +15,7 @@ export function QuoteActions({ quoteId, token, status, portalUrl }: Props) {
   const router = useRouter()
   const [copying, setCopying] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [duplicating, setDuplicating] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
 
   async function copyLink() {
@@ -22,6 +23,19 @@ export function QuoteActions({ quoteId, token, status, portalUrl }: Props) {
     await navigator.clipboard.writeText(portalUrl)
     toast.success('Link copiado!')
     setCopying(false)
+  }
+
+  async function duplicateQuote() {
+    setDuplicating(true)
+    const res = await fetch(`/api/orcamentos/${quoteId}/duplicate`, { method: 'POST' })
+    if (res.ok) {
+      const { id } = await res.json()
+      toast.success('Orçamento duplicado!')
+      router.push(`/admin/orcamentos/${id}`)
+    } else {
+      toast.error('Erro ao duplicar')
+      setDuplicating(false)
+    }
   }
 
   async function deleteQuote() {
@@ -74,6 +88,14 @@ export function QuoteActions({ quoteId, token, status, portalUrl }: Props) {
         >
           👁 Visualizar
         </a>
+
+        <button
+          onClick={duplicateQuote}
+          disabled={duplicating}
+          className="flex items-center gap-1.5 h-9 px-4 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all disabled:opacity-50"
+        >
+          {duplicating ? 'Duplicando…' : '⧉ Duplicar'}
+        </button>
 
         <a
           href={`${portalUrl}?print=1`}
