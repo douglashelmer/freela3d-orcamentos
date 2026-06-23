@@ -14,6 +14,7 @@ async function getValidToken(userId: string) {
     if (!user.googleRefreshToken) return null
     const res = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
+      cache: 'no-store',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
         client_id: process.env.GOOGLE_CLIENT_ID!,
@@ -55,7 +56,7 @@ export async function GET(req: Request) {
   // Fetch list of all user calendars
   const calListRes = await fetch(
     'https://www.googleapis.com/calendar/v3/users/me/calendarList?maxResults=50',
-    { headers }
+    { headers, cache: 'no-store' }
   )
 
   let calendarIds: string[] = ['primary']
@@ -80,7 +81,7 @@ export async function GET(req: Request) {
     calendarIds.map(async (calId) => {
       const res = await fetch(
         `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events?${params}`,
-        { headers }
+        { headers, cache: 'no-store' }
       )
       if (!res.ok) return []
       const data = await res.json()

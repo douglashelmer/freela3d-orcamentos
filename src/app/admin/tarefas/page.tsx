@@ -28,7 +28,7 @@ const PRIORITIES = [
   { key: 'URGENT', label: 'Urgente', color: '#f87171', bg: '#f8717120' },
 ]
 
-const EMPTY_FORM = { title: '', description: '', priority: 'MEDIUM', dueDate: '', tags: '' }
+const EMPTY_FORM = { title: '', description: '', priority: 'MEDIUM', dueDate: '', tags: '', column: 'TODO' }
 
 function getPriority(key: string) {
   return PRIORITIES.find(p => p.key === key) ?? PRIORITIES[1]
@@ -69,7 +69,7 @@ export default function TarefasPage() {
 
   function openNew(column = 'TODO') {
     setEditingTask(null)
-    setForm({ ...EMPTY_FORM })
+    setForm({ ...EMPTY_FORM, column })
     setShowForm(true)
   }
 
@@ -88,27 +88,41 @@ export default function TarefasPage() {
   async function save() {
     if (!form.title.trim()) return
     setSaving(true)
-    const body = {
-      ...form,
-      dueDate: form.dueDate || null,
-      column: editingTask?.column ?? 'TODO',
+    try {
+      const body = {
+        title: form.title,
+        description: form.description,
+        priority: form.priority,
+        dueDate: form.dueDate || null,
+        tags: form.tags,
+        column: editingTask?.column ?? form.column,
+      }
+      let res: Response
+      if (editingTask) {
+        res = await fetch(`/api/tarefas/${editingTask.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        })
+      } else {
+        res = await fetch('/api/tarefas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        })
+      }
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        alert(`Erro ao salvar: ${(err as { error?: string }).error ?? res.status}`)
+        return
+      }
+      setShowForm(false)
+      load()
+    } catch {
+      alert('Erro ao salvar tarefa. Tente novamente.')
+    } finally {
+      setSaving(false)
     }
-    if (editingTask) {
-      await fetch(`/api/tarefas/${editingTask.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-    } else {
-      await fetch('/api/tarefas', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-    }
-    setSaving(false)
-    setShowForm(false)
-    load()
   }
 
   async function deleteTask(id: string) {
