@@ -10,7 +10,8 @@ export async function GET(req: Request) {
   const appUrl = process.env.NEXTAUTH_URL ?? ''
 
   if (error || !code || !userId) {
-    return NextResponse.redirect(`${appUrl}/admin/configuracoes?gcal=error`)
+    const msg = encodeURIComponent(error ?? (!code ? 'sem_codigo' : 'sem_state'))
+    return NextResponse.redirect(`${appUrl}/admin/configuracoes?gcal=error&msg=${msg}`)
   }
 
   const clientId = process.env.GOOGLE_CLIENT_ID!
@@ -30,7 +31,9 @@ export async function GET(req: Request) {
   })
 
   if (!tokenRes.ok) {
-    return NextResponse.redirect(`${appUrl}/admin/configuracoes?gcal=error`)
+    let errMsg = `http_${tokenRes.status}`
+    try { const b = await tokenRes.json(); errMsg = b.error_description ?? b.error ?? errMsg } catch {}
+    return NextResponse.redirect(`${appUrl}/admin/configuracoes?gcal=error&msg=${encodeURIComponent(errMsg)}`)
   }
 
   const tokens = await tokenRes.json()
