@@ -1,4 +1,5 @@
 import { auth } from '@/auth'
+import { db } from '@/lib/db'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -8,12 +9,24 @@ const NAV = [
   { href: '/admin', label: 'Dashboard', icon: '▦' },
   { href: '/admin/orcamentos', label: 'Orçamentos', icon: '◻' },
   { href: '/admin/clientes', label: 'Clientes', icon: '◉' },
-  { href: '/admin/financeiro', label: 'Financeiro', icon: '◈' },
+  { href: '/admin/servicos', label: 'Serviços', icon: '◈' },
+  { href: '/admin/financeiro', label: 'Financeiro', icon: '◐' },
+  { href: '/admin/configuracoes', label: 'Configurações', icon: '⚙' },
 ]
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
-  if (!session) redirect('/login')
+  if (!session?.user?.id) redirect('/login')
+
+  const user = await db.user.findUnique({
+    where: { id: session.user.id },
+    select: { onboardingCompleted: true, company: true, logo: true, name: true },
+  })
+  if (!user) redirect('/login')
+  if (!user.onboardingCompleted) redirect('/setup')
+
+  const displayName = user.company || user.name || session.user.name || ''
+  const initial = (user.name || session.user.name || 'U')[0].toUpperCase()
 
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: '#1E1E1E' }}>
@@ -21,7 +34,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <aside className="flex flex-col w-64 shrink-0 border-r" style={{ background: '#1a1a1a', borderColor: '#2a2a2a' }}>
         {/* Logo */}
         <div className="flex items-center gap-3 px-6 py-5 border-b" style={{ borderColor: '#2a2a2a' }}>
-          <Image src="/logo.svg" alt="Freela3D" width={140} height={35} />
+          {user.logo ? (
+            <img src={user.logo} alt="Logo" className="h-8 object-contain max-w-[140px]" />
+          ) : (
+            <Image src="/logo.svg" alt="Freela3D" width={140} height={35} />
+          )}
         </div>
 
         {/* Nav */}
@@ -41,12 +58,15 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         {/* User */}
         <div className="px-3 py-4 border-t" style={{ borderColor: '#2a2a2a' }}>
           <div className="flex items-center gap-3 px-3 py-2">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-[#1E1E1E]" style={{ background: '#D5FF40' }}>
-              {session.user?.name?.[0]?.toUpperCase() ?? 'U'}
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-[#1E1E1E] shrink-0"
+              style={{ background: '#D5FF40' }}
+            >
+              {initial}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">{session.user?.name}</p>
-              <p className="text-xs text-[#666] truncate">{session.user?.email}</p>
+              <p className="text-sm font-medium text-white truncate">{session.user.name}</p>
+              <p className="text-xs text-[#666] truncate">{displayName !== session.user.name ? displayName : session.user.email}</p>
             </div>
           </div>
           <SignOutButton />

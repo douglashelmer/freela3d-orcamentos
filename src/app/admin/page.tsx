@@ -4,31 +4,35 @@ import { formatCurrency } from '@/lib/utils'
 import Link from 'next/link'
 
 async function getStats(userId: string) {
-  const [total, signed, sent, quotes] = await Promise.all([
+  const [total, signed, sent, declined, quotes, user] = await Promise.all([
     db.quote.count({ where: { userId } }),
     db.quote.count({ where: { userId, status: 'SIGNED' } }),
     db.quote.count({ where: { userId, status: { in: ['SENT', 'VIEWED'] } } }),
+    db.quote.count({ where: { userId, status: 'DECLINED' } }),
     db.quote.findMany({
       where: { userId },
       include: { client: true, items: true },
       orderBy: { createdAt: 'desc' },
       take: 5,
     }),
+    db.user.findUnique({ where: { id: userId }, select: { monthlyGoal: true, name: true, company: true } }),
   ])
   const revenue = quotes
     .filter(q => q.status === 'SIGNED' || q.status === 'PAID')
     .reduce((sum, q) => sum + q.items.reduce((s, i) => s + i.price * i.quantity, 0), 0)
-  return { total, signed, sent, revenue, recent: quotes }
+  return { total, signed, sent, declined, revenue, recent: quotes, monthlyGoal: user?.monthlyGoal ?? null }
 }
 
 export default async function AdminDashboard() {
   const session = await auth()
-  const { total, signed, sent, revenue, recent } = await getStats(session!.user!.id!)
+  const { total, signed, sent, declined, revenue, recent, monthlyGoal } = await getStats(session!.user!.id!)
+  const goalPct = monthlyGoal && monthlyGoal > 0 ? Math.min(100, Math.round((revenue / monthlyGoal) * 100)) : null
 
   const stats = [
-    { label: 'Total de Orçamentos', value: total, color: 'text-white' },
-    { label: 'Aguardando Resposta', value: sent, color: 'text-yellow-400' },
-    { label: 'Orçamentos Assinados', value: signed, color: 'text-[#D5FF40]' },
+    { label: 'Total', value: total, color: 'text-white' },
+    { label: 'Aguardando', value: sent, color: 'text-yellow-400' },
+    { label: 'Assinados', value: signed, color: 'text-[#D5FF40]' },
+    { label: 'Recusados', value: declined, color: 'text-red-400' },
     { label: 'Receita Aprovada', value: formatCurrency(revenue), color: 'text-[#D5FF40]' },
   ]
 
@@ -57,8 +61,26 @@ export default async function AdminDashboard() {
         </Link>
       </div>
 
+      {/* Meta de receita */}
+      {monthlyGoal && (
+        <div className="rounded-2xl border p-5 mb-6" style={{ background: '#252525', borderColor: '#333' }}>
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <p className="text-xs text-[#666] uppercase tracking-wide">Meta do mês</p>
+              <p className="text-white font-semibold mt-0.5">
+                {formatCurrency(revenue)} <span className="text-[#666] font-normal">/ {formatCurrency(monthlyGoal)}</span>
+              </p>
+            </div>
+            <p className="text-2xl font-bold text-[#D5FF40]">{goalPct}%</p>
+          </div>
+          <div className="h-2 rounded-full" style={{ background: '#333' }}>
+            <div className="h-2 rounded-full transition-all" style={{ background: '#D5FF40', width: `${goalPct}%` }} />
+          </div>
+        </div>
+      )}
+
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-5 gap-4 mb-8">
         {stats.map(s => (
           <div key={s.label} className="rounded-2xl border p-5" style={{ background: '#252525', borderColor: '#333' }}>
             <p className="text-xs text-[#666] mb-2 uppercase tracking-wide">{s.label}</p>

@@ -8,12 +8,36 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String
-  createdAt DateTime @default(now())
-  quotes    Quote[]
+  id                  String    @id @default(cuid())
+  email               String    @unique
+  password            String
+  name                String
+  company             String?
+  phone               String?
+  logo                String?
+  specialty           String?
+  address             String?
+  neighborhood        String?
+  city                String?
+  state               String?
+  zipCode             String?
+  monthlyGoal         Float?
+  onboardingCompleted Boolean   @default(false)
+  createdAt           DateTime  @default(now())
+  quotes              Quote[]
+  services            Service[]
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  category    String
+  price       Float
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
 }
 
 model Client {
