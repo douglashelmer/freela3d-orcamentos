@@ -90,6 +90,7 @@ export default function AgendaPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [gcalConnected, setGcalConnected] = useState(false)
   const [gcalLoading, setGcalLoading] = useState(false)
+  const [gcalError, setGcalError] = useState<string | null>(null)
   const [showHolidays, setShowHolidays] = useState(true)
   const [showTasks, setShowTasks] = useState(true)
   const [showFinanceiro, setShowFinanceiro] = useState(true)
@@ -118,6 +119,7 @@ export default function AgendaPage() {
       const gcalData = await gcalRes.json()
       setGcalConnected(gcalData.connected ?? false)
       setGcalEvents(gcalData.events ?? [])
+      setGcalError(gcalData.error ?? null)
     } finally {
       setGcalLoading(false)
     }
@@ -266,9 +268,11 @@ export default function AgendaPage() {
         <div className="flex items-center gap-3">
           {/* Google Connect */}
           {gcalConnected ? (
-            <div className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs" style={{ background: '#1a2e1a', border: '1px solid #22c55e33' }}>
-              <span className="w-2 h-2 rounded-full bg-green-400 inline-block" />
-              <span className="text-green-400 font-medium">Google Agenda conectado</span>
+            <div className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs" style={{ background: gcalError ? '#3a1a1a' : '#1a2e1a', border: `1px solid ${gcalError ? '#f8717133' : '#22c55e33'}` }}>
+              <span className={`w-2 h-2 rounded-full inline-block ${gcalError ? 'bg-red-400' : 'bg-green-400'}`} />
+              <span className={`font-medium ${gcalError ? 'text-red-400' : 'text-green-400'}`}>
+                {gcalError ? `Erro Google: ${gcalError}` : `Google Agenda · ${gcalEvents.length} evento${gcalEvents.length !== 1 ? 's' : ''}`}
+              </span>
             </div>
           ) : (
             <a

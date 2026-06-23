@@ -61,7 +61,11 @@ export async function GET(req: Request) {
     { headers: { Authorization: `Bearer ${token}` } }
   )
 
-  if (!res.ok) return NextResponse.json({ events: [], connected: true })
+  if (!res.ok) {
+    let errDetail = `http_${res.status}`
+    try { const b = await res.json(); errDetail = b.error?.message ?? b.error ?? errDetail } catch {}
+    return NextResponse.json({ events: [], connected: true, error: errDetail })
+  }
 
   const data = await res.json()
   const events = (data.items ?? []).map((e: Record<string, unknown>) => ({
