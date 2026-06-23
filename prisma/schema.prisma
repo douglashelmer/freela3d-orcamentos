@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  quotes    Quote[]
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  document  String?
+  company   String?
+  address   String?
+  createdAt DateTime @default(now())
+  quotes    Quote[]
+}
+
+model Quote {
+  id            String      @id @default(cuid())
+  token         String      @unique
+  number        String
+  title         String
+  status        QuoteStatus @default(DRAFT)
+  userId        String
+  user          User        @relation(fields: [userId], references: [id])
+  clientId      String?
+  client        Client?     @relation(fields: [clientId], references: [id])
+  sections      Section[]
+  items         QuoteItem[]
+  discount      Float       @default(0)
+  discountType  String      @default("percent")
+  notes         String?
+  validUntil    DateTime?
+  signedAt      DateTime?
+  signatureData String?
+  signedByName  String?
+  signedByDoc   String?
+  viewedAt      DateTime?
+  sentAt        DateTime?
+  payment       Payment?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+enum QuoteStatus {
+  DRAFT
+  SENT
+  VIEWED
+  SIGNED
+  DECLINED
+  PAID
+}
+
+model Section {
+  id      String         @id @default(cuid())
+  quoteId String
+  quote   Quote          @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  type    SectionType
+  title   String?
+  content String?
+  order   Int
+  images  SectionImage[]
+}
+
+enum SectionType {
+  TEXT
+  IMAGES
+  TERMS
+}
+
+model QuoteItem {
+  id           String   @id @default(cuid())
+  quoteId      String
+  quote        Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  name         String
+  description  String?
+  type         ItemType @default(SERVICE)
+  quantity     Float    @default(1)
+  unit         String?
+  price        Float
+  discount     Float    @default(0)
+  discountType String   @default("percent")
+  order        Int
+}
+
+enum ItemType {
+  SERVICE
+  PACKAGE
+  DAILY
+  UNIQUE
+  PRODUCT
+}
+
+model SectionImage {
+  id        String  @id @default(cuid())
+  sectionId String
+  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  url       String
+  name      String?
+  order     Int
+}
+
+model Payment {
+  id        String        @id @default(cuid())
+  quoteId   String        @unique
+  quote     Quote         @relation(fields: [quoteId], references: [id])
+  asaasId   String?
+  status    PaymentStatus @default(PENDING)
+  method    String?
+  amount    Float
+  dueDate   DateTime?
+  paidAt    DateTime?
+  pixCode   String?
+  pixQrCode String?
+  boletoUrl String?
+  createdAt DateTime      @default(now())
+}
+
+enum PaymentStatus {
+  PENDING
+  RECEIVED
+  CONFIRMED
+  OVERDUE
+  CANCELLED
+}

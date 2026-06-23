@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --color-accent: #D5FF40;
+  --color-accent-hover: #bfe010;
+  --color-bg: #1E1E1E;
+  --color-bg-card: #252525;
+  --color-bg-input: #2a2a2a;
+  --color-border: #333333;
+  --color-border-hover: #444444;
+  --color-text: #ffffff;
+  --color-text-muted: #888888;
+  --color-danger: #ef4444;
+  --color-success: #22c55e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #1E1E1E;
+  color: #ffffff;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #1E1E1E; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* Signature canvas */
+.sig-canvas {
+  touch-action: none;
+  cursor: crosshair;
+}
+
+/* Print styles for portal */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; color: #1E1E1E; }
+  .print-white { background: white !important; color: #1E1E1E !important; }
+}

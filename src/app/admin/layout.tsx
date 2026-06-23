@@ -1,0 +1,62 @@
+import { auth } from '@/auth'
+import { redirect } from 'next/navigation'
+import Link from 'next/link'
+import Image from 'next/image'
+import { SignOutButton } from '@/components/ui/SignOutButton'
+
+const NAV = [
+  { href: '/admin', label: 'Dashboard', icon: '▦' },
+  { href: '/admin/orcamentos', label: 'Orçamentos', icon: '◻' },
+  { href: '/admin/clientes', label: 'Clientes', icon: '◉' },
+  { href: '/admin/financeiro', label: 'Financeiro', icon: '◈' },
+]
+
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth()
+  if (!session) redirect('/login')
+
+  return (
+    <div className="flex h-screen overflow-hidden" style={{ background: '#1E1E1E' }}>
+      {/* Sidebar */}
+      <aside className="flex flex-col w-64 shrink-0 border-r" style={{ background: '#1a1a1a', borderColor: '#2a2a2a' }}>
+        {/* Logo */}
+        <div className="flex items-center gap-3 px-6 py-5 border-b" style={{ borderColor: '#2a2a2a' }}>
+          <Image src="/logo.svg" alt="Freela3D" width={140} height={35} />
+        </div>
+
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-4 flex flex-col gap-1">
+          {NAV.map(item => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#888] hover:text-white hover:bg-[#252525] transition-all"
+            >
+              <span className="text-base">{item.icon}</span>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* User */}
+        <div className="px-3 py-4 border-t" style={{ borderColor: '#2a2a2a' }}>
+          <div className="flex items-center gap-3 px-3 py-2">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-[#1E1E1E]" style={{ background: '#D5FF40' }}>
+              {session.user?.name?.[0]?.toUpperCase() ?? 'U'}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-white truncate">{session.user?.name}</p>
+              <p className="text-xs text-[#666] truncate">{session.user?.email}</p>
+            </div>
+          </div>
+          <SignOutButton />
+        </div>
+      </aside>
+
+      {/* Main */}
+      <main className="flex-1 overflow-y-auto">
+        {children}
+      </main>
+    </div>
+  )
+}
