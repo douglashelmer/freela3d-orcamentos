@@ -7,6 +7,7 @@ import { SignOutButton } from '@/components/ui/SignOutButton'
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', icon: '▦' },
+  { href: '/admin/leads', label: 'Leads', icon: '◎' },
   { href: '/admin/orcamentos', label: 'Orçamentos', icon: '◻' },
   { href: '/admin/clientes', label: 'Clientes', icon: '◉' },
   { href: '/admin/servicos', label: 'Serviços', icon: '◈' },
@@ -74,7 +75,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       </aside>
 
       {/* Main */}
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto flex flex-col min-h-0">
         {children}
       </main>
     </div>
