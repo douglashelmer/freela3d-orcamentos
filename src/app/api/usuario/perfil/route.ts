@@ -12,7 +12,7 @@ export async function GET() {
       id: true, name: true, email: true, company: true, phone: true,
       logo: true, specialty: true, address: true, neighborhood: true,
       city: true, state: true, zipCode: true, monthlyGoal: true,
-      onboardingCompleted: true,
+      onboardingCompleted: true, googleCalendarConnected: true,
     },
   })
 

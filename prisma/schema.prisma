@@ -8,27 +8,48 @@ datasource db {
 }
 
 model User {
-  id                  String        @id @default(cuid())
-  email               String        @unique
-  password            String
-  name                String
-  company             String?
-  phone               String?
-  logo                String?
-  specialty           String?
-  address             String?
-  neighborhood        String?
-  city                String?
-  state               String?
-  zipCode             String?
-  monthlyGoal         Float?
-  onboardingCompleted Boolean       @default(false)
-  createdAt           DateTime      @default(now())
-  quotes              Quote[]
-  services            Service[]
-  leads               Lead[]
-  transactions        Transaction[]
-  tasks               Task[]
+  id                     String        @id @default(cuid())
+  email                  String        @unique
+  password               String
+  name                   String
+  company                String?
+  phone                  String?
+  logo                   String?
+  specialty              String?
+  address                String?
+  neighborhood           String?
+  city                   String?
+  state                  String?
+  zipCode                String?
+  monthlyGoal            Float?
+  onboardingCompleted    Boolean       @default(false)
+  googleAccessToken      String?
+  googleRefreshToken     String?
+  googleTokenExpiry      DateTime?
+  googleCalendarConnected Boolean      @default(false)
+  createdAt              DateTime      @default(now())
+  quotes                 Quote[]
+  services               Service[]
+  leads                  Lead[]
+  transactions           Transaction[]
+  tasks                  Task[]
+  appointments           Appointment[]
+}
+
+model Appointment {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String
+  description   String?
+  location      String?
+  startAt       DateTime
+  endAt         DateTime?
+  allDay        Boolean   @default(false)
+  color         String?   @default("#60a5fa")
+  googleEventId String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Service {
