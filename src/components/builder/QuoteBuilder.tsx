@@ -34,6 +34,7 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
   const [openSections, setOpenSections] = useState<Set<string>>(new Set())
   const [clientOpen, setClientOpen] = useState(false)
   const [pricesOpen, setPricesOpen] = useState(true)
+  const [configOpen, setConfigOpen] = useState(false)
 
   const update = useCallback(<K extends keyof QuoteBuilderState>(key: K, value: QuoteBuilderState[K]) => {
     setState(s => ({ ...s, [key]: value }))
@@ -402,7 +403,7 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
           </Section>
 
           {/* Validity + Notes */}
-          <Section title="Configurações" open={false} onToggle={() => {}}>
+          <Section title="Configurações" open={configOpen} onToggle={() => setConfigOpen(o => !o)}>
             <div className="flex flex-col gap-3">
               <div>
                 <label className="text-xs text-[#666] mb-1 block">Validade do orçamento</label>
