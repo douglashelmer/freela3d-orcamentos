@@ -2,6 +2,7 @@ import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import Link from 'next/link'
+import { DeleteQuoteButton } from '@/components/orcamentos/DeleteQuoteButton'
 
 export default async function OrcamentosPage() {
   const session = await auth()
@@ -88,11 +89,14 @@ export default async function OrcamentosPage() {
                       {formatDate(q.createdAt)}
                     </td>
                     <td className="px-6 py-4">
-                      <Link href={`/admin/orcamentos/${q.id}`}
-                        className="text-xs text-[#D5FF40] hover:underline"
-                      >
-                        Abrir
-                      </Link>
+                      <div className="flex items-center">
+                        <Link href={`/admin/orcamentos/${q.id}`}
+                          className="text-xs text-[#D5FF40] hover:underline"
+                        >
+                          Abrir
+                        </Link>
+                        <DeleteQuoteButton quoteId={q.id} />
+                      </div>
                     </td>
                   </tr>
                 )

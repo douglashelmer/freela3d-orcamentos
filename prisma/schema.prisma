@@ -27,6 +27,8 @@ model User {
   googleRefreshToken     String?
   googleTokenExpiry      DateTime?
   googleCalendarConnected Boolean      @default(false)
+  notificationPrefs      String?
+  metaPixelId            String?
   createdAt              DateTime      @default(now())
   quotes                 Quote[]
   services               Service[]

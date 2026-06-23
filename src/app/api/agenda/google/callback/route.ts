@@ -34,17 +34,28 @@ export async function GET(req: Request) {
   }
 
   const tokens = await tokenRes.json()
-  const expiry = new Date(Date.now() + tokens.expires_in * 1000)
 
-  await db.user.update({
-    where: { id: userId },
-    data: {
-      googleAccessToken: tokens.access_token,
-      googleRefreshToken: tokens.refresh_token ?? undefined,
-      googleTokenExpiry: expiry,
-      googleCalendarConnected: true,
-    },
-  })
+  if (!tokens.access_token) {
+    const msg = encodeURIComponent(tokens.error_description ?? tokens.error ?? 'no_access_token')
+    return NextResponse.redirect(`${appUrl}/admin/configuracoes?gcal=error&msg=${msg}`)
+  }
+
+  const expiry = new Date(Date.now() + (tokens.expires_in ?? 3600) * 1000)
+
+  try {
+    await db.user.update({
+      where: { id: userId },
+      data: {
+        googleAccessToken: tokens.access_token,
+        googleRefreshToken: tokens.refresh_token ?? undefined,
+        googleTokenExpiry: expiry,
+        googleCalendarConnected: true,
+      },
+    })
+  } catch (e) {
+    const msg = encodeURIComponent(String(e))
+    return NextResponse.redirect(`${appUrl}/admin/configuracoes?gcal=error&msg=${msg}`)
+  }
 
   return NextResponse.redirect(`${appUrl}/admin/agenda?gcal=connected`)
 }

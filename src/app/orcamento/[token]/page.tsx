@@ -11,6 +11,7 @@ export default async function OrcamentoPortal({ params }: { params: Promise<{ to
       client: true,
       items: { orderBy: { order: 'asc' } },
       sections: { orderBy: { order: 'asc' }, include: { images: { orderBy: { order: 'asc' } } } },
+      user: { select: { logo: true, company: true, name: true } },
     },
   })
   if (!quote) notFound()
@@ -29,6 +30,8 @@ export default async function OrcamentoPortal({ params }: { params: Promise<{ to
   return (
     <PortalClient
       quote={{ ...quote, createdAt: quote.createdAt.toISOString(), validUntil: quote.validUntil?.toISOString() ?? null, signedAt: quote.signedAt?.toISOString() ?? null }}
+      userLogo={quote.user.logo}
+      userName={quote.user.company || quote.user.name}
       subtotal={subtotal}
       discountAmount={discountAmount}
       total={total}

@@ -16,7 +16,16 @@ export async function GET() {
     },
   })
 
-  return NextResponse.json(user)
+  // new columns — gracefully degrade if migration_v8.sql hasn't run yet
+  let extras: { notificationPrefs?: string | null; metaPixelId?: string | null } = {}
+  try {
+    const row = await db.$queryRaw<Array<{ notificationPrefs: string | null; metaPixelId: string | null }>>`
+      SELECT "notificationPrefs", "metaPixelId" FROM "User" WHERE id = ${session.user.id} LIMIT 1
+    `
+    if (row[0]) extras = row[0]
+  } catch { /* columns not yet created */ }
+
+  return NextResponse.json({ ...user, ...extras })
 }
 
 export async function PUT(req: Request) {
@@ -30,6 +39,7 @@ export async function PUT(req: Request) {
     monthlyGoal, onboardingCompleted,
   } = body
 
+  // core fields — always safe
   const user = await db.user.update({
     where: { id: session.user.id },
     data: {
@@ -48,6 +58,19 @@ export async function PUT(req: Request) {
     },
     select: { id: true, name: true, email: true, company: true, logo: true },
   })
+
+  // new columns via raw SQL — won't crash if migration hasn't run
+  if (body.notificationPrefs !== undefined || body.metaPixelId !== undefined) {
+    try {
+      if (body.notificationPrefs !== undefined && body.metaPixelId !== undefined) {
+        await db.$executeRaw`UPDATE "User" SET "notificationPrefs" = ${body.notificationPrefs}, "metaPixelId" = ${body.metaPixelId} WHERE id = ${session.user.id}`
+      } else if (body.notificationPrefs !== undefined) {
+        await db.$executeRaw`UPDATE "User" SET "notificationPrefs" = ${body.notificationPrefs} WHERE id = ${session.user.id}`
+      } else {
+        await db.$executeRaw`UPDATE "User" SET "metaPixelId" = ${body.metaPixelId} WHERE id = ${session.user.id}`
+      }
+    } catch { /* columns not yet created — silently skip */ }
+  }
 
   return NextResponse.json(user)
 }

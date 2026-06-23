@@ -31,9 +31,21 @@ interface Props {
   quoteId?: string
 }
 
+function makeDefaultSections(): BuilderSection[] {
+  return [
+    { id: nanoid(), type: 'TEXT', title: 'Relatório inicial', content: '', images: [], order: 0 },
+    { id: nanoid(), type: 'TEXT', title: 'Descrição das atividades', content: '', images: [], order: 1 },
+    { id: nanoid(), type: 'IMAGES', title: 'Imagens', content: '', images: [], order: 2 },
+  ]
+}
+
 export function QuoteBuilder({ initialState, quoteId }: Props) {
   const router = useRouter()
-  const [state, setState] = useState<QuoteBuilderState>({ ...EMPTY_STATE, ...initialState })
+  const [state, setState] = useState<QuoteBuilderState>({
+    ...EMPTY_STATE,
+    ...initialState,
+    sections: initialState?.sections !== undefined ? initialState.sections : makeDefaultSections(),
+  })
   const [saving, setSaving] = useState(false)
   const [openSections, setOpenSections] = useState<Set<string>>(new Set())
   const [clientOpen, setClientOpen] = useState(false)
