@@ -45,9 +45,29 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const year = parseInt(searchParams.get('year') ?? String(new Date().getFullYear()))
   const month = parseInt(searchParams.get('month') ?? String(new Date().getMonth() + 1))
-  const timeMin = new Date(year, month - 1, 1).toISOString()
-  const timeMax = new Date(year, month, 1).toISOString()
 
+  // Use UTC boundaries covering the full local month with ±1 day buffer
+  const timeMin = new Date(Date.UTC(year, month - 1, 1)).toISOString()
+  const timeMax = new Date(Date.UTC(year, month, 1)).toISOString()
+
+  const headers = { Authorization: `Bearer ${token}` }
+
+  // Fetch list of all user calendars
+  const calListRes = await fetch(
+    'https://www.googleapis.com/calendar/v3/users/me/calendarList?maxResults=50',
+    { headers }
+  )
+
+  let calendarIds: string[] = ['primary']
+  if (calListRes.ok) {
+    const calList = await calListRes.json()
+    calendarIds = (calList.items ?? [])
+      .filter((c: { accessRole: string }) => ['owner', 'writer', 'reader'].includes(c.accessRole))
+      .map((c: { id: string }) => c.id)
+    if (calendarIds.length === 0) calendarIds = ['primary']
+  }
+
+  // Fetch events from all calendars in parallel
   const params = new URLSearchParams({
     timeMin,
     timeMax,
@@ -56,27 +76,39 @@ export async function GET(req: Request) {
     maxResults: '250',
   })
 
-  const res = await fetch(
-    `https://www.googleapis.com/calendar/v3/calendars/primary/events?${params}`,
-    { headers: { Authorization: `Bearer ${token}` } }
+  const results = await Promise.all(
+    calendarIds.map(async (calId) => {
+      const res = await fetch(
+        `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events?${params}`,
+        { headers }
+      )
+      if (!res.ok) return []
+      const data = await res.json()
+      return data.items ?? []
+    })
   )
 
-  if (!res.ok) {
-    let errDetail = `http_${res.status}`
-    try { const b = await res.json(); errDetail = b.error?.message ?? b.error ?? errDetail } catch {}
-    return NextResponse.json({ events: [], connected: true, error: errDetail })
+  // Merge + deduplicate by event id
+  const seen = new Set<string>()
+  const allItems: Record<string, unknown>[] = []
+  for (const batch of results) {
+    for (const e of batch) {
+      if (!seen.has(e.id)) {
+        seen.add(e.id)
+        allItems.push(e)
+      }
+    }
   }
 
-  const data = await res.json()
-  const events = (data.items ?? []).map((e: Record<string, unknown>) => ({
+  const events = allItems.map((e) => ({
     id: e.id,
-    title: e.summary ?? '(sem título)',
-    start: (e.start as Record<string, string>)?.dateTime ?? (e.start as Record<string, string>)?.date,
-    end: (e.end as Record<string, string>)?.dateTime ?? (e.end as Record<string, string>)?.date,
+    title: (e.summary as string) ?? '(sem título)',
+    start: ((e.start as Record<string, string>)?.dateTime ?? (e.start as Record<string, string>)?.date) as string,
+    end: ((e.end as Record<string, string>)?.dateTime ?? (e.end as Record<string, string>)?.date) as string | undefined,
     allDay: !(e.start as Record<string, string>)?.dateTime,
-    color: (e.colorId ? null : '#34d399'),
-    location: e.location ?? null,
-    description: e.description ?? null,
+    color: '#34d399',
+    location: (e.location as string) ?? null,
+    description: (e.description as string) ?? null,
     source: 'google',
   }))
 
