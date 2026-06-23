@@ -65,6 +65,9 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       discount: body.discount ?? 0,
       discountType: body.discountType ?? 'percent',
       notes: body.notes || null,
+      contractTerms: body.contractTerms || null,
+      observations: body.observations || null,
+      paymentMethods: body.paymentMethods?.length ? JSON.stringify(body.paymentMethods) : null,
       validUntil: body.validUntil ? new Date(body.validUntil) : null,
       sentAt: body.status === 'SENT' && !existing.sentAt ? new Date() : existing.sentAt,
       sections: {

@@ -51,6 +51,8 @@ export interface QuoteBuilderState {
   discount: number
   discountType: DiscountType
   notes: string
+  contractTerms: string
+  observations: string
   validUntil: string
   paymentMethods: string[]
 }

@@ -153,6 +153,9 @@ model Quote {
   discount      Float       @default(0)
   discountType  String      @default("percent")
   notes         String?
+  contractTerms String?
+  observations  String?
+  paymentMethods String?
   validUntil    DateTime?
   signedAt      DateTime?
   signatureData String?

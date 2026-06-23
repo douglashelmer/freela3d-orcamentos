@@ -9,6 +9,8 @@ import { calcItemTotal, calcQuoteTotal, formatCurrency, ITEM_TYPE_LABELS } from 
 
 const SECTION_TYPE_LABELS = { TEXT: 'Texto', IMAGES: 'Imagens', TERMS: 'Termos e Condições' }
 
+const PAYMENT_METHODS = ['Pix', 'Crédito', 'Débito', 'Dinheiro', 'Transferência', 'Boleto', 'Cheque']
+
 const EMPTY_STATE: QuoteBuilderState = {
   title: '',
   serialNumber: true,
@@ -18,6 +20,8 @@ const EMPTY_STATE: QuoteBuilderState = {
   discount: 0,
   discountType: 'percent',
   notes: '',
+  contractTerms: '',
+  observations: '',
   validUntil: '',
   paymentMethods: [],
 }
@@ -400,6 +404,51 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
                 </>
               )}
             </div>
+          </Section>
+
+          {/* Payment Methods */}
+          <Section title="Métodos de pagamento" open={true} onToggle={() => {}}>
+            <div className="flex flex-wrap gap-2">
+              {PAYMENT_METHODS.map(m => {
+                const active = state.paymentMethods.includes(m)
+                return (
+                  <button
+                    key={m}
+                    onClick={() => update('paymentMethods', active ? state.paymentMethods.filter(x => x !== m) : [...state.paymentMethods, m])}
+                    className="px-4 py-2 rounded-xl text-sm font-medium border transition-all"
+                    style={{
+                      background: active ? '#D5FF4022' : '#2a2a2a',
+                      borderColor: active ? '#D5FF40' : '#333',
+                      color: active ? '#D5FF40' : '#888',
+                    }}
+                  >
+                    {m}
+                  </button>
+                )
+              })}
+            </div>
+          </Section>
+
+          {/* Contract Terms */}
+          <Section title="Condições de contrato" open={true} onToggle={() => {}}>
+            <textarea
+              value={state.contractTerms}
+              onChange={e => update('contractTerms', e.target.value)}
+              placeholder="Descreva as condições e termos do contrato..."
+              rows={6}
+              className="w-full rounded-lg bg-[#2a2a2a] border border-[#333] p-3 text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#D5FF40] resize-none transition-colors"
+            />
+          </Section>
+
+          {/* Observations */}
+          <Section title="Observações" open={true} onToggle={() => {}}>
+            <textarea
+              value={state.observations}
+              onChange={e => update('observations', e.target.value)}
+              placeholder="Observações adicionais para o cliente..."
+              rows={4}
+              className="w-full rounded-lg bg-[#2a2a2a] border border-[#333] p-3 text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#D5FF40] resize-none transition-colors"
+            />
           </Section>
 
           {/* Validity + Notes */}

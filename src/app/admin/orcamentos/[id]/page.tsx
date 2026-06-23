@@ -41,8 +41,10 @@ export default async function EditOrcamentoPage({ params }: { params: Promise<{ 
     discount: quote.discount,
     discountType: quote.discountType as 'percent' | 'fixed',
     notes: quote.notes ?? '',
+    contractTerms: (quote as Record<string, unknown>).contractTerms as string ?? '',
+    observations: (quote as Record<string, unknown>).observations as string ?? '',
     validUntil: quote.validUntil ? quote.validUntil.toISOString().split('T')[0] : '',
-    paymentMethods: [],
+    paymentMethods: (() => { try { return JSON.parse((quote as Record<string, unknown>).paymentMethods as string ?? '[]') } catch { return [] } })(),
   }
 
   const portalUrl = `${process.env.NEXTAUTH_URL}/orcamento/${quote.token}`
