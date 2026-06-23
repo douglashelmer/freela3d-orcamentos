@@ -28,6 +28,7 @@ model User {
   services            Service[]
   leads               Lead[]
   transactions        Transaction[]
+  tasks               Task[]
 }
 
 model Service {
@@ -99,6 +100,21 @@ model Transaction {
   category    String?
   notes       String?
   createdAt   DateTime  @default(now())
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  column      String    @default("TODO")
+  priority    String    @default("MEDIUM")
+  dueDate     DateTime?
+  tags        String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Quote {
