@@ -30,6 +30,7 @@ model User {
   notificationPrefs      String?
   metaPixelId            String?
   pdfSettings            String?
+  document               String?
   createdAt              DateTime      @default(now())
   quotes                 Quote[]
   services               Service[]
@@ -38,6 +39,48 @@ model User {
   tasks                  Task[]
   appointments           Appointment[]
   briefings              Briefing[]
+  contractTemplates      ContractTemplate[]
+  contracts              Contract[]
+}
+
+model ContractTemplate {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  content   String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Contract {
+  id                   String   @id @default(cuid())
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  templateId           String?
+  clientName           String
+  clientDocument       String?
+  clientRepresentative String?
+  clientEmail          String?
+  clientPhone          String?
+  clientAddress        String?
+  clientAddressNumber  String?
+  clientNeighborhood   String?
+  clientCity           String?
+  clientState          String?
+  projectName          String
+  services             String?
+  duration             String   @default("90 dias a partir da assinatura")
+  totalValue           Float    @default(0)
+  discount             Float    @default(0)
+  finalValue           Float    @default(0)
+  installments         Int      @default(1)
+  paymentMethod        String   @default("PIX")
+  paymentConditions    String   @default("À vista")
+  generatedContent     String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }
 
 model Appointment {

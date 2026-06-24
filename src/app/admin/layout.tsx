@@ -11,6 +11,7 @@ const NAV = [
   { href: '/admin/agenda', label: 'Agenda', icon: '◷' },
   { href: '/admin/tarefas', label: 'Tarefas', icon: '☑' },
   { href: '/admin/orcamentos', label: 'Orçamentos', icon: '◻' },
+  { href: '/admin/contratos', label: 'Contratos', icon: '◪' },
   { href: '/admin/briefings', label: 'Briefings', icon: '◫' },
   { href: '/admin/clientes', label: 'Clientes', icon: '◉' },
   { href: '/admin/servicos', label: 'Serviços', icon: '◈' },
