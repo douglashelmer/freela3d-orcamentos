@@ -10,6 +10,8 @@ type Task = {
   priority: string
   dueDate: string | null
   tags: string | null
+  imageUrl: string | null
+  links: string | null
   order: number
   createdAt: string
 }
@@ -28,7 +30,20 @@ const PRIORITIES = [
   { key: 'URGENT', label: 'Urgente', color: '#f87171', bg: '#f8717120' },
 ]
 
-const EMPTY_FORM = { title: '', description: '', priority: 'MEDIUM', dueDate: '', tags: '', column: 'TODO' }
+const EMPTY_FORM = { title: '', description: '', priority: 'MEDIUM', dueDate: '', tags: '', imageUrl: '', links: '', column: 'TODO' }
+
+function normalizeLink(link: string): string {
+  return /^https?:\/\//i.test(link) ? link : `https://${link}`
+}
+
+function linkLabel(link: string): string {
+  try { return new URL(normalizeLink(link)).hostname.replace(/^www\./, '') } catch { return link }
+}
+
+function parseLinks(links: string | null): string[] {
+  if (!links) return []
+  return links.split(/[\n,]/).map(l => l.trim()).filter(Boolean)
+}
 
 function getPriority(key: string) {
   return PRIORITIES.find(p => p.key === key) ?? PRIORITIES[1]
@@ -56,6 +71,7 @@ export default function TarefasPage() {
   const [editingTask, setEditingTask] = useState<Task | null>(null)
   const [form, setForm] = useState({ ...EMPTY_FORM })
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [dragOver, setDragOver] = useState<string | null>(null)
   const [filterPriority, setFilterPriority] = useState<string | null>(null)
   const dragId = useRef<string | null>(null)
@@ -96,6 +112,8 @@ export default function TarefasPage() {
       priority: task.priority,
       dueDate: task.dueDate ? task.dueDate.split('T')[0] : '',
       tags: task.tags ?? '',
+      imageUrl: task.imageUrl ?? '',
+      links: task.links ?? '',
       column: task.column,
     })
     setShowForm(true)
@@ -111,6 +129,8 @@ export default function TarefasPage() {
         priority: form.priority,
         dueDate: form.dueDate || null,
         tags: form.tags,
+        imageUrl: form.imageUrl,
+        links: form.links,
         column: editingTask?.column ?? form.column,
       }
       let res: Response
@@ -138,6 +158,27 @@ export default function TarefasPage() {
       alert('Erro ao salvar tarefa. Tente novamente.')
     } finally {
       setSaving(false)
+    }
+  }
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploading(true)
+    try {
+      const fd = new FormData()
+      fd.append('files', file)
+      fd.append('webp', '1')
+      const res = await fetch('/api/upload', { method: 'POST', body: fd })
+      if (!res.ok) { alert('Erro ao enviar a imagem.'); return }
+      const data = await res.json()
+      const url = data.urls?.[0]
+      if (url) setForm(f => ({ ...f, imageUrl: url }))
+    } catch {
+      alert('Erro ao enviar a imagem.')
+    } finally {
+      setUploading(false)
+      e.target.value = ''
     }
   }
 
@@ -328,6 +369,14 @@ export default function TarefasPage() {
                             <p className="text-xs text-[#555] mb-2 line-clamp-2 pl-6">{task.description}</p>
                           )}
 
+                          {/* Imagem */}
+                          {task.imageUrl && (
+                            <div className="pl-6 mb-2">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={task.imageUrl} alt="" className="w-full max-h-28 object-cover rounded-lg" style={{ border: '1px solid #333' }} />
+                            </div>
+                          )}
+
                           {/* Footer: priority + due */}
                           <div className="flex items-center justify-between pl-6">
                             <span
@@ -350,6 +399,26 @@ export default function TarefasPage() {
                                 <span key={tag} className="text-xs px-1.5 py-0.5 rounded" style={{ background: '#333', color: '#666' }}>
                                   {tag}
                                 </span>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Links */}
+                          {task.links && parseLinks(task.links).length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-2 pl-6">
+                              {parseLinks(task.links).map((link, i) => (
+                                <a
+                                  key={i}
+                                  href={normalizeLink(link)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={e => e.stopPropagation()}
+                                  draggable={false}
+                                  className="text-xs px-1.5 py-0.5 rounded inline-flex items-center gap-1 hover:underline max-w-full truncate"
+                                  style={{ background: '#2a3320', color: '#D5FF40' }}
+                                >
+                                  🔗 {linkLabel(link)}
+                                </a>
                               ))}
                             </div>
                           )}
@@ -408,6 +477,34 @@ export default function TarefasPage() {
                 />
               </div>
 
+              {/* Imagem */}
+              <div>
+                <label className="block text-xs text-[#888] mb-1 uppercase tracking-wide">Imagem</label>
+                {form.imageUrl ? (
+                  <div className="relative inline-block">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={form.imageUrl} alt="anexo" className="max-h-32 rounded-lg" style={{ border: '1px solid #333' }} />
+                    <button
+                      type="button"
+                      onClick={() => setForm(f => ({ ...f, imageUrl: '' }))}
+                      className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-sm text-white"
+                      style={{ background: '#f87171' }}
+                      title="Remover imagem"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ) : (
+                  <label
+                    className="flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm cursor-pointer text-[#888] hover:text-white transition-colors"
+                    style={{ background: '#1E1E1E', border: '1px dashed #333' }}
+                  >
+                    {uploading ? 'Enviando…' : '+ Anexar imagem'}
+                    <input type="file" accept="image/*" className="hidden" disabled={uploading} onChange={handleImageUpload} />
+                  </label>
+                )}
+              </div>
+
               {/* Priority */}
               <div>
                 <label className="block text-xs text-[#888] mb-2 uppercase tracking-wide">Prioridade</label>
@@ -450,6 +547,19 @@ export default function TarefasPage() {
                     placeholder="Design, Cliente"
                   />
                 </div>
+              </div>
+
+              {/* Links */}
+              <div>
+                <label className="block text-xs text-[#888] mb-1 uppercase tracking-wide">Links</label>
+                <textarea
+                  className={inputCls}
+                  style={inputStyle}
+                  rows={2}
+                  value={form.links}
+                  onChange={e => setForm(f => ({ ...f, links: e.target.value }))}
+                  placeholder="Um link por linha (ex.: https://figma.com/...)"
+                />
               </div>
             </div>
 

@@ -2,6 +2,7 @@ import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { formatCurrency } from '@/lib/utils'
 import Link from 'next/link'
+import { ConquistasButton } from '@/components/conquistas/ConquistasButton'
 
 async function getStats(userId: string) {
   const [total, signed, sent, declined, quotes, user] = await Promise.all([
@@ -52,13 +53,16 @@ export default async function AdminDashboard() {
           <h1 className="text-2xl font-bold text-white">Dashboard</h1>
           <p className="text-[#888] text-sm mt-0.5">Bem-vindo de volta, {session?.user?.name?.split(' ')[0]}</p>
         </div>
-        <Link
-          href="/admin/orcamentos/novo"
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E] transition-colors"
-          style={{ background: '#D5FF40' }}
-        >
-          + Novo Orçamento
-        </Link>
+        <div className="flex items-center gap-3">
+          <ConquistasButton />
+          <Link
+            href="/admin/orcamentos/novo"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E] transition-colors"
+            style={{ background: '#D5FF40' }}
+          >
+            + Novo Orçamento
+          </Link>
+        </div>
       </div>
 
       {/* Meta de receita */}

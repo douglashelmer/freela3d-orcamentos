@@ -44,16 +44,21 @@ export default async function OrcamentoPortal({ params }: { params: Promise<{ to
     quote.items, quote.discount, quote.discountType
   )
 
-  // Fetch PDF settings for the quote owner
+  const DEFAULT_PORTAL = { logo: null as string | null, favicon: null as string | null, primaryColor: '#D5FF40', secondaryColor: '#a3e635' }
+
+  // Fetch PDF + portal settings for the quote owner
   let pdfSettings = DEFAULT_PDF
+  let portalSettings = DEFAULT_PORTAL
   try {
-    const rows = await db.$queryRaw<Array<{ pdfSettings: string | null }>>`
-      SELECT "pdfSettings" FROM "User" WHERE id = ${quote.userId} LIMIT 1
+    const rows = await db.$queryRaw<Array<{ pdfSettings: string | null; portalSettings: string | null }>>`
+      SELECT "pdfSettings", "portalSettings" FROM "User" WHERE id = ${quote.userId} LIMIT 1
     `
-    const raw = rows[0]?.pdfSettings
-    if (raw) pdfSettings = { ...DEFAULT_PDF, ...JSON.parse(raw), blocks: { ...DEFAULT_PDF.blocks, ...JSON.parse(raw).blocks } }
+    const rawPdf = rows[0]?.pdfSettings
+    const rawPortal = rows[0]?.portalSettings
+    if (rawPdf) pdfSettings = { ...DEFAULT_PDF, ...JSON.parse(rawPdf), blocks: { ...DEFAULT_PDF.blocks, ...JSON.parse(rawPdf).blocks } }
+    if (rawPortal) portalSettings = { ...DEFAULT_PORTAL, ...JSON.parse(rawPortal) }
   } catch {
-    // column not created yet, use defaults
+    // columns not created yet, use defaults
   }
 
   const userContact = quote.user.email || quote.user.phone || null
@@ -68,6 +73,7 @@ export default async function OrcamentoPortal({ params }: { params: Promise<{ to
       discountAmount={discountAmount}
       total={total}
       pdfSettings={pdfSettings}
+      portalSettings={portalSettings}
     />
   )
 }

@@ -200,6 +200,8 @@ model Task {
   priority    String    @default("MEDIUM")
   dueDate     DateTime?
   tags        String?
+  imageUrl    String?
+  links       String?
   order       Int       @default(0)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt

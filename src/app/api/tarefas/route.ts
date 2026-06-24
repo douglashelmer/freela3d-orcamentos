@@ -25,6 +25,8 @@ export async function POST(req: Request) {
       priority: body.priority ?? 'MEDIUM',
       dueDate: body.dueDate ? new Date(body.dueDate) : null,
       tags: body.tags || null,
+      imageUrl: body.imageUrl || null,
+      links: body.links || null,
       order: body.order ?? 0,
     },
   })

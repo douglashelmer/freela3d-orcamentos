@@ -16,6 +16,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       ...(body.priority !== undefined && { priority: body.priority }),
       ...(body.dueDate !== undefined && { dueDate: body.dueDate ? new Date(body.dueDate) : null }),
       ...(body.tags !== undefined && { tags: body.tags || null }),
+      ...(body.imageUrl !== undefined && { imageUrl: body.imageUrl || null }),
+      ...(body.links !== undefined && { links: body.links || null }),
       ...(body.order !== undefined && { order: body.order }),
     },
   })

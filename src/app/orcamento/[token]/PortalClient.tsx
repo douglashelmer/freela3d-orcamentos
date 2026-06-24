@@ -28,6 +28,13 @@ type PdfSettings = {
   blocks: { logo: boolean; validity: boolean; notes: boolean; contact: boolean }
 }
 
+type PortalSettings = {
+  logo: string | null
+  favicon: string | null
+  primaryColor: string
+  secondaryColor: string
+}
+
 interface Props {
   quote: {
     token: string
@@ -59,9 +66,10 @@ interface Props {
   discountAmount: number
   total: number
   pdfSettings: PdfSettings
+  portalSettings: PortalSettings
 }
 
-export function PortalClient({ quote, userLogo, userName, userContact, subtotal, discountAmount, total, pdfSettings: pdf }: Props) {
+export function PortalClient({ quote, userLogo, userName, userContact, subtotal, discountAmount, total, pdfSettings: pdf, portalSettings: portal }: Props) {
   const [signed, setSigned] = useState(quote.status === 'SIGNED')
 
   const isSigned = signed || quote.status === 'SIGNED'
@@ -73,7 +81,8 @@ export function PortalClient({ quote, userLogo, userName, userContact, subtotal,
     }
   }, [])
 
-  const effectiveLogo = pdf.pdfLogo ?? userLogo
+  const effectiveLogo = portal.logo ?? pdf.pdfLogo ?? userLogo
+  const portalGrad = `linear-gradient(135deg, ${portal.primaryColor}, ${portal.secondaryColor})`
 
   // Build print CSS from pdfSettings
   const printCSS = `
@@ -129,7 +138,7 @@ export function PortalClient({ quote, userLogo, userName, userContact, subtotal,
             <div className="flex items-center gap-4">
               <div className="text-right">
                 <p className="text-xs text-[#666]">Orçamento</p>
-                <p className="text-sm font-bold pdf-number" style={{ color: '#D5FF40' }}>#{quote.number}</p>
+                <p className="text-sm font-bold pdf-number" style={{ color: portal.primaryColor }}>#{quote.number}</p>
               </div>
               <button
                 onClick={() => window.print()}
@@ -143,9 +152,16 @@ export function PortalClient({ quote, userLogo, userName, userContact, subtotal,
 
         <main className="max-w-3xl mx-auto px-6 py-10 flex flex-col gap-8">
 
+          {/* Proposta Comercial badge */}
+          <div className="flex justify-center">
+            <span className="text-sm px-4 py-1.5 rounded-full font-semibold text-white" style={{ background: portalGrad }}>
+              ✦ Proposta Comercial
+            </span>
+          </div>
+
           {/* Status banner */}
           {isSigned && (
-            <div className="rounded-2xl p-5 flex items-center gap-4" style={{ background: '#D5FF40' }}>
+            <div className="rounded-2xl p-5 flex items-center gap-4" style={{ background: portalGrad }}>
               <span className="text-3xl">✓</span>
               <div>
                 <p className="font-bold text-[#1E1E1E] text-lg">Orçamento aprovado!</p>
@@ -238,7 +254,7 @@ export function PortalClient({ quote, userLogo, userName, userContact, subtotal,
                 )}
                 <div className="pdf-total-row flex justify-between px-6 py-4 font-bold text-lg" style={{ background: '#2a2a2a' }}>
                   <span className="text-white">Total</span>
-                  <span className="pdf-total-value" style={{ color: '#D5FF40' }}>{formatCurrency(total)}</span>
+                  <span className="pdf-total-value" style={{ color: portal.primaryColor }}>{formatCurrency(total)}</span>
                 </div>
               </div>
             </div>

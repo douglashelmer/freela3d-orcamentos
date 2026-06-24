@@ -35,6 +35,12 @@ export default async function OrcamentosPage() {
         </div>
         <div className="flex items-center gap-3">
           <Link
+            href="/admin/orcamentos/portal"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all"
+          >
+            🌐 Personalizar Página
+          </Link>
+          <Link
             href="/admin/orcamentos/pdf"
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all"
           >
