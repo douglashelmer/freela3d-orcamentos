@@ -96,6 +96,7 @@ export default function TarefasPage() {
       priority: task.priority,
       dueDate: task.dueDate ? task.dueDate.split('T')[0] : '',
       tags: task.tags ?? '',
+      column: task.column,
     })
     setShowForm(true)
   }
