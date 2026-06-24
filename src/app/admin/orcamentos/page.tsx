@@ -33,13 +33,21 @@ export default async function OrcamentosPage() {
           <h1 className="text-2xl font-bold text-white">Orçamentos</h1>
           <p className="text-[#888] text-sm mt-0.5">{quotes.length} orçamento{quotes.length !== 1 ? 's' : ''}</p>
         </div>
-        <Link
-          href="/admin/orcamentos/novo"
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E]"
-          style={{ background: '#D5FF40' }}
-        >
-          + Novo Orçamento
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/orcamentos/pdf"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all"
+          >
+            🎨 Personalizar PDF
+          </Link>
+          <Link
+            href="/admin/orcamentos/novo"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E]"
+            style={{ background: '#D5FF40' }}
+          >
+            + Novo Orçamento
+          </Link>
+        </div>
       </div>
 
       <div className="rounded-2xl border overflow-hidden" style={{ background: '#252525', borderColor: '#333' }}>

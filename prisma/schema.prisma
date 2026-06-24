@@ -29,6 +29,7 @@ model User {
   googleCalendarConnected Boolean      @default(false)
   notificationPrefs      String?
   metaPixelId            String?
+  pdfSettings            String?
   createdAt              DateTime      @default(now())
   quotes                 Quote[]
   services               Service[]

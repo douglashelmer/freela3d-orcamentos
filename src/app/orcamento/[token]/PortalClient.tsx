@@ -4,6 +4,30 @@ import { useEffect, useState } from 'react'
 import { SignaturePad } from '@/components/portal/SignaturePad'
 import { formatCurrency, formatDate, calcItemTotal, ITEM_TYPE_LABELS } from '@/lib/utils'
 
+function isLightColor(hex: string): boolean {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return (r * 299 + g * 587 + b * 114) / 1000 > 128
+}
+
+type PdfSettings = {
+  template: string
+  primaryColor: string
+  accentColor: string
+  bgMode: string
+  bgColor: string
+  textColor: string
+  pdfLogo: string | null
+  pdfBanner: string | null
+  bgImage: string | null
+  watermark: string
+  introText: string
+  termsText: string
+  footerText: string
+  blocks: { logo: boolean; validity: boolean; notes: boolean; contact: boolean }
+}
+
 interface Props {
   quote: {
     token: string
@@ -30,12 +54,14 @@ interface Props {
   }
   userLogo: string | null
   userName: string | null
+  userContact: string | null
   subtotal: number
   discountAmount: number
   total: number
+  pdfSettings: PdfSettings
 }
 
-export function PortalClient({ quote, userLogo, userName, subtotal, discountAmount, total }: Props) {
+export function PortalClient({ quote, userLogo, userName, userContact, subtotal, discountAmount, total, pdfSettings: pdf }: Props) {
   const [signed, setSigned] = useState(quote.status === 'SIGNED')
 
   const isSigned = signed || quote.status === 'SIGNED'
@@ -47,32 +73,63 @@ export function PortalClient({ quote, userLogo, userName, subtotal, discountAmou
     }
   }, [])
 
+  const effectiveLogo = pdf.pdfLogo ?? userLogo
+
+  // Build print CSS from pdfSettings
+  const printCSS = `
+    @media print {
+      .no-print { display: none !important; }
+      body { background: ${pdf.bgColor} !important; color: ${pdf.textColor} !important; }
+      .print-root { background: ${pdf.bgColor} !important; }
+      header { position: static !important; background: ${pdf.primaryColor} !important; border: none !important; backdrop-filter: none !important; }
+      .pdf-header-logo { color: ${pdf.primaryColor === '#FFFFFF' ? '#1A1A1A' : '#FFFFFF'} !important; filter: brightness(${pdf.primaryColor === '#FFFFFF' ? 0 : 100}) !important; }
+      .pdf-number { color: ${pdf.accentColor} !important; }
+      .print-card { background: ${pdf.bgMode === 'dark' ? '#2a2a2a' : '#f8f8f8'} !important; border-color: ${pdf.bgMode === 'dark' ? '#333' : '#e5e7eb'} !important; }
+      .pdf-table-header td, .pdf-table-header th { background: ${pdf.accentColor} !important; color: ${isLightColor(pdf.accentColor) ? '#1A1A1A' : '#FFFFFF'} !important; }
+      .pdf-total-value { color: ${pdf.accentColor} !important; }
+      .pdf-total-row { background: ${pdf.accentColor}22 !important; }
+      ${!pdf.blocks.logo ? '.pdf-logo-wrap { display: none !important; }' : ''}
+      ${!pdf.blocks.validity ? '.pdf-validity { display: none !important; }' : ''}
+      ${!pdf.blocks.notes ? '.pdf-notes { display: none !important; }' : ''}
+      ${!pdf.blocks.contact ? '.pdf-contact { display: none !important; }' : ''}
+      ${pdf.bgImage ? `body { background-image: url(${pdf.bgImage}) !important; background-size: cover !important; background-position: center !important; }` : ''}
+      ${pdf.watermark ? `
+        body::after {
+          content: '${pdf.watermark.replace(/'/g, "\\'")}';
+          position: fixed; top: 50%; left: 50%;
+          transform: translate(-50%, -50%) rotate(-35deg);
+          font-size: 80px; font-weight: 900; opacity: 0.06;
+          color: ${pdf.textColor}; pointer-events: none; z-index: 9999;
+          white-space: nowrap;
+        }
+      ` : ''}
+    }
+  `
+
   return (
     <>
-      <style>{`
-        @media print {
-          .no-print { display: none !important; }
-          body { background: white !important; color: black !important; }
-          .print-root { background: white !important; }
-          .print-card { background: #f9f9f9 !important; border-color: #ddd !important; }
-          header { position: static !important; }
-        }
-      `}</style>
+      <style>{printCSS}</style>
 
       <div className="min-h-screen print-root" style={{ background: '#1E1E1E' }}>
         {/* Header */}
         <header className="border-b sticky top-0 z-10 backdrop-blur-sm" style={{ borderColor: '#2a2a2a', background: 'rgba(30,30,30,0.95)' }}>
+          {pdf.pdfBanner && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={pdf.pdfBanner} alt="" className="w-full object-cover no-print" style={{ maxHeight: 80 }} />
+          )}
           <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
-            {userLogo ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={userLogo} alt={userName ?? ''} className="h-8 object-contain max-w-[160px]" />
-            ) : (
-              <span className="text-white font-bold text-lg">{userName ?? 'Freela3D'}</span>
-            )}
+            <div className="pdf-logo-wrap">
+              {effectiveLogo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={effectiveLogo} alt={userName ?? ''} className="h-8 object-contain max-w-[160px] pdf-header-logo" />
+              ) : (
+                <span className="text-white font-bold text-lg pdf-header-logo">{userName ?? 'Freela3D'}</span>
+              )}
+            </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
                 <p className="text-xs text-[#666]">Orçamento</p>
-                <p className="text-sm font-bold" style={{ color: '#D5FF40' }}>#{quote.number}</p>
+                <p className="text-sm font-bold pdf-number" style={{ color: '#D5FF40' }}>#{quote.number}</p>
               </div>
               <button
                 onClick={() => window.print()}
@@ -110,9 +167,16 @@ export function PortalClient({ quote, userLogo, userName, subtotal, discountAmou
             )}
             <div className="flex items-center gap-4 mt-3 text-sm text-[#666]">
               <span>Criado em {formatDate(quote.createdAt)}</span>
-              {quote.validUntil && <span>· Válido até {formatDate(quote.validUntil)}</span>}
+              {quote.validUntil && <span className="pdf-validity">· Válido até {formatDate(quote.validUntil)}</span>}
             </div>
           </div>
+
+          {/* Intro text (PDF only) */}
+          {pdf.introText && (
+            <div className="rounded-2xl border p-5 print-card" style={{ background: '#252525', borderColor: '#333' }}>
+              <p className="text-[#ccc] text-sm leading-relaxed whitespace-pre-wrap">{pdf.introText}</p>
+            </div>
+          )}
 
           {/* Sections */}
           {quote.sections.map(sec => (
@@ -172,9 +236,9 @@ export function PortalClient({ quote, userLogo, userName, subtotal, discountAmou
                     <span>Desconto</span><span>-{formatCurrency(discountAmount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between px-6 py-4 font-bold text-lg" style={{ background: '#2a2a2a' }}>
+                <div className="pdf-total-row flex justify-between px-6 py-4 font-bold text-lg" style={{ background: '#2a2a2a' }}>
                   <span className="text-white">Total</span>
-                  <span style={{ color: '#D5FF40' }}>{formatCurrency(total)}</span>
+                  <span className="pdf-total-value" style={{ color: '#D5FF40' }}>{formatCurrency(total)}</span>
                 </div>
               </div>
             </div>
@@ -199,7 +263,18 @@ export function PortalClient({ quote, userLogo, userName, subtotal, discountAmou
 
         </main>
 
+        {/* Terms text */}
+        {pdf.termsText && (
+          <div className="pdf-notes rounded-2xl border p-5 print-card" style={{ background: '#252525', borderColor: '#333' }}>
+            <p className="text-xs text-[#888] uppercase tracking-wide mb-2">Observações</p>
+            <p className="text-[#aaa] text-sm leading-relaxed whitespace-pre-wrap">{pdf.termsText}</p>
+          </div>
+        )}
+
         <footer className="border-t mt-16 py-8 text-center" style={{ borderColor: '#2a2a2a' }}>
+          {(pdf.footerText || (pdf.blocks.contact && userContact)) && (
+            <p className="pdf-contact text-xs text-[#666] mb-2">{pdf.footerText || userContact}</p>
+          )}
           <p className="text-xs text-[#444]">Gerado por <strong className="text-[#D5FF40]">Freela3D.pro</strong></p>
         </footer>
       </div>
