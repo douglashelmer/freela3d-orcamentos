@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { sendPushToUser } from '@/lib/push'
 
 export async function POST(req: Request, { params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -20,6 +21,13 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
       signedByDoc: signedByDoc || null,
     },
   })
+
+  // Push notification
+  sendPushToUser(quote.userId, {
+    title: '✅ Orçamento assinado!',
+    body: `${quote.title} foi aprovado por ${signedByName}`,
+    url: `/admin/orcamentos/${quote.id}`,
+  }).catch(() => {})
 
   return NextResponse.json({ ok: true })
 }

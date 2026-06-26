@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { PushNotificationToggle } from '@/components/ui/PushNotificationToggle'
 
 type Profile = {
   name: string; company: string; phone: string; monthlyGoal: string
@@ -316,6 +317,10 @@ export default function ConfiguracoesPage() {
                   <h2 className="text-sm font-semibold text-white uppercase tracking-wide">Notificações</h2>
                   <p className="text-xs text-[#666] mt-1">Gerencie como você recebe atualizações</p>
                 </div>
+
+                {/* Push notifications toggle */}
+                <PushNotificationToggle />
+
                 {([
                   { key: 'novosLeads', label: 'Novos Leads', desc: 'Seja notificado quando receber um novo lead' },
                   { key: 'propostasAbertas', label: 'Propostas Abertas', desc: 'Quando o cliente visualizar sua proposta' },

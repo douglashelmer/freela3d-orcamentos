@@ -21,7 +21,6 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return
   if (!e.request.url.startsWith(self.location.origin)) return
 
-  // Network first, fall back to cache, then offline page
   e.respondWith(
     fetch(e.request)
       .then(res => {
@@ -32,5 +31,37 @@ self.addEventListener('fetch', e => {
       .catch(() =>
         caches.match(e.request).then(cached => cached || caches.match(OFFLINE_URL))
       )
+  )
+})
+
+// Push notifications
+self.addEventListener('push', e => {
+  let data = { title: 'Freela3D', body: 'Nova notificação', url: '/admin', icon: '/logo.svg' }
+  try { data = { ...data, ...e.data.json() } } catch {}
+
+  e.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: data.icon,
+      badge: '/logo.svg',
+      data: { url: data.url },
+      vibrate: [200, 100, 200],
+    })
+  )
+})
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close()
+  const url = e.notification.data?.url || '/admin'
+  e.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+      for (const client of list) {
+        if (client.url.includes('/admin') && 'focus' in client) {
+          client.navigate(url)
+          return client.focus()
+        }
+      }
+      if (clients.openWindow) return clients.openWindow(url)
+    })
   )
 })

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { db } from '@/lib/db'
 import { calcQuoteTotal } from '@/lib/utils'
 import { PortalClient } from './PortalClient'
+import { sendPushToUser } from '@/lib/push'
 
 const DEFAULT_PDF = {
   template: 'modern',
@@ -38,6 +39,12 @@ export default async function OrcamentoPortal({ params }: { params: Promise<{ to
       where: { id: quote.id },
       data: { status: 'VIEWED', viewedAt: new Date() },
     })
+    // Push notification — don't await (fire and forget)
+    sendPushToUser(quote.userId, {
+      title: '👁 Orçamento visualizado',
+      body: `${quote.client?.name ?? 'Seu cliente'} abriu "${quote.title}"`,
+      url: `/admin/orcamentos/${quote.id}`,
+    }).catch(() => {})
   }
 
   const { subtotal, discountAmount, total } = calcQuoteTotal(
