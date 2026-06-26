@@ -159,25 +159,25 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center gap-4 px-8 py-5 border-b shrink-0" style={{ borderColor: '#2a2a2a', background: '#1a1a1a' }}>
+      <div className="flex flex-col gap-3 px-4 md:px-8 py-3 md:py-5 border-b shrink-0" style={{ borderColor: '#2a2a2a', background: '#1a1a1a' }}>
         <input
           value={state.title}
           onChange={e => update('title', e.target.value)}
           placeholder="Título do orçamento..."
-          className="flex-1 text-xl font-semibold bg-transparent text-white placeholder-[#444] focus:outline-none"
+          className="w-full text-lg md:text-xl font-semibold bg-transparent text-white placeholder-[#444] focus:outline-none"
         />
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => save('DRAFT')}
             disabled={saving}
-            className="h-10 px-5 rounded-xl text-sm font-medium text-[#888] border border-[#333] hover:border-[#555] hover:text-white transition-all disabled:opacity-50"
+            className="flex-1 md:flex-none h-9 md:h-10 px-4 md:px-5 rounded-xl text-sm font-medium text-[#888] border border-[#333] hover:border-[#555] hover:text-white transition-all disabled:opacity-50"
           >
-            Salvar rascunho
+            Rascunho
           </button>
           <button
             onClick={() => save('SENT')}
             disabled={saving}
-            className="h-10 px-5 rounded-xl text-sm font-semibold text-[#1E1E1E] transition-opacity disabled:opacity-50"
+            className="flex-1 md:flex-none h-9 md:h-10 px-4 md:px-5 rounded-xl text-sm font-semibold text-[#1E1E1E] transition-opacity disabled:opacity-50"
             style={{ background: '#D5FF40' }}
           >
             {saving ? 'Salvando...' : 'Salvar e Enviar'}

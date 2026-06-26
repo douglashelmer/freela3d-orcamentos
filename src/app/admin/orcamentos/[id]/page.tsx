@@ -51,11 +51,17 @@ export default async function EditOrcamentoPage({ params }: { params: Promise<{ 
 
   return (
     <div className="h-full flex flex-col" style={{ background: '#1E1E1E' }}>
-      <div className="px-8 py-4 border-b flex items-center justify-between" style={{ borderColor: '#2a2a2a' }}>
-        <div className="flex items-center gap-2 text-sm">
-          <a href="/admin/orcamentos" className="text-[#666] hover:text-white transition-colors">Orçamentos</a>
-          <span className="text-[#444]">/</span>
-          <span className="text-white">#{quote.number} — {quote.title}</span>
+      <div className="px-4 md:px-8 py-3 border-b flex items-center justify-between gap-3" style={{ borderColor: '#2a2a2a' }}>
+        <div className="flex items-center gap-2 min-w-0">
+          <a
+            href="/admin/orcamentos"
+            className="flex items-center gap-1 shrink-0 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors"
+            style={{ color: '#aaa', background: '#252525' }}
+          >
+            ← Voltar
+          </a>
+          <span className="text-[#444] hidden sm:inline">/</span>
+          <span className="text-white text-sm truncate hidden sm:inline">#{quote.number} — {quote.title}</span>
         </div>
         <QuoteActions quoteId={id} token={quote.token} status={quote.status} portalUrl={portalUrl} />
       </div>
