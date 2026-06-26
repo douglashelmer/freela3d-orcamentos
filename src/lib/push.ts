@@ -3,7 +3,7 @@ import { db } from './db'
 
 export interface PushPayload {
   title: string
-  body: string
+  body?: string
   url?: string
   icon?: string
 }

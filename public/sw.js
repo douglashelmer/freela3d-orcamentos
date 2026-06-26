@@ -1,4 +1,4 @@
-const CACHE = 'freela3d-v2'
+const CACHE = 'freela3d-v3'
 const OFFLINE_URL = '/offline'
 
 self.addEventListener('install', e => {
@@ -41,7 +41,6 @@ self.addEventListener('push', e => {
 
   e.waitUntil(
     self.registration.showNotification(data.title, {
-      body: data.body,
       icon: data.icon,
       badge: '/icon-192.png',
       data: { url: data.url },

@@ -12,8 +12,7 @@ export async function POST() {
 
   try {
     await sendPushToUser(session.user.id, {
-      title: '✅ Orçamento aprovado!',
-      body: `Proposta de ${formatted} foi assinada pelo cliente`,
+      title: `✅ Orçamento aprovado! ${formatted}`,
       url: '/admin/orcamentos',
     })
     return NextResponse.json({ ok: true })
