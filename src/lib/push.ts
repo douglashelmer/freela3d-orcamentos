@@ -1,12 +1,6 @@
 import webPush from 'web-push'
 import { db } from './db'
 
-webPush.setVapidDetails(
-  `mailto:${process.env.VAPID_EMAIL ?? 'contato@freela3d.pro'}`,
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!,
-)
-
 export interface PushPayload {
   title: string
   body: string
@@ -14,7 +8,23 @@ export interface PushPayload {
   icon?: string
 }
 
+let vapidReady = false
+function initVapid() {
+  if (vapidReady) return true
+  const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
+  const priv = process.env.VAPID_PRIVATE_KEY
+  if (!pub || !priv) return false
+  webPush.setVapidDetails(
+    `mailto:${process.env.VAPID_EMAIL ?? 'contato@freela3d.pro'}`,
+    pub,
+    priv,
+  )
+  vapidReady = true
+  return true
+}
+
 export async function sendPushToUser(userId: string, payload: PushPayload) {
+  if (!initVapid()) return // VAPID keys not configured
   let subs: Array<{ id: string; endpoint: string; p256dh: string; auth: string }> = []
   try {
     subs = await db.$queryRaw`
