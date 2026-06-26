@@ -23,6 +23,8 @@ export function PushNotificationToggle() {
   const [state, setState] = useState<State>('loading')
   const [errorMsg, setErrorMsg] = useState('')
   const [toggling, setToggling] = useState(false)
+  const [testing, setTesting] = useState(false)
+  const [testMsg, setTestMsg] = useState('')
 
   useEffect(() => {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
@@ -92,6 +94,21 @@ export function PushNotificationToggle() {
     }
   }
 
+  async function sendTest() {
+    setTesting(true)
+    setTestMsg('')
+    try {
+      const res = await fetch('/api/push/test', { method: 'POST' })
+      const data = await res.json()
+      setTestMsg(res.ok ? '✓ Notificação enviada!' : `Erro: ${data.error}`)
+    } catch {
+      setTestMsg('Erro ao enviar')
+    } finally {
+      setTesting(false)
+      setTimeout(() => setTestMsg(''), 4000)
+    }
+  }
+
   if (state === 'loading') return null
 
   const descriptions: Record<State, string> = {
@@ -128,6 +145,24 @@ export function PushNotificationToggle() {
           </button>
         )}
       </div>
+
+      {state === 'on' && (
+        <div className="mt-3 flex items-center gap-3">
+          <button
+            onClick={sendTest}
+            disabled={testing}
+            className="text-xs px-3 py-1.5 rounded-lg border transition-colors disabled:opacity-50"
+            style={{ borderColor: '#444', color: '#888' }}
+          >
+            {testing ? 'Enviando...' : 'Enviar notificação de teste'}
+          </button>
+          {testMsg && (
+            <span className="text-xs" style={{ color: testMsg.startsWith('✓') ? '#D5FF40' : '#f87171' }}>
+              {testMsg}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   )
 }
