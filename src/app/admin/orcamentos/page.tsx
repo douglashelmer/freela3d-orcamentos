@@ -27,31 +27,31 @@ export default async function OrcamentosPage() {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="p-4 md:p-8">
+      <div className="flex items-start justify-between mb-6 md:mb-8 gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Orçamentos</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-white">Orçamentos</h1>
           <p className="text-[#888] text-sm mt-0.5">{quotes.length} orçamento{quotes.length !== 1 ? 's' : ''}</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
           <Link
             href="/admin/orcamentos/portal"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all"
+            className="hidden sm:flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all"
           >
-            🌐 Personalizar Página
+            🌐 <span className="hidden md:inline">Personalizar </span>Página
           </Link>
           <Link
             href="/admin/orcamentos/pdf"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all"
+            className="hidden sm:flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all"
           >
-            🎨 Personalizar PDF
+            🎨 <span className="hidden md:inline">Personalizar </span>PDF
           </Link>
           <Link
             href="/admin/orcamentos/novo"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E]"
+            className="flex items-center gap-1.5 px-3 md:px-5 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E]"
             style={{ background: '#D5FF40' }}
           >
-            + Novo Orçamento
+            + <span className="hidden sm:inline">Novo </span>Orçamento
           </Link>
         </div>
       </div>
@@ -70,55 +70,82 @@ export default async function OrcamentosPage() {
             </Link>
           </div>
         ) : (
-          <table className="w-full">
-            <thead>
-              <tr className="border-b" style={{ borderColor: '#333' }}>
-                {['#', 'Título', 'Cliente', 'Valor', 'Status', 'Data', ''].map(h => (
-                  <th key={h} className="text-left text-xs font-medium text-[#666] px-6 py-3 uppercase tracking-wide">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y" style={{ borderColor: '#2a2a2a' }}>
+          <>
+            {/* Mobile: card list */}
+            <div className="divide-y md:hidden" style={{ borderColor: '#2a2a2a' }}>
               {quotes.map(q => {
                 const total = q.items.reduce((s, i) => s + i.price * i.quantity, 0)
                 return (
-                  <tr key={q.id} className="hover:bg-[#2a2a2a] transition-colors">
-                    <td className="px-6 py-4">
-                      <span className="text-xs font-bold text-[#D5FF40]">#{q.number}</span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <p className="text-sm font-medium text-white">{q.title}</p>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-[#888]">
-                      {q.client?.name ?? '—'}
-                    </td>
-                    <td className="px-6 py-4 text-sm font-medium text-white">
-                      {formatCurrency(total)}
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusColor[q.status]}`}>
-                        {statusLabel[q.status]}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-[#666]">
-                      {formatDate(q.createdAt)}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center">
-                        <Link href={`/admin/orcamentos/${q.id}`}
-                          className="text-xs text-[#D5FF40] hover:underline"
-                        >
-                          Abrir
-                        </Link>
-                        <DuplicateQuoteButton quoteId={q.id} />
-                        <DeleteQuoteButton quoteId={q.id} />
-                      </div>
-                    </td>
-                  </tr>
+                  <Link key={q.id} href={`/admin/orcamentos/${q.id}`}
+                    className="flex items-center gap-3 px-4 py-3.5 hover:bg-[#2a2a2a] transition-colors"
+                  >
+                    <div className="w-9 h-9 rounded-lg flex items-center justify-center text-xs font-bold text-[#1E1E1E] shrink-0" style={{ background: '#D5FF40' }}>
+                      {q.number}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-white truncate">{q.title}</p>
+                      <p className="text-xs text-[#666] truncate">{q.client?.name ?? 'Sem cliente'}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="text-sm font-medium text-white">{formatCurrency(total)}</p>
+                      <span className={`text-xs font-medium ${statusColor[q.status]}`}>{statusLabel[q.status]}</span>
+                    </div>
+                  </Link>
                 )
               })}
-            </tbody>
-          </table>
+            </div>
+
+            {/* Desktop: table */}
+            <table className="hidden md:table w-full">
+              <thead>
+                <tr className="border-b" style={{ borderColor: '#333' }}>
+                  {['#', 'Título', 'Cliente', 'Valor', 'Status', 'Data', ''].map(h => (
+                    <th key={h} className="text-left text-xs font-medium text-[#666] px-6 py-3 uppercase tracking-wide">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y" style={{ borderColor: '#2a2a2a' }}>
+                {quotes.map(q => {
+                  const total = q.items.reduce((s, i) => s + i.price * i.quantity, 0)
+                  return (
+                    <tr key={q.id} className="hover:bg-[#2a2a2a] transition-colors">
+                      <td className="px-6 py-4">
+                        <span className="text-xs font-bold text-[#D5FF40]">#{q.number}</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <p className="text-sm font-medium text-white">{q.title}</p>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-[#888]">
+                        {q.client?.name ?? '—'}
+                      </td>
+                      <td className="px-6 py-4 text-sm font-medium text-white">
+                        {formatCurrency(total)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusColor[q.status]}`}>
+                          {statusLabel[q.status]}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-[#666]">
+                        {formatDate(q.createdAt)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center">
+                          <Link href={`/admin/orcamentos/${q.id}`}
+                            className="text-xs text-[#D5FF40] hover:underline"
+                          >
+                            Abrir
+                          </Link>
+                          <DuplicateQuoteButton quoteId={q.id} />
+                          <DeleteQuoteButton quoteId={q.id} />
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </>
         )}
       </div>
     </div>

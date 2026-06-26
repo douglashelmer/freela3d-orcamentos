@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { SignOutButton } from '@/components/ui/SignOutButton'
+import { MobileAdminNav } from '@/components/ui/MobileAdminNav'
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', icon: '▦' },
@@ -25,18 +26,29 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   const user = await db.user.findUnique({
     where: { id: session.user.id },
-    select: { onboardingCompleted: true, company: true, logo: true, name: true },
+    select: { onboardingCompleted: true, company: true, logo: true, name: true, email: true },
   })
   if (!user) redirect('/login')
   if (!user.onboardingCompleted) redirect('/setup')
 
   const displayName = user.company || user.name || session.user.name || ''
   const initial = (user.name || session.user.name || 'U')[0].toUpperCase()
+  const userName = session.user.name || user.name || ''
+  const userEmail = user.email || session.user.email || ''
 
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: '#1E1E1E' }}>
-      {/* Sidebar */}
-      <aside className="flex flex-col w-64 shrink-0 border-r" style={{ background: '#1a1a1a', borderColor: '#2a2a2a' }}>
+      {/* Mobile nav (header + drawer + bottom tabs) */}
+      <MobileAdminNav
+        logo={user.logo ?? null}
+        displayName={displayName}
+        initial={initial}
+        userName={userName}
+        userEmail={userEmail}
+      />
+
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex flex-col w-64 shrink-0 border-r" style={{ background: '#1a1a1a', borderColor: '#2a2a2a' }}>
         {/* Logo */}
         <div className="flex items-center gap-3 px-6 py-5 border-b" style={{ borderColor: '#2a2a2a' }}>
           {user.logo ? (
@@ -70,16 +82,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               {initial}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">{session.user.name}</p>
-              <p className="text-xs text-[#666] truncate">{displayName !== session.user.name ? displayName : session.user.email}</p>
+              <p className="text-sm font-medium text-white truncate">{userName}</p>
+              <p className="text-xs text-[#666] truncate">{displayName !== userName ? displayName : userEmail}</p>
             </div>
           </div>
           <SignOutButton />
         </div>
       </aside>
 
-      {/* Main */}
-      <main className="flex-1 overflow-y-auto flex flex-col min-h-0">
+      {/* Main content — pt-14 on mobile for the top bar, pb-16 for bottom tabs */}
+      <main className="flex-1 overflow-y-auto flex flex-col min-h-0 pt-14 md:pt-0 pb-16 md:pb-0">
         {children}
       </main>
     </div>

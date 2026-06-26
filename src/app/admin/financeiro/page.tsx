@@ -132,17 +132,17 @@ export default function FinanceiroPage() {
   const statusColor: Record<string, string> = { PENDING: 'text-yellow-400', PAID: 'text-[#D5FF40]', PARTIAL: 'text-blue-400' }
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-4 md:p-8">
+      <div className="flex items-center justify-between mb-5 md:mb-6 gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Financeiro</h1>
-          <p className="text-[#888] text-sm mt-0.5">Controle suas receitas e despesas</p>
+          <h1 className="text-xl md:text-2xl font-bold text-white">Financeiro</h1>
+          <p className="text-[#888] text-sm mt-0.5">Receitas e despesas</p>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => openNew('INCOME')} className="px-4 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E]" style={{ background: '#D5FF40' }}>
+          <button onClick={() => openNew('INCOME')} className="px-3 md:px-4 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E]" style={{ background: '#D5FF40' }}>
             + Receita
           </button>
-          <button onClick={() => openNew('EXPENSE')} className="px-4 py-2.5 rounded-xl text-sm font-semibold text-white" style={{ background: '#333' }}>
+          <button onClick={() => openNew('EXPENSE')} className="px-3 md:px-4 py-2.5 rounded-xl text-sm font-semibold text-white" style={{ background: '#333' }}>
             + Despesa
           </button>
         </div>
@@ -156,7 +156,7 @@ export default function FinanceiroPage() {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-5 md:mb-6">
         <div className="rounded-2xl border p-5 space-y-3" style={{ background: '#252525', borderColor: '#333' }}>
           <p className="text-xs text-[#666] uppercase tracking-wide font-medium">Contas a Receber</p>
           <div className="space-y-1.5">
@@ -222,7 +222,7 @@ export default function FinanceiroPage() {
 
       {/* Overdue alerts */}
       {(overdueIncomes.length > 0 || overdueExpenses.length > 0) && (
-        <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-5 md:mb-6">
           {overdueIncomes.length > 0 && (
             <div className="rounded-xl p-4 border" style={{ background: '#1a1200', borderColor: '#fbbf2440' }}>
               <div className="flex items-center gap-2 mb-1">
@@ -263,23 +263,23 @@ export default function FinanceiroPage() {
         ) : (
           <div className="divide-y" style={{ borderColor: '#2a2a2a' }}>
             {transactions.map(tx => (
-              <div key={tx.id} className="flex items-center justify-between px-6 py-3 hover:bg-[#2a2a2a] transition-colors group">
-                <div className="flex items-center gap-4">
+              <div key={tx.id} className="flex items-center justify-between px-4 md:px-6 py-3 hover:bg-[#2a2a2a] transition-colors group gap-2">
+                <div className="flex items-center gap-3 min-w-0">
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center text-base shrink-0"
                     style={{ background: tx.type === 'INCOME' ? '#D5FF4020' : '#f8717120' }}>
                     {tx.type === 'INCOME' ? '↑' : '↓'}
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-white">{tx.description}</p>
-                    <p className="text-xs text-[#555]">{tx.category || 'Sem categoria'} · {formatDate(tx.dueDate)}</p>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-white truncate">{tx.description}</p>
+                    <p className="text-xs text-[#555] truncate">{tx.category || 'Sem categoria'} · {formatDate(tx.dueDate)}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-6">
-                  <span className={`text-xs font-medium ${statusColor[tx.status] ?? 'text-[#666]'}`}>{statusLabel[tx.status] ?? tx.status}</span>
-                  <span className={`text-sm font-bold min-w-[100px] text-right ${tx.type === 'INCOME' ? 'text-[#D5FF40]' : 'text-red-400'}`}>
+                <div className="flex items-center gap-2 md:gap-6 shrink-0">
+                  <span className={`hidden sm:inline text-xs font-medium ${statusColor[tx.status] ?? 'text-[#666]'}`}>{statusLabel[tx.status] ?? tx.status}</span>
+                  <span className={`text-sm font-bold text-right ${tx.type === 'INCOME' ? 'text-[#D5FF40]' : 'text-red-400'}`}>
                     {tx.type === 'INCOME' ? '+' : '-'}{formatBRL(tx.amount)}
                   </span>
-                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => markPaid(tx)}
                       title={tx.status === 'PAID' ? 'Marcar pendente' : 'Marcar pago'}

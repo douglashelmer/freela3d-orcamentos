@@ -47,27 +47,27 @@ export default async function AdminDashboard() {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="p-4 md:p-8">
+      <div className="flex items-start justify-between mb-6 md:mb-8 gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-          <p className="text-[#888] text-sm mt-0.5">Bem-vindo de volta, {session?.user?.name?.split(' ')[0]}</p>
+          <h1 className="text-xl md:text-2xl font-bold text-white">Dashboard</h1>
+          <p className="text-[#888] text-sm mt-0.5">Bem-vindo, {session?.user?.name?.split(' ')[0]}</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 shrink-0">
           <ConquistasButton />
           <Link
             href="/admin/orcamentos/novo"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E] transition-colors"
+            className="flex items-center gap-1.5 px-3 md:px-5 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E] transition-colors"
             style={{ background: '#D5FF40' }}
           >
-            + Novo Orçamento
+            + <span className="hidden sm:inline">Novo </span>Orçamento
           </Link>
         </div>
       </div>
 
       {/* Meta de receita */}
       {monthlyGoal && (
-        <div className="rounded-2xl border p-5 mb-6" style={{ background: '#252525', borderColor: '#333' }}>
+        <div className="rounded-2xl border p-4 md:p-5 mb-4 md:mb-6" style={{ background: '#252525', borderColor: '#333' }}>
           <div className="flex items-center justify-between mb-3">
             <div>
               <p className="text-xs text-[#666] uppercase tracking-wide">Meta do mês</p>
@@ -84,11 +84,11 @@ export default async function AdminDashboard() {
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4 mb-6 md:mb-8">
         {stats.map(s => (
-          <div key={s.label} className="rounded-2xl border p-5" style={{ background: '#252525', borderColor: '#333' }}>
-            <p className="text-xs text-[#666] mb-2 uppercase tracking-wide">{s.label}</p>
-            <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+          <div key={s.label} className="rounded-2xl border p-4 md:p-5" style={{ background: '#252525', borderColor: '#333' }}>
+            <p className="text-xs text-[#666] mb-1.5 md:mb-2 uppercase tracking-wide">{s.label}</p>
+            <p className={`text-xl md:text-2xl font-bold ${s.color}`}>{s.value}</p>
           </div>
         ))}
       </div>
@@ -111,18 +111,18 @@ export default async function AdminDashboard() {
           )}
           {recent.map(q => (
             <Link key={q.id} href={`/admin/orcamentos/${q.id}`}
-              className="flex items-center justify-between px-6 py-4 hover:bg-[#2a2a2a] transition-colors"
+              className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4 hover:bg-[#2a2a2a] transition-colors gap-3"
             >
-              <div className="flex items-center gap-4">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-[#1E1E1E]" style={{ background: '#D5FF40' }}>
+              <div className="flex items-center gap-3 md:gap-4 min-w-0">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-[#1E1E1E] shrink-0" style={{ background: '#D5FF40' }}>
                   {q.number}
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-white">{q.title}</p>
-                  <p className="text-xs text-[#666]">{q.client?.name ?? 'Sem cliente'}</p>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-white truncate">{q.title}</p>
+                  <p className="text-xs text-[#666] truncate">{q.client?.name ?? 'Sem cliente'}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-6">
+              <div className="flex flex-col sm:flex-row items-end sm:items-center gap-1 sm:gap-6 shrink-0">
                 <p className="text-sm font-medium text-white">
                   {formatCurrency(q.items.reduce((s, i) => s + i.price * i.quantity, 0))}
                 </p>
