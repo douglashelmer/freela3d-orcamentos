@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { sendPushToUser } from '@/lib/push'
+import { checkMilestones } from '@/lib/milestones'
 
 export async function POST(req: Request, { params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -22,12 +23,14 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
     },
   })
 
-  // Push notification
+  // Push notification + milestone check
   sendPushToUser(quote.userId, {
-    title: '✅ Orçamento assinado!',
-    body: `${quote.title} foi aprovado por ${signedByName}`,
+    title: '✅ Orçamento aprovado!',
+    body: `${quote.title} foi assinado por ${signedByName}`,
     url: `/admin/orcamentos/${quote.id}`,
   }).catch(() => {})
+
+  checkMilestones(quote.userId).catch(() => {})
 
   return NextResponse.json({ ok: true })
 }

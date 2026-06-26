@@ -78,6 +78,7 @@ export async function POST(req: Request) {
   const generatedContent = applyShortcodes(templateContent, { user, contract: contractData })
 
   const id = nanoid()
+  const token = nanoid(32)
   const now = new Date()
 
   try {
@@ -87,7 +88,7 @@ export async function POST(req: Request) {
         "clientEmail", "clientPhone", "clientAddress", "clientAddressNumber", "clientNeighborhood",
         "clientCity", "clientState", "projectName", services, duration,
         "totalValue", discount, "finalValue", installments, "paymentMethod", "paymentConditions",
-        "generatedContent", "createdAt", "updatedAt"
+        "generatedContent", token, status, "createdAt", "updatedAt"
       ) VALUES (
         ${id}, ${session.user.id}, ${body.templateId ?? null}, ${contractData.clientName},
         ${contractData.clientDocument ?? null}, ${contractData.clientRepresentative ?? null},
@@ -98,7 +99,7 @@ export async function POST(req: Request) {
         ${contractData.services ?? null}, ${contractData.duration},
         ${contractData.totalValue}, ${contractData.discount}, ${contractData.finalValue},
         ${contractData.installments}, ${contractData.paymentMethod}, ${contractData.paymentConditions},
-        ${generatedContent}, ${now}, ${now}
+        ${generatedContent}, ${token}, 'DRAFT', ${now}, ${now}
       )
     `
     return NextResponse.json({ id })

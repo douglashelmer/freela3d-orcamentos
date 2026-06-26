@@ -14,6 +14,10 @@ interface Props {
     paymentConditions: string
     installments: number
     createdAt: string
+    token?: string | null
+    status?: string
+    signedAt?: string | null
+    signedByName?: string | null
   }
 }
 
