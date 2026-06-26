@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { SignOutButton } from '@/components/ui/SignOutButton'
 import { MobileAdminNav } from '@/components/ui/MobileAdminNav'
+import { PwaInstallPrompt } from '@/components/ui/PwaInstallPrompt'
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', icon: '▦' },
@@ -94,6 +95,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <main className="flex-1 overflow-y-auto flex flex-col min-h-0 pt-14 md:pt-0 pb-16 md:pb-0">
         {children}
       </main>
+
+      <PwaInstallPrompt />
     </div>
   )
 }
