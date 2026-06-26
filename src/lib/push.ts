@@ -40,7 +40,7 @@ export async function sendPushToUser(userId: string, payload: PushPayload) {
     title: payload.title,
     body: payload.body,
     url: payload.url ?? '/admin',
-    icon: payload.icon ?? '/logo.svg',
+    icon: payload.icon ?? '/icon-192.png',
   })
 
   const failed: string[] = []

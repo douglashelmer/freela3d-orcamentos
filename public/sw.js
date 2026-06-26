@@ -1,9 +1,9 @@
-const CACHE = 'freela3d-v1'
+const CACHE = 'freela3d-v2'
 const OFFLINE_URL = '/offline'
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(['/offline', '/logo.svg']))
+    caches.open(CACHE).then(c => c.addAll(['/offline', '/icon-192.png']))
   )
   self.skipWaiting()
 })
@@ -36,14 +36,14 @@ self.addEventListener('fetch', e => {
 
 // Push notifications
 self.addEventListener('push', e => {
-  let data = { title: 'Freela3D', body: 'Nova notificação', url: '/admin', icon: '/logo.svg' }
+  let data = { title: 'Freela3D', body: 'Nova notificação', url: '/admin', icon: '/icon-192.png' }
   try { data = { ...data, ...e.data.json() } } catch {}
 
   e.waitUntil(
     self.registration.showNotification(data.title, {
       body: data.body,
       icon: data.icon,
-      badge: '/logo.svg',
+      badge: '/icon-192.png',
       data: { url: data.url },
       vibrate: [200, 100, 200],
     })
