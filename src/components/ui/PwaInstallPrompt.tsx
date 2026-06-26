@@ -7,9 +7,10 @@ type Platform = 'android' | 'ios' | null
 export function PwaInstallPrompt() {
   const [platform, setPlatform] = useState<Platform>(null)
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
-  const [dismissed, setDismissed] = useState(true)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
+    // Already installed as PWA
     const isStandalone =
       window.matchMedia('(display-mode: standalone)').matches ||
       (window.navigator as any).standalone === true
@@ -18,106 +19,165 @@ export function PwaInstallPrompt() {
     if (localStorage.getItem('pwa-prompt-dismissed')) return
 
     const ua = navigator.userAgent
-    const isIOS = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream
-    const isAndroid = /Android/.test(ua)
+    const isMobile = window.innerWidth < 900 || /Android|iPhone|iPad|iPod/i.test(ua)
+    if (!isMobile) return
 
-    if (!isIOS && !isAndroid) return // desktop, skip
+    const isIOS = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream
+    const isAndroid = /Android/.test(ua) || (!isIOS && isMobile)
 
     if (isIOS) {
       const isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|OPiOS/.test(ua)
-      if (isSafari) {
-        setPlatform('ios')
-        setDismissed(false)
+      if (!isSafari) return
+      setPlatform('ios')
+    } else {
+      setPlatform('android')
+      const handler = (e: Event) => {
+        e.preventDefault()
+        setDeferredPrompt(e)
       }
-      return
+      window.addEventListener('beforeinstallprompt', handler)
+      // Cleanup returned below
     }
 
-    // Android: show immediately with manual instructions; upgrade to native if prompt fires
-    setPlatform('android')
-    setDismissed(false)
+    // Small delay to not flash on first paint
+    const t = setTimeout(() => setVisible(true), 1200)
 
-    const handler = (e: Event) => {
-      e.preventDefault()
-      setDeferredPrompt(e)
+    return () => {
+      clearTimeout(t)
+      window.removeEventListener('beforeinstallprompt', () => {})
     }
-    window.addEventListener('beforeinstallprompt', handler)
-    return () => window.removeEventListener('beforeinstallprompt', handler)
   }, [])
 
   function dismiss() {
     localStorage.setItem('pwa-prompt-dismissed', '1')
-    setDismissed(true)
+    setVisible(false)
   }
 
   async function install() {
     if (deferredPrompt) {
       deferredPrompt.prompt()
       const { outcome } = await deferredPrompt.userChoice
-      if (outcome === 'accepted') setDismissed(true)
+      if (outcome === 'accepted') { setVisible(false); return }
       setDeferredPrompt(null)
     }
     dismiss()
   }
 
-  if (dismissed || !platform) return null
+  if (!visible || !platform) return null
 
   return (
-    <div
-      className="fixed bottom-20 md:bottom-6 left-4 right-4 md:left-auto md:right-6 md:w-80 z-50 rounded-2xl p-4 shadow-2xl"
-      style={{ background: '#252525', border: '1px solid #3a3a3a' }}
-    >
-      <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0" style={{ background: '#000' }}>
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 z-50"
+        style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
+        onClick={dismiss}
+      />
+
+      {/* Modal */}
+      <div
+        className="fixed z-50 left-4 right-4 rounded-3xl p-6 shadow-2xl"
+        style={{
+          bottom: '50%',
+          transform: 'translateY(50%)',
+          background: '#1a1a1a',
+          border: '1px solid #2a2a2a',
+          maxWidth: 400,
+          margin: '0 auto',
+        }}
+      >
+        {/* Icon */}
+        <div className="flex justify-center mb-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/icon-192.png" alt="Freela3D" width={40} height={40} />
+          <img src="/icon-192.png" alt="Freela3D" width={72} height={72} className="rounded-2xl" />
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-white">Instalar Freela3D</p>
-          {platform === 'android' && !deferredPrompt && (
-            <p className="text-xs text-[#888] mt-0.5">
-              Toque em <span className="text-white">⋮</span> e depois em <span className="text-white">"Adicionar à tela inicial"</span>
-            </p>
-          )}
-          {platform === 'android' && deferredPrompt && (
-            <p className="text-xs text-[#888] mt-0.5">Acesse rapidamente pelo ícone na tela inicial</p>
-          )}
-          {platform === 'ios' && (
-            <p className="text-xs text-[#888] mt-0.5">
-              Toque em <span className="text-white">□↑</span> e depois em <span className="text-white">"Adicionar à Tela de Início"</span>
-            </p>
-          )}
-        </div>
-        <button onClick={dismiss} className="text-[#555] hover:text-[#888] text-lg leading-none shrink-0 -mt-0.5">✕</button>
-      </div>
 
-      {platform === 'android' && deferredPrompt && (
-        <div className="flex gap-2 mt-3">
-          <button
-            onClick={dismiss}
-            className="flex-1 py-2 rounded-xl text-sm font-medium text-[#666]"
-            style={{ background: '#1E1E1E' }}
-          >
-            Agora não
-          </button>
-          <button
-            onClick={install}
-            className="flex-1 py-2 rounded-xl text-sm font-semibold text-[#1E1E1E]"
-            style={{ background: '#D5FF40' }}
-          >
-            Instalar
-          </button>
-        </div>
-      )}
+        <h2 className="text-lg font-bold text-white text-center mb-1">Instalar Freela3D</h2>
+        <p className="text-sm text-center mb-5" style={{ color: '#888' }}>
+          Adicione à tela inicial para acesso rápido e notificações
+        </p>
 
-      {(platform === 'ios' || (platform === 'android' && !deferredPrompt)) && (
+        {platform === 'ios' && (
+          <>
+            <div className="rounded-2xl p-4 mb-4 text-sm" style={{ background: '#252525' }}>
+              <p className="text-white mb-3 font-medium">Como instalar no iPhone / iPad:</p>
+              <div className="flex items-start gap-3 mb-2">
+                <span className="text-xl shrink-0">1️⃣</span>
+                <p style={{ color: '#aaa' }}>Toque no ícone de compartilhar <span className="text-white font-bold">□↑</span> na barra do Safari</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-xl shrink-0">2️⃣</span>
+                <p style={{ color: '#aaa' }}>Toque em <span className="text-white font-bold">"Adicionar à Tela de Início"</span></p>
+              </div>
+            </div>
+            <button
+              onClick={dismiss}
+              className="w-full py-3.5 rounded-2xl text-sm font-semibold"
+              style={{ background: '#D5FF40', color: '#1E1E1E' }}
+            >
+              Entendi
+            </button>
+          </>
+        )}
+
+        {platform === 'android' && (
+          <>
+            {!deferredPrompt ? (
+              <>
+                <div className="rounded-2xl p-4 mb-4 text-sm" style={{ background: '#252525' }}>
+                  <p className="text-white mb-3 font-medium">Como instalar no Android:</p>
+                  <div className="flex items-start gap-3 mb-2">
+                    <span className="text-xl shrink-0">1️⃣</span>
+                    <p style={{ color: '#aaa' }}>Toque no menu <span className="text-white font-bold">⋮</span> do Chrome</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl shrink-0">2️⃣</span>
+                    <p style={{ color: '#aaa' }}>Toque em <span className="text-white font-bold">"Adicionar à tela inicial"</span></p>
+                  </div>
+                </div>
+                <button
+                  onClick={dismiss}
+                  className="w-full py-3.5 rounded-2xl text-sm font-semibold"
+                  style={{ background: '#D5FF40', color: '#1E1E1E' }}
+                >
+                  Entendi
+                </button>
+              </>
+            ) : (
+              <>
+                <p className="text-sm text-center mb-4" style={{ color: '#aaa' }}>
+                  Acesse o CRM diretamente pelo ícone na tela inicial, sem abrir o navegador.
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={dismiss}
+                    className="flex-1 py-3.5 rounded-2xl text-sm font-medium"
+                    style={{ background: '#252525', color: '#666' }}
+                  >
+                    Agora não
+                  </button>
+                  <button
+                    onClick={install}
+                    className="flex-1 py-3.5 rounded-2xl text-sm font-semibold"
+                    style={{ background: '#D5FF40', color: '#1E1E1E' }}
+                  >
+                    Instalar
+                  </button>
+                </div>
+              </>
+            )}
+          </>
+        )}
+
+        {/* Close X */}
         <button
           onClick={dismiss}
-          className="w-full mt-3 py-2 rounded-xl text-sm font-medium text-[#666]"
-          style={{ background: '#1E1E1E' }}
+          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full text-lg"
+          style={{ color: '#555', background: '#252525' }}
         >
-          Entendi
+          ✕
         </button>
-      )}
-    </div>
+      </div>
+    </>
   )
 }

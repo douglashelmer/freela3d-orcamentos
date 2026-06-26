@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Geist } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import { PwaRegister } from '@/components/ui/PwaRegister'
+import { PwaInstallPrompt } from '@/components/ui/PwaInstallPrompt'
 import './globals.css'
 
 const geist = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR" className={`${geist.variable} h-full`}>
       <body className="min-h-full bg-bg text-text antialiased">
         <PwaRegister />
+        <PwaInstallPrompt />
         {children}
         <Toaster
           position="top-right"
