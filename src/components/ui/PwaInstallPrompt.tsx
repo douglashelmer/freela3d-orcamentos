@@ -1,32 +1,29 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 
 type Platform = 'android' | 'ios' | null
 
 export function PwaInstallPrompt() {
   const [platform, setPlatform] = useState<Platform>(null)
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
-  const [dismissed, setDismissed] = useState(true) // start hidden until check
+  const [dismissed, setDismissed] = useState(true)
 
   useEffect(() => {
-    // Already installed as PWA
     const isStandalone =
       window.matchMedia('(display-mode: standalone)').matches ||
       (window.navigator as any).standalone === true
     if (isStandalone) return
 
-    // Already dismissed
     if (localStorage.getItem('pwa-prompt-dismissed')) return
 
     const ua = navigator.userAgent
     const isIOS = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream
     const isAndroid = /Android/.test(ua)
 
+    if (!isIOS && !isAndroid) return // desktop, skip
+
     if (isIOS) {
-      // iOS Safari: show manual instructions
-      // Only show on Safari (not Chrome/Firefox on iOS)
       const isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|OPiOS/.test(ua)
       if (isSafari) {
         setPlatform('ios')
@@ -35,12 +32,13 @@ export function PwaInstallPrompt() {
       return
     }
 
-    // Android / Chrome: wait for beforeinstallprompt
+    // Android: show immediately with manual instructions; upgrade to native if prompt fires
+    setPlatform('android')
+    setDismissed(false)
+
     const handler = (e: Event) => {
       e.preventDefault()
       setDeferredPrompt(e)
-      setPlatform('android')
-      setDismissed(false)
     }
     window.addEventListener('beforeinstallprompt', handler)
     return () => window.removeEventListener('beforeinstallprompt', handler)
@@ -55,9 +53,7 @@ export function PwaInstallPrompt() {
     if (deferredPrompt) {
       deferredPrompt.prompt()
       const { outcome } = await deferredPrompt.userChoice
-      if (outcome === 'accepted') {
-        setDismissed(true)
-      }
+      if (outcome === 'accepted') setDismissed(true)
       setDeferredPrompt(null)
     }
     dismiss()
@@ -71,14 +67,21 @@ export function PwaInstallPrompt() {
       style={{ background: '#252525', border: '1px solid #3a3a3a' }}
     >
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 flex items-center justify-center" style={{ background: '#1E1E1E' }}>
-          <Image src="/logo.svg" alt="Freela3D" width={28} height={28} />
+        <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0" style={{ background: '#000' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/icon-192.png" alt="Freela3D" width={40} height={40} />
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-white">Instalar Freela3D</p>
-          {platform === 'android' ? (
+          {platform === 'android' && !deferredPrompt && (
+            <p className="text-xs text-[#888] mt-0.5">
+              Toque em <span className="text-white">⋮</span> e depois em <span className="text-white">"Adicionar à tela inicial"</span>
+            </p>
+          )}
+          {platform === 'android' && deferredPrompt && (
             <p className="text-xs text-[#888] mt-0.5">Acesse rapidamente pelo ícone na tela inicial</p>
-          ) : (
+          )}
+          {platform === 'ios' && (
             <p className="text-xs text-[#888] mt-0.5">
               Toque em <span className="text-white">□↑</span> e depois em <span className="text-white">"Adicionar à Tela de Início"</span>
             </p>
@@ -87,18 +90,18 @@ export function PwaInstallPrompt() {
         <button onClick={dismiss} className="text-[#555] hover:text-[#888] text-lg leading-none shrink-0 -mt-0.5">✕</button>
       </div>
 
-      {platform === 'android' && (
+      {platform === 'android' && deferredPrompt && (
         <div className="flex gap-2 mt-3">
           <button
             onClick={dismiss}
-            className="flex-1 py-2 rounded-xl text-sm font-medium text-[#666] hover:text-[#888] transition-colors"
+            className="flex-1 py-2 rounded-xl text-sm font-medium text-[#666]"
             style={{ background: '#1E1E1E' }}
           >
             Agora não
           </button>
           <button
             onClick={install}
-            className="flex-1 py-2 rounded-xl text-sm font-semibold text-[#1E1E1E] transition-colors"
+            className="flex-1 py-2 rounded-xl text-sm font-semibold text-[#1E1E1E]"
             style={{ background: '#D5FF40' }}
           >
             Instalar
@@ -106,10 +109,10 @@ export function PwaInstallPrompt() {
         </div>
       )}
 
-      {platform === 'ios' && (
+      {(platform === 'ios' || (platform === 'android' && !deferredPrompt)) && (
         <button
           onClick={dismiss}
-          className="w-full mt-3 py-2 rounded-xl text-sm font-medium text-[#666] hover:text-[#888] transition-colors"
+          className="w-full mt-3 py-2 rounded-xl text-sm font-medium text-[#666]"
           style={{ background: '#1E1E1E' }}
         >
           Entendi

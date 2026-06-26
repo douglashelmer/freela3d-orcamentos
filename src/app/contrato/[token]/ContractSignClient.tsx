@@ -79,9 +79,18 @@ export function ContractSignClient({ contract, token }: Props) {
           <p className="text-xs text-[#888]">Contrato de Prestação de Serviços</p>
           <p className="text-white font-semibold text-sm">{contract.projectName}</p>
         </div>
-        {contract.finalValue > 0 && (
-          <span className="text-sm font-bold" style={{ color: '#D5FF40' }}>{fmt(contract.finalValue)}</span>
-        )}
+        <div className="flex items-center gap-3">
+          {contract.finalValue > 0 && (
+            <span className="text-sm font-bold" style={{ color: '#D5FF40' }}>{fmt(contract.finalValue)}</span>
+          )}
+          <button
+            onClick={() => window.history.back()}
+            className="flex items-center justify-center w-8 h-8 rounded-lg text-[#666] hover:text-white transition-colors text-lg leading-none"
+            title="Fechar"
+          >
+            ✕
+          </button>
+        </div>
       </header>
 
       {/* Contract text */}

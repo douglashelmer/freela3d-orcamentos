@@ -135,7 +135,7 @@ export function PortalClient({ quote, userLogo, userName, userContact, subtotal,
                 <span className="text-white font-bold text-lg pdf-header-logo">{userName ?? 'Freela3D'}</span>
               )}
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <div className="text-right">
                 <p className="text-xs text-[#666]">Orçamento</p>
                 <p className="text-sm font-bold pdf-number" style={{ color: portal.primaryColor }}>#{quote.number}</p>
@@ -145,6 +145,13 @@ export function PortalClient({ quote, userLogo, userName, userContact, subtotal,
                 className="no-print flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all"
               >
                 📄 Salvar PDF
+              </button>
+              <button
+                onClick={() => window.history.back()}
+                className="no-print flex items-center justify-center w-9 h-9 rounded-xl border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all text-lg leading-none"
+                title="Fechar"
+              >
+                ✕
               </button>
             </div>
           </div>
