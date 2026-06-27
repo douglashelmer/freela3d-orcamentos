@@ -1,5 +1,6 @@
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { sendPushToUser } from '@/lib/push'
 import { NextResponse } from 'next/server'
 import { nanoid } from 'nanoid'
 
@@ -29,5 +30,11 @@ export async function POST(req: Request) {
       status: 'PENDING',
     },
   })
+  sendPushToUser(session.user.id, {
+    title: '📝 Briefing criado',
+    body: `${briefing.clientName} — ${briefing.clientEmail}`,
+    url: `/admin/briefings/${briefing.id}`,
+  }).catch(() => {})
+
   return NextResponse.json(briefing, { status: 201 })
 }

@@ -1,4 +1,5 @@
 import { db } from '@/lib/db'
+import { sendPushToUser } from '@/lib/push'
 import { NextResponse } from 'next/server'
 
 export async function GET(_: Request, { params }: { params: Promise<{ token: string }> }) {
@@ -33,5 +34,11 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
       answeredAt: new Date(),
     },
   })
+  sendPushToUser(briefing.userId, {
+    title: '✅ Briefing respondido!',
+    body: `${briefing.clientName} preencheu o formulário`,
+    url: `/admin/briefings/${briefing.id}`,
+  }).catch(() => {})
+
   return NextResponse.json({ ok: true })
 }

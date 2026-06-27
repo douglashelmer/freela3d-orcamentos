@@ -320,10 +320,10 @@ enum PaymentStatus {
 }
 
 model ReminderSent {
-  id          String   @id @default(cuid())
-  appointmentId String
-  type        String   // "30min" | "10min"
-  sentAt      DateTime @default(now())
+  id       String   @id @default(cuid())
+  entityId String
+  type     String
+  sentAt   DateTime @default(now())
 
-  @@unique([appointmentId, type])
+  @@unique([entityId, type])
 }

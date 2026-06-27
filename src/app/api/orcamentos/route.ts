@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { sendPushToUser } from '@/lib/push'
 import { generateToken } from '@/lib/utils'
 import type { QuoteBuilderState } from '@/types'
 
@@ -81,6 +82,12 @@ export async function POST(req: Request) {
       },
     },
   })
+
+  sendPushToUser(session.user.id, {
+    title: '📋 Orçamento criado',
+    body: `#${quote.number} — ${quote.title}`,
+    url: `/admin/orcamentos/${quote.id}`,
+  }).catch(() => {})
 
   return NextResponse.json(quote)
 }
