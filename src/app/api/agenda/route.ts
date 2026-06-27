@@ -1,5 +1,6 @@
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { resolveInternalUser } from '@/lib/internal-auth'
 import { sendPushToUser } from '@/lib/push'
 import { NextResponse } from 'next/server'
 
@@ -20,11 +21,13 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const session = await auth()
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const internalId = !session?.user?.id ? await resolveInternalUser(req) : null
+  const userId = session?.user?.id ?? internalId
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const body = await req.json()
   const appointment = await db.appointment.create({
     data: {
-      userId: session.user.id,
+      userId,
       title: body.title,
       description: body.description || null,
       location: body.location || null,
@@ -38,7 +41,7 @@ export async function POST(req: Request) {
     ? 'dia todo'
     : appointment.startAt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
 
-  sendPushToUser(session.user.id, {
+  sendPushToUser(userId, {
     title: '📅 Novo evento na agenda',
     body: `${appointment.title} — ${timeStr}`,
     url: '/admin/agenda',

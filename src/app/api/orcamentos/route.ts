@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { resolveInternalUser } from '@/lib/internal-auth'
 import { sendPushToUser } from '@/lib/push'
 import { generateToken } from '@/lib/utils'
 import type { QuoteBuilderState } from '@/types'
@@ -18,11 +19,13 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const session = await auth()
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const internalId = !session?.user?.id ? await resolveInternalUser(req) : null
+  const userId = session?.user?.id ?? internalId
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body: QuoteBuilderState & { status?: string } = await req.json()
 
-  const count = await db.quote.count({ where: { userId: session.user.id } })
+  const count = await db.quote.count({ where: { userId } })
   const number = String(count + 1).padStart(3, '0')
 
   let clientId: string | undefined
@@ -46,7 +49,7 @@ export async function POST(req: Request) {
       number,
       title: body.title || 'Sem título',
       status: (body.status as 'DRAFT' | 'SENT') ?? 'DRAFT',
-      userId: session.user.id,
+      userId,
       clientId,
       discount: body.discount ?? 0,
       discountType: body.discountType ?? 'percent',
@@ -83,7 +86,7 @@ export async function POST(req: Request) {
     },
   })
 
-  sendPushToUser(session.user.id, {
+  sendPushToUser(userId, {
     title: '📋 Orçamento criado',
     body: `#${quote.number} — ${quote.title}`,
     url: `/admin/orcamentos/${quote.id}`,

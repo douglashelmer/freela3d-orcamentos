@@ -1,5 +1,6 @@
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { resolveInternalUser } from '@/lib/internal-auth'
 import { sendPushToUser } from '@/lib/push'
 import { NextResponse } from 'next/server'
 import { nanoid } from 'nanoid'
@@ -16,12 +17,14 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const session = await auth()
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const internalId = !session?.user?.id ? await resolveInternalUser(req) : null
+  const userId = session?.user?.id ?? internalId
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const body = await req.json()
   const token = nanoid(32)
   const briefing = await db.briefing.create({
     data: {
-      userId: session.user.id,
+      userId,
       token,
       type: body.type ?? 'OTHER',
       clientName: body.clientName,
@@ -30,7 +33,7 @@ export async function POST(req: Request) {
       status: 'PENDING',
     },
   })
-  sendPushToUser(session.user.id, {
+  sendPushToUser(userId, {
     title: '📝 Briefing criado',
     body: `${briefing.clientName} — ${briefing.clientEmail}`,
     url: `/admin/briefings/${briefing.id}`,

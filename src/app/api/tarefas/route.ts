@@ -1,5 +1,6 @@
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { resolveInternalUser } from '@/lib/internal-auth'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
@@ -14,11 +15,13 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const session = await auth()
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const internalId = !session?.user?.id ? await resolveInternalUser(req) : null
+  const userId = session?.user?.id ?? internalId
+  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const body = await req.json()
   const task = await db.task.create({
     data: {
-      userId: session.user.id,
+      userId,
       title: body.title,
       description: body.description || null,
       column: body.column ?? 'TODO',
