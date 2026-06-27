@@ -1,5 +1,6 @@
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { sendPushToUser } from '@/lib/push'
 import { NextResponse } from 'next/server'
 
 export async function GET(req: Request) {
@@ -33,5 +34,15 @@ export async function POST(req: Request) {
       color: body.color ?? '#60a5fa',
     },
   })
+  const timeStr = appointment.allDay
+    ? 'dia todo'
+    : appointment.startAt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+
+  sendPushToUser(session.user.id, {
+    title: '📅 Novo evento na agenda',
+    body: `${appointment.title} — ${timeStr}`,
+    url: '/admin/agenda',
+  }).catch(() => {})
+
   return NextResponse.json(appointment, { status: 201 })
 }

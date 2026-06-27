@@ -318,3 +318,12 @@ enum PaymentStatus {
   OVERDUE
   CANCELLED
 }
+
+model ReminderSent {
+  id          String   @id @default(cuid())
+  appointmentId String
+  type        String   // "30min" | "10min"
+  sentAt      DateTime @default(now())
+
+  @@unique([appointmentId, type])
+}
