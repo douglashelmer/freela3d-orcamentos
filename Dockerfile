@@ -18,4 +18,4 @@ EXPOSE 3000
 ENV NODE_ENV=production
 ENV PORT=3000
 
-CMD ["sh", "-c", "npx prisma db push --skip-generate && node_modules/.bin/next start --port 3000"]
+CMD ["sh", "-c", "npx prisma db push && node_modules/.bin/next start --port 3000"]
