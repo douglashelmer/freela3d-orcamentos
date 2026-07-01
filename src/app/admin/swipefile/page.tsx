@@ -21,6 +21,7 @@ export default function SwipeFilePage() {
   const [color, setColor] = useState(COLORS[0])
   const [creating, setCreating] = useState(false)
   const [search, setSearch] = useState('')
+  const [confirmDelete, setConfirmDelete] = useState<Folder | null>(null)
 
   async function load() {
     const res = await fetch('/api/swipefile')
@@ -44,11 +45,16 @@ export default function SwipeFilePage() {
     load()
   }
 
-  async function remove(id: string, e: React.MouseEvent) {
+  function askRemove(folder: Folder, e: React.MouseEvent) {
     e.preventDefault()
     e.stopPropagation()
-    if (!confirm('Excluir esta pasta e todo o conteúdo dela?')) return
-    await fetch(`/api/swipefile/${id}`, { method: 'DELETE' })
+    setConfirmDelete(folder)
+  }
+
+  async function confirmRemove() {
+    if (!confirmDelete) return
+    await fetch(`/api/swipefile/${confirmDelete.id}`, { method: 'DELETE' })
+    setConfirmDelete(null)
     load()
   }
 
@@ -111,7 +117,7 @@ export default function SwipeFilePage() {
                 style={{ background: '#252525', border: '1px solid #2a2a2a' }}
               >
                 <button
-                  onClick={e => remove(f.id, e)}
+                  onClick={e => askRemove(f, e)}
                   className="absolute top-3 right-3 w-6 h-6 rounded-lg flex items-center justify-center text-xs text-[#666] opacity-0 group-hover:opacity-100 hover:text-red-400 hover:bg-red-400/10 transition-all"
                   title="Excluir pasta"
                 >
@@ -176,6 +182,26 @@ export default function SwipeFilePage() {
                 style={{ background: '#D5FF40', color: '#1E1E1E' }}
               >
                 {creating ? 'Criando…' : 'Criar Pasta'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Confirm Delete */}
+      {confirmDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.7)' }}>
+          <div className="w-full max-w-sm rounded-2xl p-6" style={{ background: '#1a1a1a', border: '1px solid #333' }}>
+            <h2 className="text-lg font-bold text-white mb-2">Excluir pasta?</h2>
+            <p className="text-sm text-[#888] mb-6">
+              &ldquo;{confirmDelete.name}&rdquo; e todo o conteúdo dela (canvas e links) serão excluídos permanentemente.
+            </p>
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setConfirmDelete(null)} className="px-4 py-2 rounded-xl text-sm font-medium text-[#888] hover:text-white transition-colors">
+                Cancelar
+              </button>
+              <button onClick={confirmRemove} className="px-4 py-2 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-90" style={{ background: '#ef4444' }}>
+                Excluir
               </button>
             </div>
           </div>
