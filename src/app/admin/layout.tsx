@@ -14,6 +14,7 @@ const NAV = [
   { href: '/admin/orcamentos', label: 'Orçamentos', icon: '◻' },
   { href: '/admin/contratos', label: 'Contratos', icon: '◪' },
   { href: '/admin/briefings', label: 'Briefings', icon: '◫' },
+  { href: '/admin/swipefile', label: 'Swipe File', icon: '⌗' },
   { href: '/admin/clientes', label: 'Clientes', icon: '◉' },
   { href: '/admin/servicos', label: 'Serviços', icon: '◈' },
   { href: '/admin/financeiro', label: 'Financeiro', icon: '◐' },
