@@ -2,7 +2,15 @@ import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { resolveInternalUser } from '@/lib/internal-auth'
 import { sendPushToUser } from '@/lib/push'
+import { BR_TZ, brDateTimeToISO } from '@/lib/tz'
 import { NextResponse } from 'next/server'
+
+function firstOfMonthISO(year: number, month: number) {
+  // month is 1-based here; roll over to next year when month is 13
+  const y = month > 12 ? year + 1 : year
+  const m = ((month - 1) % 12) + 1
+  return brDateTimeToISO(`${y}-${String(m).padStart(2, '0')}-01`, '00:00')
+}
 
 export async function GET(req: Request) {
   const session = await auth()
@@ -10,8 +18,8 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const year = parseInt(searchParams.get('year') ?? String(new Date().getFullYear()))
   const month = parseInt(searchParams.get('month') ?? String(new Date().getMonth() + 1))
-  const start = new Date(year, month - 1, 1)
-  const end = new Date(year, month, 1)
+  const start = new Date(firstOfMonthISO(year, month))
+  const end = new Date(firstOfMonthISO(year, month + 1))
   const appointments = await db.appointment.findMany({
     where: { userId: session.user.id, startAt: { gte: start, lt: end } },
     orderBy: { startAt: 'asc' },
@@ -39,7 +47,7 @@ export async function POST(req: Request) {
   })
   const timeStr = appointment.allDay
     ? 'dia todo'
-    : appointment.startAt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+    : appointment.startAt.toLocaleTimeString('pt-BR', { timeZone: BR_TZ, hour: '2-digit', minute: '2-digit' })
 
   sendPushToUser(userId, {
     title: '📅 Novo evento na agenda',

@@ -1,12 +1,13 @@
 import { db } from './db'
 import { sendPushToUser } from './push'
+import { BR_TZ } from './tz'
 
 function formatTime(date: Date) {
-  return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  return date.toLocaleTimeString('pt-BR', { timeZone: BR_TZ, hour: '2-digit', minute: '2-digit' })
 }
 
 function formatDate(date: Date) {
-  return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
+  return date.toLocaleDateString('pt-BR', { timeZone: BR_TZ, day: '2-digit', month: '2-digit' })
 }
 
 async function markAndCheck(entityId: string, type: string): Promise<boolean> {

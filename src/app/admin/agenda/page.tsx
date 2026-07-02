@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { brDateTimeToISO, brDateKey, brTime } from '@/lib/tz'
 
 type Appointment = {
   id: string
@@ -157,9 +158,9 @@ export default function AgendaPage() {
   }
 
   appointments.forEach(a => {
-    const date = a.startAt.slice(0, 10)
+    const date = a.allDay ? a.startAt.slice(0, 10) : brDateKey(a.startAt)
     if (!eventsByDay.has(date)) eventsByDay.set(date, [])
-    const time = a.allDay ? undefined : a.startAt.slice(11, 16)
+    const time = a.allDay ? undefined : brTime(a.startAt)
     eventsByDay.get(date)!.push({ id: a.id, title: a.title, date, time, color: a.color || TYPE_COLORS.appointment, type: 'appointment', raw: a })
   })
 
@@ -182,10 +183,11 @@ export default function AgendaPage() {
 
   if (showGoogle && gcalConnected) {
     gcalEvents.forEach(e => {
-      const date = (e.start ?? '').slice(0, 10)
-      if (!date) return
+      const start = e.start ?? ''
+      if (!start) return
+      const date = e.allDay ? start.slice(0, 10) : brDateKey(start)
       if (!eventsByDay.has(date)) eventsByDay.set(date, [])
-      const time = !e.allDay ? (e.start ?? '').slice(11, 16) : undefined
+      const time = !e.allDay ? brTime(start) : undefined
       eventsByDay.get(date)!.push({ id: `g-${e.id}`, title: e.title, date, time, color: e.color ?? TYPE_COLORS.google, type: 'google', raw: e })
     })
   }
@@ -201,10 +203,10 @@ export default function AgendaPage() {
   function openEdit(ev: CalEvent) {
     if (ev.type !== 'appointment' || !ev.raw) return
     const a = ev.raw as Appointment
-    const startDate = a.startAt.slice(0, 10)
-    const startTime = a.startAt.length > 10 ? a.startAt.slice(11, 16) : '09:00'
-    const endDate = a.endAt?.slice(0, 10) ?? startDate
-    const endTime = a.endAt && a.endAt.length > 10 ? a.endAt.slice(11, 16) : '10:00'
+    const startDate = a.allDay ? a.startAt.slice(0, 10) : brDateKey(a.startAt)
+    const startTime = !a.allDay && a.startAt.length > 10 ? brTime(a.startAt) : '09:00'
+    const endDate = a.endAt ? (a.allDay ? a.endAt.slice(0, 10) : brDateKey(a.endAt)) : startDate
+    const endTime = a.endAt && !a.allDay && a.endAt.length > 10 ? brTime(a.endAt) : '10:00'
     setForm({
       title: a.title,
       description: a.description ?? '',
@@ -222,8 +224,8 @@ export default function AgendaPage() {
 
   async function saveAppointment() {
     setSaving(true)
-    const startAt = form.allDay ? form.startAt : `${form.startAt}T${form.startTime}:00`
-    const endAt = form.allDay ? form.endAt || form.startAt : `${form.endAt || form.startAt}T${form.endTime}:00`
+    const startAt = form.allDay ? form.startAt : brDateTimeToISO(form.startAt, form.startTime)
+    const endAt = form.allDay ? form.endAt || form.startAt : brDateTimeToISO(form.endAt || form.startAt, form.endTime)
     const body = { title: form.title, description: form.description, location: form.location, startAt, endAt, allDay: form.allDay, color: form.color }
     if (editId) {
       await fetch(`/api/agenda/${editId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
