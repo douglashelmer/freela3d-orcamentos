@@ -31,10 +31,10 @@ export async function GET() {
   `
 
   // Build full 12-month list (fill gaps with 0)
-  const now = new Date()
+  const nowParts = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' }).split('-').map(Number)
   const months: Array<{ month: string; label: string; amount: number }> = []
   for (let i = 11; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
+    const d = new Date(nowParts[0], nowParts[1] - 1 - i, 1)
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
     const label = d.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' }).replace('. de ', '/').replace('.', '')
     const found = monthlyRows.find(r => r.month === key)

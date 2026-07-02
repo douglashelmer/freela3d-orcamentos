@@ -144,7 +144,7 @@ type ShortcodeData = {
 }
 
 export function applyShortcodes(template: string, data: ShortcodeData): string {
-  const today = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+  const today = new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: 'long', year: 'numeric' })
   const fmt = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
   const providerName = data.user.company || data.user.name
 
