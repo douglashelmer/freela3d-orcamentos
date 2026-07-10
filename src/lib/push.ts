@@ -15,7 +15,7 @@ function initVapid() {
   const priv = process.env.VAPID_PRIVATE_KEY
   if (!pub || !priv) return false
   webPush.setVapidDetails(
-    `mailto:${process.env.VAPID_EMAIL ?? 'contato@freela3d.pro'}`,
+    `mailto:${process.env.VAPID_EMAIL ?? 'contato@projetoatlaz.com'}`,
     pub,
     priv,
   )

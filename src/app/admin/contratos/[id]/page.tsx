@@ -40,7 +40,7 @@ export default async function ContratoViewPage({ params }: { params: Promise<{ i
   if (!contract) notFound()
 
   const shareUrl = contract.token
-    ? `${process.env.NEXTAUTH_URL ?? 'https://freela3d.pro'}/contrato/${contract.token}`
+    ? `${process.env.NEXTAUTH_URL ?? 'https://dash.projetoatlaz.com'}/contrato/${contract.token}`
     : null
 
   return (

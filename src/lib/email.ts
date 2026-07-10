@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 export async function sendOtpEmail(to: string, code: string) {
   const resend = new Resend(process.env.RESEND_API_KEY)
   await resend.emails.send({
-    from: 'Freela3D <noreply@freela3d.pro>',
+    from: 'Freela3D <noreply@projetoatlaz.com>',
     to,
     subject: `${code} — Código de acesso Freela3D`,
     html: `
