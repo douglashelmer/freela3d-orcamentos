@@ -298,7 +298,7 @@ export function PortalClient({ quote, userLogo, userName, userContact, subtotal,
           {(pdf.footerText || (pdf.blocks.contact && userContact)) && (
             <p className="pdf-contact text-xs text-[#6e6a60] mb-2">{pdf.footerText || userContact}</p>
           )}
-          <p className="text-xs text-[rgba(255,255,255,0.16)]">Gerado por <strong className="text-[#e8b84b]">Freela3D.pro</strong></p>
+          <p className="text-xs text-[rgba(255,255,255,0.16)]">Gerado por <strong className="text-[#e8b84b]">projetoatlaz.com</strong></p>
         </footer>
       </div>
     </>

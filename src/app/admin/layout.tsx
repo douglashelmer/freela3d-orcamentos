@@ -55,7 +55,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           {user.logo ? (
             <img src={user.logo} alt="Logo" className="h-8 object-contain max-w-[140px]" />
           ) : (
-            <Image src="/logo.svg" alt="Freela3D" width={140} height={35} />
+            <Image src="/logo-atlaz.svg" alt="ATL△Z" width={140} height={39} />
           )}
         </div>
 

@@ -256,7 +256,7 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
         className="flex items-center justify-between px-8 py-4 border-b"
         style={{ borderColor: '#1c1b1e' }}
       >
-        <Image src="/logo.svg" alt="Freela3D" width={130} height={32} />
+        <Image src="/logo-atlaz.svg" alt="ATL△Z" width={130} height={36} />
         <button onClick={skip} className="text-sm text-[#6e6a60] hover:text-white transition-colors">
           Pular configuração →
         </button>

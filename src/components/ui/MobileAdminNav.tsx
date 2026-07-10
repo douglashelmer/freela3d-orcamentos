@@ -67,7 +67,7 @@ export function MobileAdminNav({ logo, displayName, initial, userName, userEmail
           {logo ? (
             <img src={logo} alt="Logo" className="h-7 object-contain max-w-[120px]" />
           ) : (
-            <Image src="/logo.svg" alt="Freela3D" width={100} height={28} />
+            <Image src="/logo-atlaz.svg" alt="ATL△Z" width={100} height={28} />
           )}
         </div>
         <button
@@ -98,7 +98,7 @@ export function MobileAdminNav({ logo, displayName, initial, userName, userEmail
               {logo ? (
                 <img src={logo} alt="Logo" className="h-7 object-contain max-w-[120px]" />
               ) : (
-                <Image src="/logo.svg" alt="Freela3D" width={100} height={28} />
+                <Image src="/logo-atlaz.svg" alt="ATL△Z" width={100} height={28} />
               )}
               <button
                 onClick={() => setOpen(false)}

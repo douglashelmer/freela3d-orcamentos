@@ -29,7 +29,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center p-4" style={{ background: '#09090a' }}>
       <div className="w-full max-w-sm">
         <div className="flex justify-center mb-10">
-          <Image src="/logo.svg" alt="Freela3D" width={200} height={50} priority />
+          <Image src="/logo-atlaz.svg" alt="ATL△Z" width={200} height={56} priority />
         </div>
 
         <div className="rounded-2xl border border-[rgba(255,255,255,0.1)] bg-[#161518] p-8">
@@ -76,7 +76,7 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <p className="text-center text-xs text-[#6e6a60] mt-6">Freela3D.pro © {new Date().getFullYear()}</p>
+        <p className="text-center text-xs text-[#6e6a60] mt-6">projetoatlaz.com © {new Date().getFullYear()}</p>
       </div>
     </div>
   )
