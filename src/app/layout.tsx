@@ -19,8 +19,8 @@ export const metadata: Metadata = {
     title: 'Freela3D',
   },
   icons: {
-    icon: '/logo.svg',
-    apple: '/logo.svg',
+    icon: '/icon-atlaz.png',
+    apple: '/icon-atlaz.png',
   },
 }
 

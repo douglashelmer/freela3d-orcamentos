@@ -6,12 +6,12 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#1E1E1E",
-  "theme_color": "#1E1E1E",
+  "background_color": "#09090a",
+  "theme_color": "#09090a",
   "icons": [
     {
-      "src": "/freela.jpg",
-      "type": "image/jpeg",
+      "src": "/icon-atlaz.png",
+      "type": "image/png",
       "sizes": "any",
       "purpose": "any maskable"
     }
