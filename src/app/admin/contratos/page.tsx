@@ -44,13 +44,13 @@ function TemplateEditor({ value, onChange }: { value: string; onChange: (v: stri
     <div className="flex gap-6 h-full">
       {/* Editor */}
       <div className="flex-1 flex flex-col gap-2">
-        <label className="text-sm font-medium text-[#aaa]">Modelo do Contrato</label>
+        <label className="text-sm font-medium text-[#a8a296]">Modelo do Contrato</label>
         <textarea
           ref={textareaRef}
           value={value}
           onChange={e => onChange(e.target.value)}
           className="flex-1 rounded-xl border text-sm font-mono leading-relaxed resize-none p-4 focus:outline-none focus:border-red-500 transition-colors"
-          style={{ background: '#1a1a1a', borderColor: '#333', color: '#ddd', minHeight: 420 }}
+          style={{ background: '#0f0f11', borderColor: 'rgba(255,255,255,0.1)', color: '#a8a296', minHeight: 420 }}
           placeholder="Texto do contrato com {{shortcodes}}..."
           spellCheck={false}
         />
@@ -60,7 +60,7 @@ function TemplateEditor({ value, onChange }: { value: string; onChange: (v: stri
       <div className="w-64 flex-shrink-0 flex flex-col gap-4 overflow-y-auto" style={{ maxHeight: 520 }}>
         <div>
           <p className="text-sm font-semibold text-white mb-0.5">Shortcodes Disponíveis</p>
-          <p className="text-xs text-[#666]">Clique para inserir no modelo</p>
+          <p className="text-xs text-[#6e6a60]">Clique para inserir no modelo</p>
         </div>
         {SHORTCODE_GROUPS.map(group => (
           <div key={group.label}>
@@ -79,7 +79,7 @@ function TemplateEditor({ value, onChange }: { value: string; onChange: (v: stri
                   >
                     {code}
                   </span>
-                  <span className="block text-[11px] text-[#666] mt-0.5 pl-1">{desc}</span>
+                  <span className="block text-[11px] text-[#6e6a60] mt-0.5 pl-1">{desc}</span>
                 </button>
               ))}
             </div>
@@ -164,13 +164,13 @@ function ModelosModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.7)' }}>
-      <div className="rounded-2xl border w-full flex flex-col" style={{ background: '#252525', borderColor: '#333', maxWidth: view === 'edit' ? 1100 : 560, maxHeight: '92vh' }}>
+      <div className="rounded-2xl border w-full flex flex-col" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)', maxWidth: view === 'edit' ? 1100 : 560, maxHeight: '92vh' }}>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b" style={{ borderColor: '#333' }}>
+        <div className="flex items-center justify-between px-6 py-5 border-b" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
           <div className="flex items-center gap-3">
             {view === 'edit' && (
-              <button onClick={() => setView('list')} className="text-[#888] hover:text-white transition-colors text-lg">←</button>
+              <button onClick={() => setView('list')} className="text-[#a8a296] hover:text-white transition-colors text-lg">←</button>
             )}
             <div>
               <h2 className="font-semibold text-white text-lg flex items-center gap-2">
@@ -178,14 +178,14 @@ function ModelosModal({
                 {view === 'list' ? 'Modelos de Contrato' : (editing ? 'Editar Modelo' : 'Novo Modelo')}
               </h2>
               {view === 'list' && (
-                <p className="text-xs text-[#666] mt-0.5">Gerencie seus modelos de contrato. O modelo padrão será usado automaticamente ao criar novos contratos.</p>
+                <p className="text-xs text-[#6e6a60] mt-0.5">Gerencie seus modelos de contrato. O modelo padrão será usado automaticamente ao criar novos contratos.</p>
               )}
               {view === 'edit' && (
-                <p className="text-xs text-[#666] mt-0.5">Personalize o modelo de contrato usando os shortcodes disponíveis</p>
+                <p className="text-xs text-[#6e6a60] mt-0.5">Personalize o modelo de contrato usando os shortcodes disponíveis</p>
               )}
             </div>
           </div>
-          <button onClick={onClose} className="text-[#666] hover:text-white transition-colors text-xl w-8 h-8 flex items-center justify-center">×</button>
+          <button onClick={onClose} className="text-[#6e6a60] hover:text-white transition-colors text-xl w-8 h-8 flex items-center justify-center">×</button>
         </div>
 
         {/* Body */}
@@ -195,17 +195,17 @@ function ModelosModal({
               <button
                 onClick={openNew}
                 className="w-full py-4 rounded-2xl border-2 border-dashed text-white font-medium text-sm hover:border-red-500 hover:text-red-400 transition-colors flex items-center justify-center gap-2"
-                style={{ borderColor: '#444' }}
+                style={{ borderColor: 'rgba(255,255,255,0.16)' }}
               >
                 + Novo modelo
               </button>
 
               {templates.length === 0 && (
-                <p className="text-center text-[#555] text-sm py-4">Nenhum modelo criado ainda.</p>
+                <p className="text-center text-[#6e6a60] text-sm py-4">Nenhum modelo criado ainda.</p>
               )}
 
               {templates.map(t => (
-                <div key={t.id} className="rounded-2xl border p-4 flex items-start justify-between gap-4" style={{ background: '#1e1e1e', borderColor: '#333' }}>
+                <div key={t.id} className="rounded-2xl border p-4 flex items-start justify-between gap-4" style={{ background: '#09090a', borderColor: 'rgba(255,255,255,0.1)' }}>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <p className="text-sm font-semibold text-white">{t.name}</p>
@@ -215,14 +215,14 @@ function ModelosModal({
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-[#666] line-clamp-2">{t.content.slice(0, 120)}...</p>
+                    <p className="text-xs text-[#6e6a60] line-clamp-2">{t.content.slice(0, 120)}...</p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <button onClick={() => openEdit(t)} className="p-2 rounded-lg hover:bg-[#333] text-[#888] hover:text-white transition-colors" title="Editar">✎</button>
+                    <button onClick={() => openEdit(t)} className="p-2 rounded-lg hover:bg-[rgba(255,255,255,0.1)] text-[#a8a296] hover:text-white transition-colors" title="Editar">✎</button>
                     <button
                       onClick={() => del(t.id)}
                       disabled={deleting === t.id}
-                      className="p-2 rounded-lg hover:bg-red-900/30 text-[#888] hover:text-red-400 transition-colors"
+                      className="p-2 rounded-lg hover:bg-red-900/30 text-[#a8a296] hover:text-red-400 transition-colors"
                       title="Deletar"
                     >
                       {deleting === t.id ? '...' : '🗑'}
@@ -234,13 +234,13 @@ function ModelosModal({
           ) : (
             <div className="flex flex-col gap-4 h-full">
               <div>
-                <label className="text-sm font-medium text-[#aaa] block mb-1.5">Nome do modelo</label>
+                <label className="text-sm font-medium text-[#a8a296] block mb-1.5">Nome do modelo</label>
                 <input
                   value={editName}
                   onChange={e => setEditName(e.target.value)}
                   placeholder="Ex: Template Padrão"
                   className="w-full px-4 py-3 rounded-xl border text-sm text-white focus:outline-none focus:border-red-500 transition-colors"
-                  style={{ background: '#1a1a1a', borderColor: '#333' }}
+                  style={{ background: '#0f0f11', borderColor: 'rgba(255,255,255,0.1)' }}
                 />
               </div>
               <div className="flex-1">
@@ -252,7 +252,7 @@ function ModelosModal({
 
         {/* Footer */}
         {view === 'edit' && (
-          <div className="px-6 py-4 border-t flex items-center gap-3" style={{ borderColor: '#333' }}>
+          <div className="px-6 py-4 border-t flex items-center gap-3" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
             <button
               onClick={save}
               disabled={saving || !editName.trim()}
@@ -263,8 +263,8 @@ function ModelosModal({
             </button>
             <button
               onClick={restoreDefault}
-              className="px-4 py-2.5 rounded-xl text-sm font-medium border text-[#888] hover:text-white hover:border-[#555] transition-colors"
-              style={{ borderColor: '#444' }}
+              className="px-4 py-2.5 rounded-xl text-sm font-medium border text-[#a8a296] hover:text-white hover:border-[#6e6a60] transition-colors"
+              style={{ borderColor: 'rgba(255,255,255,0.16)' }}
             >
               Restaurar Padrão
             </button>
@@ -364,23 +364,23 @@ function NovoContratoModal({
   }
 
   const inp = 'w-full px-4 py-3 rounded-xl border text-sm text-white focus:outline-none focus:border-red-500 transition-colors'
-  const inpStyle = { background: '#1a1a1a', borderColor: '#333' }
-  const labelCls = 'text-sm font-medium text-[#aaa] block mb-1.5'
+  const inpStyle = { background: '#0f0f11', borderColor: 'rgba(255,255,255,0.1)' }
+  const labelCls = 'text-sm font-medium text-[#a8a296] block mb-1.5'
 
   const TABS = ['Dados Básicos', 'Dados do Cliente', 'Dados Financeiros']
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.7)' }}>
-      <div className="rounded-2xl border w-full flex flex-col" style={{ background: '#252525', borderColor: '#333', maxWidth: 680, maxHeight: '90vh' }}>
+      <div className="rounded-2xl border w-full flex flex-col" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)', maxWidth: 680, maxHeight: '90vh' }}>
 
         {/* Header */}
-        <div className="px-6 py-5 border-b" style={{ borderColor: '#333' }}>
+        <div className="px-6 py-5 border-b" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-white text-lg">Novo Contrato</h2>
-            <button onClick={onClose} className="text-[#666] hover:text-white transition-colors text-xl w-8 h-8 flex items-center justify-center">×</button>
+            <button onClick={onClose} className="text-[#6e6a60] hover:text-white transition-colors text-xl w-8 h-8 flex items-center justify-center">×</button>
           </div>
           {/* Tabs */}
-          <div className="flex border-b" style={{ borderColor: '#333' }}>
+          <div className="flex border-b" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
             {TABS.map((tab, i) => (
               <button
                 key={tab}
@@ -388,7 +388,7 @@ function NovoContratoModal({
                 className="pb-3 px-4 text-sm font-medium border-b-2 transition-colors"
                 style={{
                   borderColor: step === i + 1 ? '#ef4444' : 'transparent',
-                  color: step === i + 1 ? '#ef4444' : '#666',
+                  color: step === i + 1 ? '#ef4444' : '#6e6a60',
                 }}
               >
                 {tab}
@@ -568,11 +568,11 @@ function NovoContratoModal({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t flex items-center justify-between" style={{ borderColor: '#333' }}>
-          <button onClick={onClose} className="px-4 py-2.5 rounded-xl text-sm text-[#888] hover:text-white transition-colors">Cancelar</button>
+        <div className="px-6 py-4 border-t flex items-center justify-between" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+          <button onClick={onClose} className="px-4 py-2.5 rounded-xl text-sm text-[#a8a296] hover:text-white transition-colors">Cancelar</button>
           <div className="flex items-center gap-3">
             {step > 1 && (
-              <button onClick={() => setStep(s => s - 1)} className="px-4 py-2.5 rounded-xl text-sm font-medium border text-[#888] hover:text-white hover:border-[#555] transition-colors" style={{ borderColor: '#444' }}>
+              <button onClick={() => setStep(s => s - 1)} className="px-4 py-2.5 rounded-xl text-sm font-medium border text-[#a8a296] hover:text-white hover:border-[#6e6a60] transition-colors" style={{ borderColor: 'rgba(255,255,255,0.16)' }}>
                 ‹ Voltar
               </button>
             )}
@@ -665,13 +665,13 @@ export default function ContratosPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-white">Contratos</h1>
-          <p className="text-[#888] text-sm mt-0.5">{contracts.length} contrato{contracts.length !== 1 ? 's' : ''} gerado{contracts.length !== 1 ? 's' : ''}</p>
+          <p className="text-[#a8a296] text-sm mt-0.5">{contracts.length} contrato{contracts.length !== 1 ? 's' : ''} gerado{contracts.length !== 1 ? 's' : ''}</p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={() => { setShowModelos(true); loadTemplates() }}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border transition-all"
-            style={{ borderColor: '#333', color: '#888' }}
+            style={{ borderColor: 'rgba(255,255,255,0.1)', color: '#a8a296' }}
           >
             ◻ Modelos
           </button>
@@ -686,13 +686,13 @@ export default function ContratosPage() {
       </div>
 
       {/* List */}
-      <div className="rounded-2xl border overflow-hidden" style={{ background: '#252525', borderColor: '#333' }}>
+      <div className="rounded-2xl border overflow-hidden" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
         {loading ? (
-          <div className="py-16 text-center text-[#555]">
+          <div className="py-16 text-center text-[#6e6a60]">
             <p className="text-lg">Carregando...</p>
           </div>
         ) : contracts.length === 0 ? (
-          <div className="py-16 text-center text-[#555]">
+          <div className="py-16 text-center text-[#6e6a60]">
             <p className="text-5xl mb-4">◻</p>
             <p className="text-lg mb-1">Nenhum contrato gerado</p>
             <p className="text-sm mb-4">Crie seu primeiro contrato com modelo personalizável</p>
@@ -707,23 +707,23 @@ export default function ContratosPage() {
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="border-b" style={{ borderColor: '#333' }}>
+              <tr className="border-b" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
                 {['Projeto', 'Cliente', 'Valor', 'Data', ''].map(h => (
-                  <th key={h} className="text-left text-xs font-medium text-[#666] px-6 py-3 uppercase tracking-wide">{h}</th>
+                  <th key={h} className="text-left text-xs font-medium text-[#6e6a60] px-6 py-3 uppercase tracking-wide font-mono">{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y" style={{ borderColor: '#2a2a2a' }}>
+            <tbody className="divide-y" style={{ borderColor: '#1c1b1e' }}>
               {contracts.map(c => (
-                <tr key={c.id} className="hover:bg-[#2a2a2a] transition-colors">
+                <tr key={c.id} className="hover:bg-[#1c1b1e] transition-colors">
                   <td className="px-6 py-4">
                     <p className="text-sm font-medium text-white">{c.projectName}</p>
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#888]">{c.clientName}</td>
+                  <td className="px-6 py-4 text-sm text-[#a8a296]">{c.clientName}</td>
                   <td className="px-6 py-4 text-sm font-medium text-white">
                     {fmt(c.finalValue || c.totalValue)}
                   </td>
-                  <td className="px-6 py-4 text-sm text-[#666]">
+                  <td className="px-6 py-4 text-sm text-[#6e6a60]">
                     {new Date(c.createdAt).toLocaleDateString('pt-BR')}
                   </td>
                   <td className="px-6 py-4">
@@ -737,7 +737,7 @@ export default function ContratosPage() {
                       <button
                         onClick={() => deleteContract(c.id)}
                         disabled={deletingId === c.id}
-                        className="text-xs text-[#555] hover:text-red-400 transition-colors"
+                        className="text-xs text-[#6e6a60] hover:text-red-400 transition-colors"
                       >
                         {deletingId === c.id ? '...' : 'Deletar'}
                       </button>

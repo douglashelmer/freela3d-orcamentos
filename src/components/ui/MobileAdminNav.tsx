@@ -61,7 +61,7 @@ export function MobileAdminNav({ logo, displayName, initial, userName, userEmail
       {/* Mobile top header */}
       <header
         className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 h-14"
-        style={{ background: '#1a1a1a', borderBottom: '1px solid #2a2a2a' }}
+        style={{ background: '#0f0f11', borderBottom: '1px solid #1c1b1e' }}
       >
         <div className="flex items-center">
           {logo ? (
@@ -73,7 +73,7 @@ export function MobileAdminNav({ logo, displayName, initial, userName, userEmail
         <button
           onClick={() => setOpen(true)}
           className="w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-xl"
-          style={{ background: '#252525' }}
+          style={{ background: '#161518' }}
           aria-label="Menu"
         >
           <span className="block w-5 h-0.5 bg-white rounded-full" />
@@ -90,11 +90,11 @@ export function MobileAdminNav({ logo, displayName, initial, userName, userEmail
         >
           <div
             className="w-72 h-full flex flex-col"
-            style={{ background: '#1a1a1a', borderRight: '1px solid #2a2a2a' }}
+            style={{ background: '#0f0f11', borderRight: '1px solid #1c1b1e' }}
             onClick={e => e.stopPropagation()}
           >
             {/* Drawer header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b" style={{ borderColor: '#2a2a2a' }}>
+            <div className="flex items-center justify-between px-5 py-4 border-b" style={{ borderColor: '#1c1b1e' }}>
               {logo ? (
                 <img src={logo} alt="Logo" className="h-7 object-contain max-w-[120px]" />
               ) : (
@@ -102,7 +102,7 @@ export function MobileAdminNav({ logo, displayName, initial, userName, userEmail
               )}
               <button
                 onClick={() => setOpen(false)}
-                className="w-8 h-8 flex items-center justify-center rounded-lg text-[#666] hover:text-white hover:bg-[#252525]"
+                className="w-8 h-8 flex items-center justify-center rounded-lg text-[#6e6a60] hover:text-white hover:bg-[#161518]"
                 aria-label="Fechar"
               >
                 ✕
@@ -117,31 +117,31 @@ export function MobileAdminNav({ logo, displayName, initial, userName, userEmail
                   href={item.href}
                   className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all ${
                     isActive(item.href)
-                      ? 'text-white bg-[#252525]'
-                      : 'text-[#888] hover:text-white hover:bg-[#252525]'
+                      ? 'text-white bg-[#161518]'
+                      : 'text-[#a8a296] hover:text-white hover:bg-[#161518]'
                   }`}
                 >
                   <span className="text-base w-5 text-center">{item.icon}</span>
                   {item.label}
                   {isActive(item.href) && (
-                    <span className="ml-auto w-1.5 h-1.5 rounded-full" style={{ background: '#D5FF40' }} />
+                    <span className="ml-auto w-1.5 h-1.5 rounded-full" style={{ background: '#e8b84b' }} />
                   )}
                 </Link>
               ))}
             </nav>
 
             {/* User info + sign out */}
-            <div className="px-3 py-4 border-t" style={{ borderColor: '#2a2a2a' }}>
+            <div className="px-3 py-4 border-t" style={{ borderColor: '#1c1b1e' }}>
               <div className="flex items-center gap-3 px-3 py-2 mb-2">
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-[#1E1E1E] shrink-0"
-                  style={{ background: '#D5FF40' }}
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-[#09090a] shrink-0"
+                  style={{ background: '#e8b84b' }}
                 >
                   {initial}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-white truncate">{userName}</p>
-                  <p className="text-xs text-[#666] truncate">{displayName !== userName ? displayName : userEmail}</p>
+                  <p className="text-xs text-[#6e6a60] truncate">{displayName !== userName ? displayName : userEmail}</p>
                 </div>
               </div>
               <SignOutButton />
@@ -156,7 +156,7 @@ export function MobileAdminNav({ logo, displayName, initial, userName, userEmail
       {/* Bottom tab bar */}
       <nav
         className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex"
-        style={{ background: '#1a1a1a', borderTop: '1px solid #2a2a2a' }}
+        style={{ background: '#0f0f11', borderTop: '1px solid #1c1b1e' }}
       >
         {BOTTOM_TABS.map(tab => {
           const active = isActive(tab.href)
@@ -165,7 +165,7 @@ export function MobileAdminNav({ logo, displayName, initial, userName, userEmail
               key={tab.href}
               href={tab.href}
               className="flex-1 flex flex-col items-center justify-center py-2 gap-1 text-[10px] font-medium transition-colors"
-              style={{ color: active ? '#D5FF40' : '#666' }}
+              style={{ color: active ? '#e8b84b' : '#6e6a60' }}
             >
               <span className="text-lg leading-none">{tab.icon}</span>
               <span>{tab.label}</span>
@@ -175,7 +175,7 @@ export function MobileAdminNav({ logo, displayName, initial, userName, userEmail
         {/* Menu button */}
         <button
           onClick={() => setOpen(true)}
-          className="flex-1 flex flex-col items-center justify-center py-2 gap-1 text-[10px] font-medium text-[#666]"
+          className="flex-1 flex flex-col items-center justify-center py-2 gap-1 text-[10px] font-medium text-[#6e6a60]"
         >
           <span className="text-lg leading-none">☰</span>
           <span>Menu</span>

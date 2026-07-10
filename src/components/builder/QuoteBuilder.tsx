@@ -159,26 +159,26 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex flex-col gap-3 px-4 md:px-8 py-3 md:py-5 border-b shrink-0" style={{ borderColor: '#2a2a2a', background: '#1a1a1a' }}>
+      <div className="flex flex-col gap-3 px-4 md:px-8 py-3 md:py-5 border-b shrink-0" style={{ borderColor: '#1c1b1e', background: '#0f0f11' }}>
         <input
           value={state.title}
           onChange={e => update('title', e.target.value)}
           placeholder="Título do orçamento..."
-          className="w-full text-lg md:text-xl font-semibold bg-transparent text-white placeholder-[#444] focus:outline-none"
+          className="w-full text-lg md:text-xl font-semibold bg-transparent text-white placeholder-[rgba(255,255,255,0.16)] focus:outline-none"
         />
         <div className="flex items-center gap-2">
           <button
             onClick={() => save('DRAFT')}
             disabled={saving}
-            className="flex-1 md:flex-none h-9 md:h-10 px-4 md:px-5 rounded-xl text-sm font-medium text-[#888] border border-[#333] hover:border-[#555] hover:text-white transition-all disabled:opacity-50"
+            className="flex-1 md:flex-none h-9 md:h-10 px-4 md:px-5 rounded-xl text-sm font-medium text-[#a8a296] border border-[rgba(255,255,255,0.1)] hover:border-[#6e6a60] hover:text-white transition-all disabled:opacity-50"
           >
             Rascunho
           </button>
           <button
             onClick={() => save('SENT')}
             disabled={saving}
-            className="flex-1 md:flex-none h-9 md:h-10 px-4 md:px-5 rounded-xl text-sm font-semibold text-[#1E1E1E] transition-opacity disabled:opacity-50"
-            style={{ background: '#D5FF40' }}
+            className="flex-1 md:flex-none h-9 md:h-10 px-4 md:px-5 rounded-full text-sm font-semibold text-[#09090a] transition-opacity disabled:opacity-50"
+            style={{ background: '#e8b84b' }}
           >
             {saving ? 'Salvando...' : 'Salvar e Enviar'}
           </button>
@@ -193,11 +193,11 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
           <div className="flex items-center gap-3 px-1">
             <button
               onClick={() => update('serialNumber', !state.serialNumber)}
-              className={`relative w-10 h-6 rounded-full transition-colors ${state.serialNumber ? 'bg-[#D5FF40]' : 'bg-[#333]'}`}
+              className={`relative w-10 h-6 rounded-full transition-colors ${state.serialNumber ? 'bg-[#e8b84b]' : 'bg-[rgba(255,255,255,0.1)]'}`}
             >
               <span className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${state.serialNumber ? 'left-5' : 'left-1'}`} />
             </button>
-            <span className="text-sm text-[#888]">Número serial</span>
+            <span className="text-sm text-[#a8a296]">Número serial</span>
           </div>
 
           {/* Client */}
@@ -217,12 +217,12 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
                 { key: 'address', label: 'Endereço', placeholder: 'Rua ...', full: true },
               ].map(f => (
                 <div key={f.key} className={f.full ? 'col-span-2' : ''}>
-                  <label className="block text-xs text-[#666] mb-1">{f.label}</label>
+                  <label className="block text-xs text-[#6e6a60] mb-1">{f.label}</label>
                   <input
                     value={(state.client as Record<string, string> | null)?.[f.key] ?? ''}
                     onChange={e => update('client', { ...{ name: '', email: '', phone: '', company: '', document: '', address: '' }, ...state.client, [f.key]: e.target.value })}
                     placeholder={f.placeholder}
-                    className="w-full h-10 rounded-lg bg-[#2a2a2a] border border-[#333] px-3 text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#D5FF40] transition-colors"
+                    className="w-full h-10 rounded-lg bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] px-3 text-sm text-white placeholder-[rgba(255,255,255,0.16)] focus:outline-none focus:border-[#e8b84b] transition-colors"
                   />
                 </div>
               ))}
@@ -247,22 +247,22 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
                   onChange={e => updateSection(sec.id, { content: e.target.value })}
                   placeholder="Digite o conteúdo..."
                   rows={6}
-                  className="w-full rounded-lg bg-[#2a2a2a] border border-[#333] p-3 text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#D5FF40] resize-none transition-colors"
+                  className="w-full rounded-lg bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] p-3 text-sm text-white placeholder-[rgba(255,255,255,0.16)] focus:outline-none focus:border-[#e8b84b] resize-none transition-colors"
                 />
               )}
 
               {sec.type === 'IMAGES' && (
                 <div>
-                  <label className="flex flex-col items-center justify-center h-32 rounded-xl border-2 border-dashed border-[#333] cursor-pointer hover:border-[#D5FF40] hover:bg-[#D5FF40]/5 transition-all">
+                  <label className="flex flex-col items-center justify-center h-32 rounded-xl border-2 border-dashed border-[rgba(255,255,255,0.1)] cursor-pointer hover:border-[#e8b84b] hover:bg-[#e8b84b]/5 transition-all">
                     <span className="text-2xl mb-1">🖼</span>
-                    <span className="text-sm text-[#666]">Clique para adicionar imagens</span>
+                    <span className="text-sm text-[#6e6a60]">Clique para adicionar imagens</span>
                     <input type="file" accept="image/*" multiple className="hidden"
                       onChange={e => e.target.files && handleUpload(sec.id, e.target.files)} />
                   </label>
                   {sec.images.length > 0 && (
                     <div className="grid grid-cols-4 gap-2 mt-3">
                       {sec.images.map(img => (
-                        <div key={img.id} className="relative group aspect-square rounded-lg overflow-hidden bg-[#2a2a2a]">
+                        <div key={img.id} className="relative group aspect-square rounded-lg overflow-hidden bg-[#1c1b1e]">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={img.url} alt={img.name} className="w-full h-full object-cover" />
                           <button
@@ -282,7 +282,7 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
                   onChange={e => updateSection(sec.id, { content: e.target.value })}
                   placeholder="Termos e condições do contrato..."
                   rows={8}
-                  className="w-full rounded-lg bg-[#2a2a2a] border border-[#333] p-3 text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#D5FF40] resize-none transition-colors"
+                  className="w-full rounded-lg bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] p-3 text-sm text-white placeholder-[rgba(255,255,255,0.16)] focus:outline-none focus:border-[#e8b84b] resize-none transition-colors"
                 />
               )}
             </Section>
@@ -294,7 +294,7 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
               <button
                 key={type}
                 onClick={() => addSection(type)}
-                className="flex-1 py-2 text-xs font-medium text-[#666] border border-dashed border-[#333] rounded-xl hover:border-[#D5FF40] hover:text-[#D5FF40] transition-all"
+                className="flex-1 py-2 text-xs font-medium text-[#6e6a60] border border-dashed border-[rgba(255,255,255,0.1)] rounded-xl hover:border-[#e8b84b] hover:text-[#e8b84b] transition-all"
               >
                 + {SECTION_TYPE_LABELS[type]}
               </button>
@@ -310,32 +310,32 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
           >
             <div className="flex flex-col gap-3">
               {state.items.length > 0 && (
-                <div className="rounded-xl border overflow-hidden" style={{ borderColor: '#333' }}>
+                <div className="rounded-xl border overflow-hidden" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
                   {/* Header */}
-                  <div className="grid grid-cols-[1fr_80px_140px_100px_100px_32px] gap-2 px-4 py-2 text-xs text-[#555] uppercase bg-[#2a2a2a]">
+                  <div className="grid grid-cols-[1fr_80px_140px_100px_100px_32px] gap-2 px-4 py-2 text-xs text-[#6e6a60] uppercase bg-[#1c1b1e]">
                     <span>Item</span><span>Qtd</span><span>Tipo</span><span>Valor</span><span className="text-right">Total</span><span />
                   </div>
 
                   {state.items.map((item, idx) => (
-                    <div key={item.id} className="border-t" style={{ borderColor: '#2a2a2a' }}>
+                    <div key={item.id} className="border-t" style={{ borderColor: '#1c1b1e' }}>
                       <div className="grid grid-cols-[1fr_80px_140px_100px_100px_32px] gap-2 px-4 py-3 items-center">
                         <input
                           value={item.name}
                           onChange={e => updateItem(item.id, { name: e.target.value })}
                           placeholder={`Item #${idx + 1}`}
-                          className="bg-transparent text-sm text-white placeholder-[#444] focus:outline-none"
+                          className="bg-transparent text-sm text-white placeholder-[rgba(255,255,255,0.16)] focus:outline-none"
                         />
                         <input
                           type="number"
                           value={item.quantity}
                           min={0}
                           onChange={e => updateItem(item.id, { quantity: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-[#2a2a2a] border border-[#333] rounded-lg px-2 py-1 text-sm text-white text-center focus:outline-none focus:border-[#D5FF40]"
+                          className="w-full bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] rounded-lg px-2 py-1 text-sm text-white text-center focus:outline-none focus:border-[#e8b84b]"
                         />
                         <select
                           value={item.type}
                           onChange={e => updateItem(item.id, { type: e.target.value as BuilderItem['type'] })}
-                          className="bg-[#2a2a2a] border border-[#333] rounded-lg px-2 py-1 text-sm text-white focus:outline-none focus:border-[#D5FF40]"
+                          className="bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] rounded-lg px-2 py-1 text-sm text-white focus:outline-none focus:border-[#e8b84b]"
                         >
                           {Object.entries(ITEM_TYPE_LABELS).map(([v, l]) => (
                             <option key={v} value={v}>{l}</option>
@@ -347,12 +347,12 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
                           min={0}
                           step={0.01}
                           onChange={e => updateItem(item.id, { price: parseFloat(e.target.value) || 0 })}
-                          className="w-full bg-[#2a2a2a] border border-[#333] rounded-lg px-2 py-1 text-sm text-white text-right focus:outline-none focus:border-[#D5FF40]"
+                          className="w-full bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] rounded-lg px-2 py-1 text-sm text-white text-right focus:outline-none focus:border-[#e8b84b]"
                         />
                         <p className="text-sm text-right font-medium text-white">
                           {formatCurrency(calcItemTotal(item))}
                         </p>
-                        <button onClick={() => removeItem(item.id)} className="text-[#555] hover:text-red-400 transition-colors text-lg leading-none">×</button>
+                        <button onClick={() => removeItem(item.id)} className="text-[#6e6a60] hover:text-red-400 transition-colors text-lg leading-none">×</button>
                       </div>
 
                       {/* Description */}
@@ -361,7 +361,7 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
                           value={item.description}
                           onChange={e => updateItem(item.id, { description: e.target.value })}
                           placeholder="Descrição opcional..."
-                          className="w-full bg-transparent text-xs text-[#666] placeholder-[#444] focus:outline-none"
+                          className="w-full bg-transparent text-xs text-[#6e6a60] placeholder-[rgba(255,255,255,0.16)] focus:outline-none"
                         />
                       </div>
                     </div>
@@ -371,7 +371,7 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
 
               <button
                 onClick={addItem}
-                className="flex items-center gap-2 text-sm text-[#D5FF40] hover:opacity-80 transition-opacity"
+                className="flex items-center gap-2 text-sm text-[#e8b84b] hover:opacity-80 transition-opacity"
               >
                 + Adicionar item
               </button>
@@ -380,11 +380,11 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
               {state.items.length > 0 && (
                 <>
                   <div className="flex items-center gap-3 mt-2">
-                    <label className="text-sm text-[#888]">Desconto</label>
+                    <label className="text-sm text-[#a8a296]">Desconto</label>
                     <select
                       value={state.discountType}
                       onChange={e => update('discountType', e.target.value as 'percent' | 'fixed')}
-                      className="bg-[#2a2a2a] border border-[#333] rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#D5FF40]"
+                      className="bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#e8b84b]"
                     >
                       <option value="percent">%</option>
                       <option value="fixed">R$</option>
@@ -394,13 +394,13 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
                       value={state.discount}
                       min={0}
                       onChange={e => update('discount', parseFloat(e.target.value) || 0)}
-                      className="w-28 bg-[#2a2a2a] border border-[#333] rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#D5FF40]"
+                      className="w-28 bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#e8b84b]"
                     />
                   </div>
 
                   {/* Totals */}
-                  <div className="rounded-xl bg-[#2a2a2a] border border-[#333] divide-y mt-2" style={{ borderColor: '#333' }}>
-                    <div className="flex justify-between px-4 py-3 text-sm text-[#888]">
+                  <div className="rounded-xl bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] divide-y mt-2" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+                    <div className="flex justify-between px-4 py-3 text-sm text-[#a8a296]">
                       <span>Subtotal</span><span className="text-white">{formatCurrency(subtotal)}</span>
                     </div>
                     {discountAmount > 0 && (
@@ -410,7 +410,7 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
                     )}
                     <div className="flex justify-between px-4 py-3 text-base font-bold">
                       <span className="text-white">Total</span>
-                      <span style={{ color: '#D5FF40' }}>{formatCurrency(total)}</span>
+                      <span style={{ color: '#e8b84b' }}>{formatCurrency(total)}</span>
                     </div>
                   </div>
                 </>
@@ -429,9 +429,9 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
                     onClick={() => update('paymentMethods', active ? state.paymentMethods.filter(x => x !== m) : [...state.paymentMethods, m])}
                     className="px-4 py-2 rounded-xl text-sm font-medium border transition-all"
                     style={{
-                      background: active ? '#D5FF4022' : '#2a2a2a',
-                      borderColor: active ? '#D5FF40' : '#333',
-                      color: active ? '#D5FF40' : '#888',
+                      background: active ? '#e8b84b22' : '#1c1b1e',
+                      borderColor: active ? '#e8b84b' : 'rgba(255,255,255,0.1)',
+                      color: active ? '#e8b84b' : '#a8a296',
                     }}
                   >
                     {m}
@@ -448,7 +448,7 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
               onChange={e => update('contractTerms', e.target.value)}
               placeholder="Descreva as condições e termos do contrato..."
               rows={6}
-              className="w-full rounded-lg bg-[#2a2a2a] border border-[#333] p-3 text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#D5FF40] resize-none transition-colors"
+              className="w-full rounded-lg bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] p-3 text-sm text-white placeholder-[rgba(255,255,255,0.16)] focus:outline-none focus:border-[#e8b84b] resize-none transition-colors"
             />
           </Section>
 
@@ -459,7 +459,7 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
               onChange={e => update('observations', e.target.value)}
               placeholder="Observações adicionais para o cliente..."
               rows={4}
-              className="w-full rounded-lg bg-[#2a2a2a] border border-[#333] p-3 text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#D5FF40] resize-none transition-colors"
+              className="w-full rounded-lg bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] p-3 text-sm text-white placeholder-[rgba(255,255,255,0.16)] focus:outline-none focus:border-[#e8b84b] resize-none transition-colors"
             />
           </Section>
 
@@ -467,22 +467,22 @@ export function QuoteBuilder({ initialState, quoteId }: Props) {
           <Section title="Configurações" open={configOpen} onToggle={() => setConfigOpen(o => !o)}>
             <div className="flex flex-col gap-3">
               <div>
-                <label className="text-xs text-[#666] mb-1 block">Validade do orçamento</label>
+                <label className="text-xs text-[#6e6a60] mb-1 block">Validade do orçamento</label>
                 <input
                   type="date"
                   value={state.validUntil}
                   onChange={e => update('validUntil', e.target.value)}
-                  className="h-10 rounded-lg bg-[#2a2a2a] border border-[#333] px-3 text-sm text-white focus:outline-none focus:border-[#D5FF40]"
+                  className="h-10 rounded-lg bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] px-3 text-sm text-white focus:outline-none focus:border-[#e8b84b]"
                 />
               </div>
               <div>
-                <label className="text-xs text-[#666] mb-1 block">Observações internas</label>
+                <label className="text-xs text-[#6e6a60] mb-1 block">Observações internas</label>
                 <textarea
                   value={state.notes}
                   onChange={e => update('notes', e.target.value)}
                   rows={3}
                   placeholder="Notas que não aparecem no orçamento..."
-                  className="w-full rounded-lg bg-[#2a2a2a] border border-[#333] p-3 text-sm text-white placeholder-[#444] focus:outline-none focus:border-[#D5FF40] resize-none"
+                  className="w-full rounded-lg bg-[#1c1b1e] border border-[rgba(255,255,255,0.1)] p-3 text-sm text-white placeholder-[rgba(255,255,255,0.16)] focus:outline-none focus:border-[#e8b84b] resize-none"
                 />
               </div>
             </div>
@@ -509,10 +509,10 @@ function Section({
   onTitleChange?: (t: string) => void
 }) {
   return (
-    <div className="rounded-2xl border overflow-hidden" style={{ background: '#252525', borderColor: '#333' }}>
+    <div className="rounded-2xl border overflow-hidden" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[#2a2a2a] transition-colors"
+        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[#1c1b1e] transition-colors"
       >
         <div className="flex items-center gap-2">
           {titleEditable && onTitleChange ? (
@@ -525,20 +525,20 @@ function Section({
           ) : (
             <span className="text-sm font-medium text-white">{title}</span>
           )}
-          {badge && <span className="text-xs text-[#555]">({badge})</span>}
+          {badge && <span className="text-xs text-[#6e6a60]">({badge})</span>}
         </div>
         <div className="flex items-center gap-2">
           {onRemove && (
             <span
               onClick={e => { e.stopPropagation(); onRemove() }}
-              className="text-[#555] hover:text-red-400 transition-colors px-1"
+              className="text-[#6e6a60] hover:text-red-400 transition-colors px-1"
             >×</span>
           )}
-          <span className="text-[#555] text-sm">{open ? '∧' : '∨'}</span>
+          <span className="text-[#6e6a60] text-sm">{open ? '∧' : '∨'}</span>
         </div>
       </button>
       {open && (
-        <div className="px-5 pb-5 border-t" style={{ borderColor: '#2a2a2a' }}>
+        <div className="px-5 pb-5 border-t" style={{ borderColor: '#1c1b1e' }}>
           <div className="pt-4">{children}</div>
         </div>
       )}

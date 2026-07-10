@@ -59,5 +59,5 @@ export const STATUS_COLORS: Record<string, string> = {
   VIEWED: 'text-yellow-400 bg-yellow-900/40',
   SIGNED: 'text-green-400 bg-green-900/40',
   DECLINED: 'text-red-400 bg-red-900/40',
-  PAID: 'text-[#D5FF40] bg-[#D5FF40]/10',
+  PAID: 'text-[#e8b84b] bg-[#e8b84b]/10',
 }

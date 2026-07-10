@@ -50,17 +50,17 @@ export default async function EditOrcamentoPage({ params }: { params: Promise<{ 
   const portalUrl = `${process.env.NEXTAUTH_URL}/orcamento/${quote.token}`
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#1E1E1E' }}>
-      <div className="px-4 md:px-8 py-3 border-b flex items-center justify-between gap-3" style={{ borderColor: '#2a2a2a' }}>
+    <div className="h-full flex flex-col" style={{ background: '#09090a' }}>
+      <div className="px-4 md:px-8 py-3 border-b flex items-center justify-between gap-3" style={{ borderColor: '#1c1b1e' }}>
         <div className="flex items-center gap-2 min-w-0">
           <a
             href="/admin/orcamentos"
             className="flex items-center gap-1 shrink-0 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors"
-            style={{ color: '#aaa', background: '#252525' }}
+            style={{ color: '#a8a296', background: '#161518' }}
           >
             ← Voltar
           </a>
-          <span className="text-[#444] hidden sm:inline">/</span>
+          <span className="text-[rgba(255,255,255,0.16)] hidden sm:inline">/</span>
           <span className="text-white text-sm truncate hidden sm:inline">#{quote.number} — {quote.title}</span>
         </div>
         <QuoteActions quoteId={id} token={quote.token} status={quote.status} portalUrl={portalUrl} />

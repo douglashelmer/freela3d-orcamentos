@@ -6,8 +6,8 @@ import { sendPushToUser } from '@/lib/push'
 
 const DEFAULT_PDF = {
   template: 'modern',
-  primaryColor: '#1E1E1E',
-  accentColor: '#D5FF40',
+  primaryColor: '#09090a',
+  accentColor: '#e8b84b',
   bgMode: 'light',
   bgColor: '#FFFFFF',
   textColor: '#1A1A1A',
@@ -51,7 +51,7 @@ export default async function OrcamentoPortal({ params }: { params: Promise<{ to
     quote.items, quote.discount, quote.discountType
   )
 
-  const DEFAULT_PORTAL = { logo: null as string | null, favicon: null as string | null, primaryColor: '#D5FF40', secondaryColor: '#a3e635' }
+  const DEFAULT_PORTAL = { logo: null as string | null, favicon: null as string | null, primaryColor: '#e8b84b', secondaryColor: '#a3e635' }
 
   // Fetch PDF + portal settings for the quote owner
   let pdfSettings = DEFAULT_PDF

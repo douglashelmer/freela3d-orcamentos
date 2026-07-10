@@ -60,7 +60,7 @@ export function QuoteActions({ quoteId, token, status, portalUrl }: Props) {
     DRAFT: 'text-zinc-400 bg-zinc-800',
     SENT: 'text-blue-400 bg-blue-900/30',
     VIEWED: 'text-yellow-400 bg-yellow-900/30',
-    SIGNED: 'text-[#D5FF40] bg-[#D5FF40]/10',
+    SIGNED: 'text-[#e8b84b] bg-[#e8b84b]/10',
     DECLINED: 'text-red-400 bg-red-900/30',
     PAID: 'text-green-400 bg-green-900/30',
   }
@@ -75,7 +75,7 @@ export function QuoteActions({ quoteId, token, status, portalUrl }: Props) {
         <button
           onClick={copyLink}
           disabled={copying}
-          className="flex items-center gap-1.5 h-9 px-4 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all"
+          className="flex items-center gap-1.5 h-9 px-4 rounded-xl text-sm font-medium border border-[rgba(255,255,255,0.1)] text-[#a8a296] hover:text-white hover:border-[#6e6a60] transition-all"
         >
           {copying ? 'Copiado!' : '🔗 Copiar link'}
         </button>
@@ -84,7 +84,7 @@ export function QuoteActions({ quoteId, token, status, portalUrl }: Props) {
           href={portalUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 h-9 px-4 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all"
+          className="flex items-center gap-1.5 h-9 px-4 rounded-xl text-sm font-medium border border-[rgba(255,255,255,0.1)] text-[#a8a296] hover:text-white hover:border-[#6e6a60] transition-all"
         >
           👁 Visualizar
         </a>
@@ -92,7 +92,7 @@ export function QuoteActions({ quoteId, token, status, portalUrl }: Props) {
         <button
           onClick={duplicateQuote}
           disabled={duplicating}
-          className="flex items-center gap-1.5 h-9 px-4 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all disabled:opacity-50"
+          className="flex items-center gap-1.5 h-9 px-4 rounded-xl text-sm font-medium border border-[rgba(255,255,255,0.1)] text-[#a8a296] hover:text-white hover:border-[#6e6a60] transition-all disabled:opacity-50"
         >
           {duplicating ? 'Duplicando…' : '⧉ Duplicar'}
         </button>
@@ -101,7 +101,7 @@ export function QuoteActions({ quoteId, token, status, portalUrl }: Props) {
           href={`${portalUrl}?print=1`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 h-9 px-4 rounded-xl text-sm font-medium border border-[#333] text-[#888] hover:text-white hover:border-[#555] transition-all"
+          className="flex items-center gap-1.5 h-9 px-4 rounded-xl text-sm font-medium border border-[rgba(255,255,255,0.1)] text-[#a8a296] hover:text-white hover:border-[#6e6a60] transition-all"
         >
           📄 PDF
         </a>
@@ -117,14 +117,14 @@ export function QuoteActions({ quoteId, token, status, portalUrl }: Props) {
       {/* Confirmation modal */}
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.7)' }}>
-          <div className="rounded-2xl border p-6 w-full max-w-sm" style={{ background: '#252525', borderColor: '#333' }}>
+          <div className="rounded-2xl border p-6 w-full max-w-sm" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
             <h3 className="text-white font-semibold text-lg mb-2">Excluir orçamento?</h3>
-            <p className="text-[#888] text-sm mb-6">Esta ação não pode ser desfeita. O link de acesso do cliente deixará de funcionar.</p>
+            <p className="text-[#a8a296] text-sm mb-6">Esta ação não pode ser desfeita. O link de acesso do cliente deixará de funcionar.</p>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowConfirm(false)}
                 disabled={deleting}
-                className="flex-1 py-2.5 rounded-xl text-sm font-medium border border-[#444] text-[#888] hover:text-white transition-colors"
+                className="flex-1 py-2.5 rounded-xl text-sm font-medium border border-[rgba(255,255,255,0.16)] text-[#a8a296] hover:text-white transition-colors"
               >
                 Cancelar
               </button>

@@ -19,20 +19,20 @@ export function SwipeFolderView({
   const [tab, setTab] = useState<'canvas' | 'links'>('canvas')
 
   return (
-    <div className="flex flex-col h-full" style={{ background: '#1E1E1E' }}>
+    <div className="flex flex-col h-full" style={{ background: '#09090a' }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-6 md:px-8 py-4 border-b shrink-0" style={{ borderColor: '#2a2a2a' }}>
+      <div className="flex items-center justify-between px-6 md:px-8 py-4 border-b shrink-0" style={{ borderColor: '#1c1b1e' }}>
         <div className="flex items-center gap-3 min-w-0">
           <Link
             href="/admin/swipefile"
-            className="flex items-center justify-center w-8 h-8 rounded-lg shrink-0 text-[#aaa] hover:text-white transition-colors"
-            style={{ background: '#252525' }}
+            className="flex items-center justify-center w-8 h-8 rounded-lg shrink-0 text-[#a8a296] hover:text-white transition-colors"
+            style={{ background: '#161518' }}
           >
             ←
           </Link>
           <div
             className="w-9 h-9 rounded-xl flex items-center justify-center text-base shrink-0"
-            style={{ background: `${folder.color ?? '#D5FF40'}22`, color: folder.color ?? '#D5FF40' }}
+            style={{ background: `${folder.color ?? '#e8b84b'}22`, color: folder.color ?? '#e8b84b' }}
           >
             📁
           </div>
@@ -40,18 +40,18 @@ export function SwipeFolderView({
         </div>
 
         {/* Tabs */}
-        <div className="flex items-center gap-1 p-1 rounded-xl shrink-0" style={{ background: '#252525' }}>
+        <div className="flex items-center gap-1 p-1 rounded-xl shrink-0" style={{ background: '#161518' }}>
           <button
             onClick={() => setTab('canvas')}
             className="px-4 py-1.5 rounded-lg text-sm font-medium transition-all"
-            style={tab === 'canvas' ? { background: '#D5FF40', color: '#1E1E1E' } : { color: '#888' }}
+            style={tab === 'canvas' ? { background: '#e8b84b', color: '#09090a' } : { color: '#a8a296' }}
           >
             Canvas
           </button>
           <button
             onClick={() => setTab('links')}
             className="px-4 py-1.5 rounded-lg text-sm font-medium transition-all"
-            style={tab === 'links' ? { background: '#D5FF40', color: '#1E1E1E' } : { color: '#888' }}
+            style={tab === 'links' ? { background: '#e8b84b', color: '#09090a' } : { color: '#a8a296' }}
           >
             Links
           </button>

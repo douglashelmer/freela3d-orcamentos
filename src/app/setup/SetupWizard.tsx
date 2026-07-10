@@ -246,18 +246,18 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
   }
 
   const inputCls =
-    'w-full px-4 py-3 rounded-xl text-sm text-white outline-none focus:ring-2 focus:ring-[#D5FF40] transition-all'
-  const inputStyle = { background: '#252525', border: '1px solid #333' }
+    'w-full px-4 py-3 rounded-xl text-sm text-white outline-none focus:ring-2 focus:ring-[#e8b84b] transition-all'
+  const inputStyle = { background: '#161518', border: '1px solid rgba(255,255,255,0.1)' }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#1E1E1E' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#09090a' }}>
       {/* Header */}
       <div
         className="flex items-center justify-between px-8 py-4 border-b"
-        style={{ borderColor: '#2a2a2a' }}
+        style={{ borderColor: '#1c1b1e' }}
       >
         <Image src="/logo.svg" alt="Freela3D" width={130} height={32} />
-        <button onClick={skip} className="text-sm text-[#666] hover:text-white transition-colors">
+        <button onClick={skip} className="text-sm text-[#6e6a60] hover:text-white transition-colors">
           Pular configuração →
         </button>
       </div>
@@ -271,21 +271,21 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                 key={i}
                 className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all"
                 style={{
-                  background: i + 1 < step ? '#D5FF40' : i + 1 === step ? '#D5FF40' : '#252525',
-                  color: i + 1 <= step ? '#1E1E1E' : '#666',
-                  border: i + 1 > step ? '2px solid #333' : 'none',
+                  background: i + 1 < step ? '#e8b84b' : i + 1 === step ? '#e8b84b' : '#161518',
+                  color: i + 1 <= step ? '#09090a' : '#6e6a60',
+                  border: i + 1 > step ? '2px solid rgba(255,255,255,0.1)' : 'none',
                 }}
               >
                 {i + 1 < step ? '✓' : i + 1}
               </div>
             ))}
           </div>
-          <span className="text-xs text-[#666]">{Math.round(progress)}% completo</span>
+          <span className="text-xs text-[#6e6a60]">{Math.round(progress)}% completo</span>
         </div>
-        <div className="h-1 rounded-full" style={{ background: '#252525' }}>
+        <div className="h-1 rounded-full" style={{ background: '#161518' }}>
           <div
             className="h-1 rounded-full transition-all"
-            style={{ background: '#D5FF40', width: `${progress}%` }}
+            style={{ background: '#e8b84b', width: `${progress}%` }}
           />
         </div>
       </div>
@@ -298,11 +298,11 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold text-white">Dados da sua empresa</h2>
-                <p className="text-[#888] text-sm mt-1">Essas informações aparecem nos seus orçamentos</p>
+                <p className="text-[#a8a296] text-sm mt-1">Essas informações aparecem nos seus orçamentos</p>
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-medium text-[#888] mb-1.5 uppercase tracking-wide">
+                  <label className="block text-xs font-medium text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">
                     Nome completo *
                   </label>
                   <input
@@ -314,7 +314,7 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-[#888] mb-1.5 uppercase tracking-wide">
+                  <label className="block text-xs font-medium text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">
                     Nome da empresa / estúdio
                   </label>
                   <input
@@ -326,7 +326,7 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-[#888] mb-1.5 uppercase tracking-wide">
+                  <label className="block text-xs font-medium text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">
                     Telefone / WhatsApp
                   </label>
                   <input
@@ -338,7 +338,7 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-[#888] mb-1.5 uppercase tracking-wide">
+                  <label className="block text-xs font-medium text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">
                     Meta de faturamento mensal
                   </label>
                   <input
@@ -360,11 +360,11 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold text-white">Sua localização</h2>
-                <p className="text-[#888] text-sm mt-1">Opcional — aparece no rodapé dos orçamentos</p>
+                <p className="text-[#a8a296] text-sm mt-1">Opcional — aparece no rodapé dos orçamentos</p>
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-medium text-[#888] mb-1.5 uppercase tracking-wide">
+                  <label className="block text-xs font-medium text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">
                     CEP
                   </label>
                   <div className="flex gap-2">
@@ -378,12 +378,12 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                       maxLength={9}
                     />
                     {cepLoading && (
-                      <div className="flex items-center px-3 text-[#666] text-sm">Buscando…</div>
+                      <div className="flex items-center px-3 text-[#6e6a60] text-sm">Buscando…</div>
                     )}
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-[#888] mb-1.5 uppercase tracking-wide">
+                  <label className="block text-xs font-medium text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">
                     Endereço
                   </label>
                   <input
@@ -395,7 +395,7 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-[#888] mb-1.5 uppercase tracking-wide">
+                  <label className="block text-xs font-medium text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">
                     Bairro
                   </label>
                   <input
@@ -408,7 +408,7 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   <div className="col-span-2">
-                    <label className="block text-xs font-medium text-[#888] mb-1.5 uppercase tracking-wide">
+                    <label className="block text-xs font-medium text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">
                       Cidade
                     </label>
                     <input
@@ -420,7 +420,7 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-[#888] mb-1.5 uppercase tracking-wide">
+                    <label className="block text-xs font-medium text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">
                       Estado
                     </label>
                     <input
@@ -442,7 +442,7 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold text-white">Logo do seu estúdio</h2>
-                <p className="text-[#888] text-sm mt-1">
+                <p className="text-[#a8a296] text-sm mt-1">
                   Opcional — aparece nos orçamentos e no painel
                 </p>
               </div>
@@ -463,8 +463,8 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                 />
                 <button
                   onClick={() => fileRef.current?.click()}
-                  className="w-full rounded-2xl border-2 border-dashed flex flex-col items-center justify-center py-12 gap-4 transition-all hover:border-[#D5FF40]"
-                  style={{ borderColor: data.logoPreview ? '#D5FF40' : '#333' }}
+                  className="w-full rounded-2xl border-2 border-dashed flex flex-col items-center justify-center py-12 gap-4 transition-all hover:border-[#e8b84b]"
+                  style={{ borderColor: data.logoPreview ? '#e8b84b' : 'rgba(255,255,255,0.1)' }}
                 >
                   {data.logoPreview ? (
                     <img
@@ -477,7 +477,7 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                       <div className="text-4xl">🖼️</div>
                       <div className="text-center">
                         <p className="text-white font-medium">Clique para fazer upload</p>
-                        <p className="text-[#666] text-xs mt-1">PNG, JPG, SVG até 5MB</p>
+                        <p className="text-[#6e6a60] text-xs mt-1">PNG, JPG, SVG até 5MB</p>
                       </div>
                     </>
                   )}
@@ -485,12 +485,12 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                 {data.logoPreview && (
                   <button
                     onClick={() => setData(prev => ({ ...prev, logoFile: null, logoPreview: null }))}
-                    className="mt-3 text-xs text-[#666] hover:text-red-400 transition-colors"
+                    className="mt-3 text-xs text-[#6e6a60] hover:text-red-400 transition-colors"
                   >
                     Remover logo
                   </button>
                 )}
-                <p className="mt-3 text-xs text-[#555]">
+                <p className="mt-3 text-xs text-[#6e6a60]">
                   💡 Use PNG com fundo transparente para melhor resultado
                 </p>
               </div>
@@ -502,7 +502,7 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold text-white">Sua especialidade</h2>
-                <p className="text-[#888] text-sm mt-1">
+                <p className="text-[#a8a296] text-sm mt-1">
                   Vamos sugerir serviços e preços com base no seu nicho
                 </p>
               </div>
@@ -513,14 +513,14 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                     onClick={() => set('specialty', n.value)}
                     className="flex items-center gap-3 px-4 py-4 rounded-xl text-left transition-all"
                     style={{
-                      background: data.specialty === n.value ? '#D5FF4022' : '#252525',
-                      border: `2px solid ${data.specialty === n.value ? '#D5FF40' : '#333'}`,
+                      background: data.specialty === n.value ? '#e8b84b22' : '#161518',
+                      border: `2px solid ${data.specialty === n.value ? '#e8b84b' : 'rgba(255,255,255,0.1)'}`,
                     }}
                   >
                     <span className="text-2xl">{n.icon}</span>
                     <span
                       className="text-sm font-medium"
-                      style={{ color: data.specialty === n.value ? '#D5FF40' : '#ccc' }}
+                      style={{ color: data.specialty === n.value ? '#e8b84b' : '#a8a296' }}
                     >
                       {n.label}
                     </span>
@@ -535,7 +535,7 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold text-white">Seus serviços e preços</h2>
-                <p className="text-[#888] text-sm mt-1">
+                <p className="text-[#a8a296] text-sm mt-1">
                   Selecione os que você oferece — você pode editar depois
                 </p>
               </div>
@@ -550,28 +550,28 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                         onClick={() => toggleService(i)}
                         className="flex items-center justify-between px-4 py-3 rounded-xl text-left transition-all"
                         style={{
-                          background: selected ? '#D5FF4015' : '#252525',
-                          border: `1.5px solid ${selected ? '#D5FF40' : '#333'}`,
+                          background: selected ? '#e8b84b15' : '#161518',
+                          border: `1.5px solid ${selected ? '#e8b84b' : 'rgba(255,255,255,0.1)'}`,
                         }}
                       >
                         <div>
                           <p
                             className="text-sm font-medium"
-                            style={{ color: selected ? '#D5FF40' : '#fff' }}
+                            style={{ color: selected ? '#e8b84b' : '#fff' }}
                           >
                             {s.name}
                           </p>
-                          <p className="text-xs text-[#666]">{s.category}</p>
+                          <p className="text-xs text-[#6e6a60]">{s.category}</p>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="text-sm font-semibold text-[#D5FF40]">
+                          <span className="text-sm font-semibold text-[#e8b84b]">
                             {formatBRL(s.price)}
                           </span>
                           <div
                             className="w-5 h-5 rounded flex items-center justify-center text-xs"
                             style={{
-                              background: selected ? '#D5FF40' : '#333',
-                              color: selected ? '#1E1E1E' : '#666',
+                              background: selected ? '#e8b84b' : 'rgba(255,255,255,0.1)',
+                              color: selected ? '#09090a' : '#6e6a60',
                             }}
                           >
                             {selected ? '✓' : '+'}
@@ -585,21 +585,21 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
 
               {/* Custom services */}
               <div>
-                <p className="text-xs font-medium text-[#888] uppercase tracking-wide mb-3">
+                <p className="text-xs font-medium text-[#a8a296] uppercase tracking-wide font-mono mb-3">
                   Adicionar serviço personalizado
                 </p>
-                <div className="rounded-xl p-4 space-y-3" style={{ background: '#252525', border: '1px solid #333' }}>
+                <div className="rounded-xl p-4 space-y-3" style={{ background: '#161518', border: '1px solid rgba(255,255,255,0.1)' }}>
                   <div className="grid grid-cols-2 gap-3">
                     <input
                       className={inputCls}
-                      style={{ background: '#1E1E1E', border: '1px solid #333' }}
+                      style={{ background: '#09090a', border: '1px solid rgba(255,255,255,0.1)' }}
                       placeholder="Nome do serviço"
                       value={data.customName}
                       onChange={e => set('customName', e.target.value)}
                     />
                     <input
                       className={inputCls}
-                      style={{ background: '#1E1E1E', border: '1px solid #333' }}
+                      style={{ background: '#09090a', border: '1px solid rgba(255,255,255,0.1)' }}
                       placeholder="Preço (R$)"
                       value={data.customPrice}
                       onChange={e => set('customPrice', e.target.value)}
@@ -610,15 +610,15 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                   <div className="flex gap-3">
                     <input
                       className={`${inputCls} flex-1`}
-                      style={{ background: '#1E1E1E', border: '1px solid #333' }}
+                      style={{ background: '#09090a', border: '1px solid rgba(255,255,255,0.1)' }}
                       placeholder="Categoria (ex: Render)"
                       value={data.customCategory}
                       onChange={e => set('customCategory', e.target.value)}
                     />
                     <button
                       onClick={addCustomService}
-                      className="px-4 py-2 rounded-xl text-sm font-semibold text-[#1E1E1E] transition-opacity hover:opacity-80"
-                      style={{ background: '#D5FF40' }}
+                      className="px-4 py-2 rounded-full text-sm font-semibold text-[#09090a] transition-opacity hover:opacity-80"
+                      style={{ background: '#e8b84b' }}
                     >
                       + Adicionar
                     </button>
@@ -631,19 +631,19 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
                       <div
                         key={i}
                         className="flex items-center justify-between px-4 py-2 rounded-xl"
-                        style={{ background: '#252525', border: '1px solid #333' }}
+                        style={{ background: '#161518', border: '1px solid rgba(255,255,255,0.1)' }}
                       >
                         <div>
                           <p className="text-sm text-white">{s.name}</p>
-                          <p className="text-xs text-[#666]">{s.category}</p>
+                          <p className="text-xs text-[#6e6a60]">{s.category}</p>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="text-sm font-semibold text-[#D5FF40]">
+                          <span className="text-sm font-semibold text-[#e8b84b]">
                             {formatBRL(s.price)}
                           </span>
                           <button
                             onClick={() => removeCustom(i)}
-                            className="text-[#555] hover:text-red-400 transition-colors text-xs"
+                            className="text-[#6e6a60] hover:text-red-400 transition-colors text-xs"
                           >
                             ✕
                           </button>
@@ -661,7 +661,7 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
             <button
               onClick={() => step > 1 && setStep(s => s - 1)}
               className="px-6 py-3 rounded-xl text-sm font-medium transition-colors"
-              style={{ color: step === 1 ? '#444' : '#888' }}
+              style={{ color: step === 1 ? 'rgba(255,255,255,0.16)' : '#a8a296' }}
               disabled={step === 1}
             >
               ← Voltar
@@ -670,8 +670,8 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
             {step < TOTAL_STEPS ? (
               <button
                 onClick={() => setStep(s => s + 1)}
-                className="px-8 py-3 rounded-xl text-sm font-bold text-[#1E1E1E] transition-opacity hover:opacity-90"
-                style={{ background: '#D5FF40' }}
+                className="px-8 py-3 rounded-full text-sm font-bold text-[#09090a] transition-opacity hover:opacity-90"
+                style={{ background: '#e8b84b' }}
               >
                 Próximo →
               </button>
@@ -679,8 +679,8 @@ export default function SetupWizard({ userId, initialName }: { userId: string; i
               <button
                 onClick={finish}
                 disabled={saving}
-                className="px-8 py-3 rounded-xl text-sm font-bold text-[#1E1E1E] transition-opacity hover:opacity-90 disabled:opacity-50"
-                style={{ background: '#D5FF40' }}
+                className="px-8 py-3 rounded-full text-sm font-bold text-[#09090a] transition-opacity hover:opacity-90 disabled:opacity-50"
+                style={{ background: '#e8b84b' }}
               >
                 {saving ? 'Salvando…' : 'Concluir ✓'}
               </button>

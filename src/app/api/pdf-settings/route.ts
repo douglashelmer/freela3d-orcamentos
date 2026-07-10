@@ -4,8 +4,8 @@ import { NextResponse } from 'next/server'
 
 export const DEFAULT_PDF_SETTINGS = {
   template: 'modern',
-  primaryColor: '#1E1E1E',
-  accentColor: '#D5FF40',
+  primaryColor: '#09090a',
+  accentColor: '#e8b84b',
   bgMode: 'light',
   bgColor: '#FFFFFF',
   textColor: '#1A1A1A',

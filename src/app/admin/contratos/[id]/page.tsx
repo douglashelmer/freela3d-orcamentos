@@ -44,17 +44,17 @@ export default async function ContratoViewPage({ params }: { params: Promise<{ i
     : null
 
   return (
-    <div className="min-h-screen" style={{ background: '#1E1E1E' }}>
+    <div className="min-h-screen" style={{ background: '#09090a' }}>
       {/* Top bar */}
-      <div className="no-print sticky top-0 z-10 border-b px-4 md:px-6 py-3 flex items-center justify-between gap-3" style={{ background: 'rgba(30,30,30,0.95)', borderColor: '#2a2a2a' }}>
+      <div className="no-print sticky top-0 z-10 border-b px-4 md:px-6 py-3 flex items-center justify-between gap-3" style={{ background: 'rgba(30,30,30,0.95)', borderColor: '#1c1b1e' }}>
         <div className="flex items-center gap-3 min-w-0">
-          <Link href="/admin/contratos" className="text-[#888] hover:text-white transition-colors text-sm flex items-center gap-1 shrink-0">
+          <Link href="/admin/contratos" className="text-[#a8a296] hover:text-white transition-colors text-sm flex items-center gap-1 shrink-0">
             ← Contratos
           </Link>
-          <div className="hidden sm:block w-px h-4" style={{ background: '#333' }} />
+          <div className="hidden sm:block w-px h-4" style={{ background: 'rgba(255,255,255,0.1)' }} />
           <p className="hidden sm:block text-sm font-medium text-white truncate">{contract.projectName}</p>
           {contract.status === 'SIGNED' && (
-            <span className="text-xs font-medium px-2 py-0.5 rounded-full shrink-0" style={{ background: '#D5FF4020', color: '#D5FF40' }}>
+            <span className="text-xs font-medium px-2 py-0.5 rounded-full shrink-0" style={{ background: '#e8b84b20', color: '#e8b84b' }}>
               ✅ Assinado
             </span>
           )}
@@ -73,7 +73,7 @@ export default async function ContratoViewPage({ params }: { params: Promise<{ i
       </div>
 
       {contract.status === 'SIGNED' && contract.signedByName && (
-        <div className="no-print px-6 py-3 text-sm text-center" style={{ background: '#D5FF4015', color: '#D5FF40' }}>
+        <div className="no-print px-6 py-3 text-sm text-center" style={{ background: '#e8b84b15', color: '#e8b84b' }}>
           Assinado por <strong>{contract.signedByName}</strong>
           {contract.signedAt && (
             <> em {new Date(contract.signedAt).toLocaleDateString('pt-BR')}</>

@@ -80,20 +80,20 @@ export default function ServicosPage() {
 
   const categories = [...new Set(services.map(s => s.category))].sort()
 
-  const inputCls = 'w-full px-4 py-2.5 rounded-xl text-sm text-white outline-none focus:ring-2 focus:ring-[#D5FF40]'
-  const inputStyle = { background: '#1E1E1E', border: '1px solid #333' }
+  const inputCls = 'w-full px-4 py-2.5 rounded-xl text-sm text-white outline-none focus:ring-2 focus:ring-[#e8b84b]'
+  const inputStyle = { background: '#09090a', border: '1px solid rgba(255,255,255,0.1)' }
 
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-white">Meus Serviços</h1>
-          <p className="text-[#888] text-sm mt-0.5">Catálogo de serviços e preços</p>
+          <p className="text-[#a8a296] text-sm mt-0.5">Catálogo de serviços e preços</p>
         </div>
         <button
           onClick={startNew}
-          className="px-5 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E]"
-          style={{ background: '#D5FF40' }}
+          className="px-5 py-2.5 rounded-full text-sm font-semibold text-[#09090a]"
+          style={{ background: '#e8b84b' }}
         >
           + Novo Serviço
         </button>
@@ -106,9 +106,9 @@ export default function ServicosPage() {
           { label: 'Ativos', value: services.filter(s => s.active).length },
           { label: 'Categorias', value: categories.length },
         ].map(s => (
-          <div key={s.label} className="rounded-2xl border p-5" style={{ background: '#252525', borderColor: '#333' }}>
-            <p className="text-xs text-[#666] mb-2 uppercase tracking-wide">{s.label}</p>
-            <p className="text-2xl font-bold text-[#D5FF40]">{s.value}</p>
+          <div key={s.label} className="rounded-2xl border p-5" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
+            <p className="text-xs text-[#6e6a60] mb-2 uppercase tracking-wide font-mono">{s.label}</p>
+            <p className="text-2xl font-bold text-[#e8b84b]">{s.value}</p>
           </div>
         ))}
       </div>
@@ -127,32 +127,32 @@ export default function ServicosPage() {
       {/* Form modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: '#000000aa' }}>
-          <div className="w-full max-w-md rounded-2xl p-6 space-y-4" style={{ background: '#252525', border: '1px solid #333' }}>
+          <div className="w-full max-w-md rounded-2xl p-6 space-y-4" style={{ background: '#161518', border: '1px solid rgba(255,255,255,0.1)' }}>
             <h3 className="text-lg font-bold text-white">{editingId ? 'Editar' : 'Novo'} Serviço</h3>
             <div className="space-y-3">
               <div>
-                <label className="block text-xs text-[#888] mb-1 uppercase tracking-wide">Nome *</label>
+                <label className="block text-xs text-[#a8a296] mb-1 uppercase tracking-wide font-mono">Nome *</label>
                 <input className={inputCls} style={inputStyle} placeholder="Nome do serviço" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
               </div>
               <div>
-                <label className="block text-xs text-[#888] mb-1 uppercase tracking-wide">Categoria *</label>
+                <label className="block text-xs text-[#a8a296] mb-1 uppercase tracking-wide font-mono">Categoria *</label>
                 <input className={inputCls} style={inputStyle} placeholder="Ex: Modelagem 3D" value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} list="cats" />
                 <datalist id="cats">{categories.map(c => <option key={c} value={c} />)}</datalist>
               </div>
               <div>
-                <label className="block text-xs text-[#888] mb-1 uppercase tracking-wide">Preço (R$) *</label>
+                <label className="block text-xs text-[#a8a296] mb-1 uppercase tracking-wide font-mono">Preço (R$) *</label>
                 <input className={inputCls} style={inputStyle} placeholder="0" type="number" min="0" value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} />
               </div>
               <div>
-                <label className="block text-xs text-[#888] mb-1 uppercase tracking-wide">Descrição</label>
+                <label className="block text-xs text-[#a8a296] mb-1 uppercase tracking-wide font-mono">Descrição</label>
                 <textarea className={inputCls} style={inputStyle} placeholder="Descrição opcional…" rows={2} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} />
               </div>
             </div>
             <div className="flex gap-3 pt-2">
-              <button onClick={() => setShowForm(false)} className="flex-1 py-2.5 rounded-xl text-sm text-[#888] hover:text-white transition-colors" style={{ background: '#1E1E1E', border: '1px solid #333' }}>
+              <button onClick={() => setShowForm(false)} className="flex-1 py-2.5 rounded-xl text-sm text-[#a8a296] hover:text-white transition-colors" style={{ background: '#09090a', border: '1px solid rgba(255,255,255,0.1)' }}>
                 Cancelar
               </button>
-              <button onClick={save} disabled={saving} className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E] disabled:opacity-50" style={{ background: '#D5FF40' }}>
+              <button onClick={save} disabled={saving} className="flex-1 py-2.5 rounded-full text-sm font-semibold text-[#09090a] disabled:opacity-50" style={{ background: '#e8b84b' }}>
                 {saving ? 'Salvando…' : 'Salvar'}
               </button>
             </div>
@@ -162,13 +162,13 @@ export default function ServicosPage() {
 
       {/* List */}
       {loading ? (
-        <div className="text-center py-16 text-[#555]">Carregando…</div>
+        <div className="text-center py-16 text-[#6e6a60]">Carregando…</div>
       ) : filtered.length === 0 ? (
-        <div className="text-center py-16 rounded-2xl border" style={{ background: '#252525', borderColor: '#333' }}>
+        <div className="text-center py-16 rounded-2xl border" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
           <p className="text-4xl mb-3">◈</p>
-          <p className="text-[#666]">{search ? 'Nenhum resultado' : 'Nenhum serviço cadastrado'}</p>
+          <p className="text-[#6e6a60]">{search ? 'Nenhum resultado' : 'Nenhum serviço cadastrado'}</p>
           {!search && (
-            <button onClick={startNew} className="mt-4 text-[#D5FF40] text-sm hover:underline">
+            <button onClick={startNew} className="mt-4 text-[#e8b84b] text-sm hover:underline">
               + Criar primeiro serviço
             </button>
           )}
@@ -176,30 +176,30 @@ export default function ServicosPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {filtered.map(s => (
-            <div key={s.id} className="rounded-2xl border p-5 space-y-3 transition-all hover:border-[#444]" style={{ background: '#252525', borderColor: s.active ? '#333' : '#222' }}>
+            <div key={s.id} className="rounded-2xl border p-5 space-y-3 transition-all hover:border-[rgba(255,255,255,0.16)]" style={{ background: '#161518', borderColor: s.active ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.1)' }}>
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="font-semibold text-white truncate" style={{ opacity: s.active ? 1 : 0.5 }}>{s.name}</p>
-                  <p className="text-xs text-[#666] mt-0.5">{s.category}</p>
+                  <p className="text-xs text-[#6e6a60] mt-0.5">{s.category}</p>
                 </div>
                 <button
                   onClick={() => toggleActive(s)}
                   className="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-all"
                   style={{
-                    background: s.active ? '#D5FF4022' : '#33333380',
-                    color: s.active ? '#D5FF40' : '#555',
-                    border: `1px solid ${s.active ? '#D5FF4060' : '#333'}`,
+                    background: s.active ? '#e8b84b22' : 'rgba(255,255,255,0.1)80',
+                    color: s.active ? '#e8b84b' : '#6e6a60',
+                    border: `1px solid ${s.active ? '#e8b84b60' : 'rgba(255,255,255,0.1)'}`,
                   }}
                 >
                   {s.active ? 'Ativo' : 'Inativo'}
                 </button>
               </div>
-              {s.description && <p className="text-xs text-[#666] line-clamp-2">{s.description}</p>}
-              <div className="flex items-center justify-between pt-1 border-t" style={{ borderColor: '#2a2a2a' }}>
-                <span className="text-lg font-bold text-[#D5FF40]">{formatBRL(s.price)}</span>
+              {s.description && <p className="text-xs text-[#6e6a60] line-clamp-2">{s.description}</p>}
+              <div className="flex items-center justify-between pt-1 border-t" style={{ borderColor: '#1c1b1e' }}>
+                <span className="text-lg font-bold text-[#e8b84b]">{formatBRL(s.price)}</span>
                 <div className="flex gap-2">
-                  <button onClick={() => startEdit(s)} className="text-xs text-[#666] hover:text-white transition-colors px-2 py-1">Editar</button>
-                  <button onClick={() => remove(s.id)} className="text-xs text-[#666] hover:text-red-400 transition-colors px-2 py-1">Excluir</button>
+                  <button onClick={() => startEdit(s)} className="text-xs text-[#6e6a60] hover:text-white transition-colors px-2 py-1">Editar</button>
+                  <button onClick={() => remove(s.id)} className="text-xs text-[#6e6a60] hover:text-red-400 transition-colors px-2 py-1">Excluir</button>
                 </div>
               </div>
             </div>

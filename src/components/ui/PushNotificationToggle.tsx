@@ -121,11 +121,11 @@ export function PushNotificationToggle() {
   }
 
   return (
-    <div className="py-4 border-b" style={{ borderColor: '#333' }}>
+    <div className="py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-white">Notificações push</p>
-          <p className="text-xs mt-0.5" style={{ color: state === 'error' ? '#f87171' : '#666' }}>
+          <p className="text-xs mt-0.5" style={{ color: state === 'error' ? '#f87171' : '#6e6a60' }}>
             {descriptions[state]}
           </p>
         </div>
@@ -135,7 +135,7 @@ export function PushNotificationToggle() {
             onClick={state === 'on' ? disable : enable}
             disabled={toggling}
             className="relative w-11 h-6 rounded-full transition-colors shrink-0 mt-0.5 disabled:opacity-50"
-            style={{ background: state === 'on' ? '#D5FF40' : '#333' }}
+            style={{ background: state === 'on' ? '#e8b84b' : 'rgba(255,255,255,0.1)' }}
             aria-label={state === 'on' ? 'Desativar notificações' : 'Ativar notificações'}
           >
             <span
@@ -152,12 +152,12 @@ export function PushNotificationToggle() {
             onClick={sendTest}
             disabled={testing}
             className="text-xs px-3 py-1.5 rounded-lg border transition-colors disabled:opacity-50"
-            style={{ borderColor: '#444', color: '#888' }}
+            style={{ borderColor: 'rgba(255,255,255,0.16)', color: '#a8a296' }}
           >
             {testing ? 'Enviando...' : 'Enviar notificação de teste'}
           </button>
           {testMsg && (
-            <span className="text-xs" style={{ color: testMsg.startsWith('✓') ? '#D5FF40' : '#f87171' }}>
+            <span className="text-xs" style={{ color: testMsg.startsWith('✓') ? '#e8b84b' : '#f87171' }}>
               {testMsg}
             </span>
           )}

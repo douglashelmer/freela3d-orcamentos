@@ -25,7 +25,7 @@ export function DuplicateQuoteButton({ quoteId }: { quoteId: string }) {
     <button
       onClick={e => { e.stopPropagation(); duplicate() }}
       disabled={duplicating}
-      className="text-xs text-[#888] hover:text-white transition-colors ml-3 disabled:opacity-50"
+      className="text-xs text-[#a8a296] hover:text-white transition-colors ml-3 disabled:opacity-50"
     >
       {duplicating ? '…' : 'Duplicar'}
     </button>

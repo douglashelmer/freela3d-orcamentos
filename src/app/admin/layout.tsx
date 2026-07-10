@@ -38,7 +38,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const userEmail = user.email || session.user.email || ''
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ background: '#1E1E1E' }}>
+    <div className="flex h-screen overflow-hidden" style={{ background: '#09090a' }}>
       {/* Mobile nav (header + drawer + bottom tabs) */}
       <MobileAdminNav
         logo={user.logo ?? null}
@@ -49,9 +49,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       />
 
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 shrink-0 border-r" style={{ background: '#1a1a1a', borderColor: '#2a2a2a' }}>
+      <aside className="hidden md:flex flex-col w-64 shrink-0 border-r" style={{ background: '#0f0f11', borderColor: '#1c1b1e' }}>
         {/* Logo */}
-        <div className="flex items-center gap-3 px-6 py-5 border-b" style={{ borderColor: '#2a2a2a' }}>
+        <div className="flex items-center gap-3 px-6 py-5 border-b" style={{ borderColor: '#1c1b1e' }}>
           {user.logo ? (
             <img src={user.logo} alt="Logo" className="h-8 object-contain max-w-[140px]" />
           ) : (
@@ -65,7 +65,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <Link
               key={item.href}
               href={item.href}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#888] hover:text-white hover:bg-[#252525] transition-all"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#a8a296] hover:text-white hover:bg-[#161518] transition-all"
             >
               <span className="text-base">{item.icon}</span>
               {item.label}
@@ -74,17 +74,17 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         </nav>
 
         {/* User */}
-        <div className="px-3 py-4 border-t" style={{ borderColor: '#2a2a2a' }}>
+        <div className="px-3 py-4 border-t" style={{ borderColor: '#1c1b1e' }}>
           <div className="flex items-center gap-3 px-3 py-2">
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-[#1E1E1E] shrink-0"
-              style={{ background: '#D5FF40' }}
+              className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-[#09090a] shrink-0"
+              style={{ background: '#e8b84b' }}
             >
               {initial}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">{userName}</p>
-              <p className="text-xs text-[#666] truncate">{displayName !== userName ? displayName : userEmail}</p>
+              <p className="text-xs text-[#6e6a60] truncate">{displayName !== userName ? displayName : userEmail}</p>
             </div>
           </div>
           <SignOutButton />

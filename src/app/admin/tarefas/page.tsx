@@ -17,14 +17,14 @@ type Task = {
 }
 
 const COLUMNS = [
-  { key: 'TODO', label: 'A Fazer', color: '#888' },
+  { key: 'TODO', label: 'A Fazer', color: '#a8a296' },
   { key: 'IN_PROGRESS', label: 'Em Andamento', color: '#60a5fa' },
   { key: 'REVIEW', label: 'Em Revisão', color: '#fbbf24' },
-  { key: 'DONE', label: 'Concluído', color: '#D5FF40' },
+  { key: 'DONE', label: 'Concluído', color: '#e8b84b' },
 ]
 
 const PRIORITIES = [
-  { key: 'LOW', label: 'Baixa', color: '#555', bg: '#55555520' },
+  { key: 'LOW', label: 'Baixa', color: '#6e6a60', bg: '#6e6a6020' },
   { key: 'MEDIUM', label: 'Média', color: '#60a5fa', bg: '#60a5fa20' },
   { key: 'HIGH', label: 'Alta', color: '#fbbf24', bg: '#fbbf2420' },
   { key: 'URGENT', label: 'Urgente', color: '#f87171', bg: '#f8717120' },
@@ -60,7 +60,7 @@ function getDueInfo(dueDate: string | null): { label: string; color: string } | 
   if (diff === 0) return { label: 'Hoje', color: '#fbbf24' }
   if (diff === 1) return { label: 'Amanhã', color: '#fbbf24' }
   if (diff <= 3) return { label: `${diff} dias`, color: '#fbbf24' }
-  return { label: due.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }), color: '#555' }
+  return { label: due.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }), color: '#6e6a60' }
 }
 
 export default function TarefasPage() {
@@ -220,17 +220,17 @@ export default function TarefasPage() {
     return d.getTime() === n.getTime()
   }).length
 
-  const inputCls = 'w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-2 focus:ring-[#D5FF40]'
-  const inputStyle = { background: '#1E1E1E', border: '1px solid #333' }
+  const inputCls = 'w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-2 focus:ring-[#e8b84b]'
+  const inputStyle = { background: '#09090a', border: '1px solid rgba(255,255,255,0.1)' }
 
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="px-8 py-6 border-b shrink-0" style={{ borderColor: '#2a2a2a' }}>
+      <div className="px-8 py-6 border-b shrink-0" style={{ borderColor: '#1c1b1e' }}>
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-2xl font-bold text-white">Tarefas</h1>
-            <p className="text-[#888] text-sm mt-0.5">
+            <p className="text-[#a8a296] text-sm mt-0.5">
               {totalTasks} tarefas · {doneCount} concluídas
               {overdue > 0 && <span className="text-red-400 ml-2">· {overdue} atrasadas</span>}
               {todayCount > 0 && <span className="text-yellow-400 ml-2">· {todayCount} vencem hoje</span>}
@@ -238,8 +238,8 @@ export default function TarefasPage() {
           </div>
           <button
             onClick={() => openNew()}
-            className="px-5 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E]"
-            style={{ background: '#D5FF40' }}
+            className="px-5 py-2.5 rounded-full text-sm font-semibold text-[#09090a]"
+            style={{ background: '#e8b84b' }}
           >
             + Nova Tarefa
           </button>
@@ -251,9 +251,9 @@ export default function TarefasPage() {
             onClick={() => setFilterPriority(null)}
             className="px-3 py-1 rounded-full text-xs font-medium transition-all"
             style={{
-              background: !filterPriority ? '#D5FF40' : '#252525',
-              color: !filterPriority ? '#1E1E1E' : '#888',
-              border: '1px solid #333',
+              background: !filterPriority ? '#e8b84b' : '#161518',
+              color: !filterPriority ? '#09090a' : '#a8a296',
+              border: '1px solid rgba(255,255,255,0.1)',
             }}
           >
             Todas
@@ -264,9 +264,9 @@ export default function TarefasPage() {
               onClick={() => setFilterPriority(filterPriority === p.key ? null : p.key)}
               className="px-3 py-1 rounded-full text-xs font-medium transition-all"
               style={{
-                background: filterPriority === p.key ? p.bg : '#252525',
-                color: filterPriority === p.key ? p.color : '#888',
-                border: `1px solid ${filterPriority === p.key ? p.color + '60' : '#333'}`,
+                background: filterPriority === p.key ? p.bg : '#161518',
+                color: filterPriority === p.key ? p.color : '#a8a296',
+                border: `1px solid ${filterPriority === p.key ? p.color + '60' : 'rgba(255,255,255,0.1)'}`,
               }}
             >
               {p.label}
@@ -283,7 +283,7 @@ export default function TarefasPage() {
           </div>
         )}
         {loading ? (
-          <div className="text-center py-16 text-[#555]">Carregando…</div>
+          <div className="text-center py-16 text-[#6e6a60]">Carregando…</div>
         ) : (
           <div className="flex gap-4 h-full" style={{ minWidth: `${COLUMNS.length * 300}px` }}>
             {COLUMNS.map(col => {
@@ -296,8 +296,8 @@ export default function TarefasPage() {
                   style={{
                     width: 292,
                     minWidth: 292,
-                    background: isOver ? '#2a2a2a' : '#1f1f1f',
-                    border: `1px solid ${isOver ? col.color + '60' : '#2a2a2a'}`,
+                    background: isOver ? '#1c1b1e' : '#1f1f1f',
+                    border: `1px solid ${isOver ? col.color + '60' : '#1c1b1e'}`,
                   }}
                   onDragOver={e => { e.preventDefault(); setDragOver(col.key) }}
                   onDragLeave={() => setDragOver(null)}
@@ -308,17 +308,17 @@ export default function TarefasPage() {
                   }}
                 >
                   {/* Column header */}
-                  <div className="flex items-center justify-between px-4 py-3 border-b shrink-0" style={{ borderColor: '#2a2a2a' }}>
+                  <div className="flex items-center justify-between px-4 py-3 border-b shrink-0" style={{ borderColor: '#1c1b1e' }}>
                     <div className="flex items-center gap-2">
                       <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: col.color }} />
                       <span className="text-sm font-medium text-white">{col.label}</span>
-                      <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs" style={{ background: '#2a2a2a', color: '#666' }}>
+                      <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs" style={{ background: '#1c1b1e', color: '#6e6a60' }}>
                         {colTasks.length}
                       </span>
                     </div>
                     <button
                       onClick={() => openNew(col.key)}
-                      className="text-[#555] hover:text-[#D5FF40] transition-colors text-lg leading-none"
+                      className="text-[#6e6a60] hover:text-[#e8b84b] transition-colors text-lg leading-none"
                       title="Nova tarefa nesta coluna"
                     >
                       +
@@ -337,8 +337,8 @@ export default function TarefasPage() {
                           draggable
                           onDragStart={() => { dragId.current = task.id }}
                           onDragEnd={() => { dragId.current = null; setDragOver(null) }}
-                          className="rounded-xl p-3 cursor-grab active:cursor-grabbing hover:border-[#444] transition-all group"
-                          style={{ background: '#252525', border: '1px solid #333', opacity: isDone ? 0.6 : 1 }}
+                          className="rounded-xl p-3 cursor-grab active:cursor-grabbing hover:border-[rgba(255,255,255,0.16)] transition-all group"
+                          style={{ background: '#161518', border: '1px solid rgba(255,255,255,0.1)', opacity: isDone ? 0.6 : 1 }}
                         >
                           {/* Title + actions */}
                           <div className="flex items-start gap-2 mb-2">
@@ -346,19 +346,19 @@ export default function TarefasPage() {
                               onClick={() => quickDone(task)}
                               className="shrink-0 mt-0.5 w-4 h-4 rounded border flex items-center justify-center transition-all"
                               style={{
-                                borderColor: isDone ? '#D5FF40' : '#444',
-                                background: isDone ? '#D5FF40' : 'transparent',
+                                borderColor: isDone ? '#e8b84b' : 'rgba(255,255,255,0.16)',
+                                background: isDone ? '#e8b84b' : 'transparent',
                               }}
                               title={isDone ? 'Reabrir' : 'Concluir'}
                             >
-                              {isDone && <span className="text-[#1E1E1E] text-xs leading-none">✓</span>}
+                              {isDone && <span className="text-[#09090a] text-xs leading-none">✓</span>}
                             </button>
-                            <p className={`text-sm font-medium text-white flex-1 leading-tight ${isDone ? 'line-through text-[#555]' : ''}`}>
+                            <p className={`text-sm font-medium text-white flex-1 leading-tight ${isDone ? 'line-through text-[#6e6a60]' : ''}`}>
                               {task.title}
                             </p>
                             <button
                               onClick={() => openEdit(task)}
-                              className="shrink-0 text-[#444] hover:text-white transition-colors text-xs opacity-0 group-hover:opacity-100"
+                              className="shrink-0 text-[rgba(255,255,255,0.16)] hover:text-white transition-colors text-xs opacity-0 group-hover:opacity-100"
                             >
                               ✎
                             </button>
@@ -366,14 +366,14 @@ export default function TarefasPage() {
 
                           {/* Description */}
                           {task.description && (
-                            <p className="text-xs text-[#555] mb-2 line-clamp-2 pl-6">{task.description}</p>
+                            <p className="text-xs text-[#6e6a60] mb-2 line-clamp-2 pl-6">{task.description}</p>
                           )}
 
                           {/* Imagem */}
                           {task.imageUrl && (
                             <div className="pl-6 mb-2">
                               {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img src={task.imageUrl} alt="" className="w-full max-h-28 object-cover rounded-lg" style={{ border: '1px solid #333' }} />
+                              <img src={task.imageUrl} alt="" className="w-full max-h-28 object-cover rounded-lg" style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
                             </div>
                           )}
 
@@ -396,7 +396,7 @@ export default function TarefasPage() {
                           {task.tags && (
                             <div className="flex flex-wrap gap-1 mt-2 pl-6">
                               {task.tags.split(',').map(t => t.trim()).filter(Boolean).map(tag => (
-                                <span key={tag} className="text-xs px-1.5 py-0.5 rounded" style={{ background: '#333', color: '#666' }}>
+                                <span key={tag} className="text-xs px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.1)', color: '#6e6a60' }}>
                                   {tag}
                                 </span>
                               ))}
@@ -415,7 +415,7 @@ export default function TarefasPage() {
                                   onClick={e => e.stopPropagation()}
                                   draggable={false}
                                   className="text-xs px-1.5 py-0.5 rounded inline-flex items-center gap-1 hover:underline max-w-full truncate"
-                                  style={{ background: '#2a3320', color: '#D5FF40' }}
+                                  style={{ background: '#2a3320', color: '#e8b84b' }}
                                 >
                                   🔗 {linkLabel(link)}
                                 </a>
@@ -428,8 +428,8 @@ export default function TarefasPage() {
 
                     {colTasks.length === 0 && (
                       <div
-                        className="text-center py-8 text-xs text-[#444] rounded-xl border-2 border-dashed cursor-pointer hover:border-[#555] transition-colors"
-                        style={{ borderColor: '#2a2a2a' }}
+                        className="text-center py-8 text-xs text-[rgba(255,255,255,0.16)] rounded-xl border-2 border-dashed cursor-pointer hover:border-[#6e6a60] transition-colors"
+                        style={{ borderColor: '#1c1b1e' }}
                         onClick={() => openNew(col.key)}
                       >
                         + Adicionar tarefa
@@ -446,15 +446,15 @@ export default function TarefasPage() {
       {/* Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: '#000000cc' }}>
-          <div className="w-full max-w-md rounded-2xl" style={{ background: '#252525', border: '1px solid #333' }}>
-            <div className="flex items-center justify-between px-6 py-5 border-b" style={{ borderColor: '#333' }}>
+          <div className="w-full max-w-md rounded-2xl" style={{ background: '#161518', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className="flex items-center justify-between px-6 py-5 border-b" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
               <h3 className="text-lg font-bold text-white">{editingTask ? 'Editar Tarefa' : 'Nova Tarefa'}</h3>
-              <button onClick={() => setShowForm(false)} className="text-[#555] hover:text-white transition-colors text-xl leading-none">✕</button>
+              <button onClick={() => setShowForm(false)} className="text-[#6e6a60] hover:text-white transition-colors text-xl leading-none">✕</button>
             </div>
 
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-xs text-[#888] mb-1 uppercase tracking-wide">Título *</label>
+                <label className="block text-xs text-[#a8a296] mb-1 uppercase tracking-wide font-mono">Título *</label>
                 <input
                   className={inputCls}
                   style={inputStyle}
@@ -466,7 +466,7 @@ export default function TarefasPage() {
               </div>
 
               <div>
-                <label className="block text-xs text-[#888] mb-1 uppercase tracking-wide">Descrição</label>
+                <label className="block text-xs text-[#a8a296] mb-1 uppercase tracking-wide font-mono">Descrição</label>
                 <textarea
                   className={inputCls}
                   style={inputStyle}
@@ -479,11 +479,11 @@ export default function TarefasPage() {
 
               {/* Imagem */}
               <div>
-                <label className="block text-xs text-[#888] mb-1 uppercase tracking-wide">Imagem</label>
+                <label className="block text-xs text-[#a8a296] mb-1 uppercase tracking-wide font-mono">Imagem</label>
                 {form.imageUrl ? (
                   <div className="relative inline-block">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={form.imageUrl} alt="anexo" className="max-h-32 rounded-lg" style={{ border: '1px solid #333' }} />
+                    <img src={form.imageUrl} alt="anexo" className="max-h-32 rounded-lg" style={{ border: '1px solid rgba(255,255,255,0.1)' }} />
                     <button
                       type="button"
                       onClick={() => setForm(f => ({ ...f, imageUrl: '' }))}
@@ -496,8 +496,8 @@ export default function TarefasPage() {
                   </div>
                 ) : (
                   <label
-                    className="flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm cursor-pointer text-[#888] hover:text-white transition-colors"
-                    style={{ background: '#1E1E1E', border: '1px dashed #333' }}
+                    className="flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm cursor-pointer text-[#a8a296] hover:text-white transition-colors"
+                    style={{ background: '#09090a', border: '1px dashed rgba(255,255,255,0.1)' }}
                   >
                     {uploading ? 'Enviando…' : '+ Anexar imagem'}
                     <input type="file" accept="image/*" className="hidden" disabled={uploading} onChange={handleImageUpload} />
@@ -507,7 +507,7 @@ export default function TarefasPage() {
 
               {/* Priority */}
               <div>
-                <label className="block text-xs text-[#888] mb-2 uppercase tracking-wide">Prioridade</label>
+                <label className="block text-xs text-[#a8a296] mb-2 uppercase tracking-wide font-mono">Prioridade</label>
                 <div className="grid grid-cols-4 gap-2">
                   {PRIORITIES.map(p => (
                     <button
@@ -515,9 +515,9 @@ export default function TarefasPage() {
                       onClick={() => setForm(f => ({ ...f, priority: p.key }))}
                       className="py-1.5 rounded-lg text-xs font-medium transition-all"
                       style={{
-                        background: form.priority === p.key ? p.bg : '#1E1E1E',
-                        color: form.priority === p.key ? p.color : '#666',
-                        border: `1px solid ${form.priority === p.key ? p.color + '60' : '#333'}`,
+                        background: form.priority === p.key ? p.bg : '#09090a',
+                        color: form.priority === p.key ? p.color : '#6e6a60',
+                        border: `1px solid ${form.priority === p.key ? p.color + '60' : 'rgba(255,255,255,0.1)'}`,
                       }}
                     >
                       {p.label}
@@ -528,7 +528,7 @@ export default function TarefasPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-[#888] mb-1 uppercase tracking-wide">Prazo</label>
+                  <label className="block text-xs text-[#a8a296] mb-1 uppercase tracking-wide font-mono">Prazo</label>
                   <input
                     className={inputCls}
                     style={inputStyle}
@@ -538,7 +538,7 @@ export default function TarefasPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-[#888] mb-1 uppercase tracking-wide">Tags</label>
+                  <label className="block text-xs text-[#a8a296] mb-1 uppercase tracking-wide font-mono">Tags</label>
                   <input
                     className={inputCls}
                     style={inputStyle}
@@ -551,7 +551,7 @@ export default function TarefasPage() {
 
               {/* Links */}
               <div>
-                <label className="block text-xs text-[#888] mb-1 uppercase tracking-wide">Links</label>
+                <label className="block text-xs text-[#a8a296] mb-1 uppercase tracking-wide font-mono">Links</label>
                 <textarea
                   className={inputCls}
                   style={inputStyle}
@@ -574,16 +574,16 @@ export default function TarefasPage() {
               )}
               <button
                 onClick={() => setShowForm(false)}
-                className="flex-1 py-2.5 rounded-xl text-sm text-[#888] hover:text-white transition-colors"
-                style={{ background: '#1E1E1E', border: '1px solid #333' }}
+                className="flex-1 py-2.5 rounded-xl text-sm text-[#a8a296] hover:text-white transition-colors"
+                style={{ background: '#09090a', border: '1px solid rgba(255,255,255,0.1)' }}
               >
                 Cancelar
               </button>
               <button
                 onClick={save}
                 disabled={saving || !form.title.trim()}
-                className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E] disabled:opacity-40"
-                style={{ background: '#D5FF40' }}
+                className="flex-1 py-2.5 rounded-full text-sm font-semibold text-[#09090a] disabled:opacity-40"
+                style={{ background: '#e8b84b' }}
               >
                 {saving ? 'Salvando…' : editingTask ? 'Salvar' : 'Criar'}
               </button>

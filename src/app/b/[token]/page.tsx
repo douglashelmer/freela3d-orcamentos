@@ -56,16 +56,16 @@ export default function BriefingPage() {
   const canNext = !q?.required || !!answers[q.key]?.trim()
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center" style={{ background: '#0f0f0f' }}>
-      <div className="w-8 h-8 rounded-full border-2 border-[#D5FF40] border-t-transparent animate-spin" />
+    <div className="min-h-screen flex items-center justify-center" style={{ background: '#0f0f11' }}>
+      <div className="w-8 h-8 rounded-full border-2 border-[#e8b84b] border-t-transparent animate-spin" />
     </div>
   )
 
   if (notFound) return (
-    <div className="min-h-screen flex items-center justify-center" style={{ background: '#0f0f0f' }}>
+    <div className="min-h-screen flex items-center justify-center" style={{ background: '#0f0f11' }}>
       <div className="text-center">
         <p className="text-4xl mb-4">404</p>
-        <p className="text-[#666]">Briefing não encontrado ou link inválido.</p>
+        <p className="text-[#6e6a60]">Briefing não encontrado ou link inválido.</p>
       </div>
     </div>
   )
@@ -75,24 +75,24 @@ export default function BriefingPage() {
   const displayName = info.user.company || info.user.name
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0f0f0f', color: '#fff' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#0f0f11', color: '#f5f1e8' }}>
       {/* Header */}
-      <header className="flex items-center justify-between px-8 py-5 border-b" style={{ borderColor: '#1a1a1a' }}>
+      <header className="flex items-center justify-between px-8 py-5 border-b" style={{ borderColor: '#0f0f11' }}>
         <div className="font-bold text-white text-lg">{displayName}</div>
         <div className="text-right">
           <p className="text-sm font-medium text-white">{info.clientName}</p>
-          <p className="text-xs text-[#666]">{info.type === 'OTHER' ? 'Outro' : info.type.replace('_', ' ')}</p>
+          <p className="text-xs text-[#6e6a60]">{info.type === 'OTHER' ? 'Outro' : info.type.replace('_', ' ')}</p>
         </div>
       </header>
 
       {done ? (
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center max-w-md px-4">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: '#D5FF4022', border: '2px solid #D5FF40' }}>
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: '#e8b84b22', border: '2px solid #e8b84b' }}>
               <span className="text-3xl">✓</span>
             </div>
             <h1 className="text-2xl font-bold text-white mb-3">Briefing enviado!</h1>
-            <p className="text-[#888]">Obrigado, {info.clientName}. Recebemos suas informações e entraremos em contato em breve.</p>
+            <p className="text-[#a8a296]">Obrigado, {info.clientName}. Recebemos suas informações e entraremos em contato em breve.</p>
           </div>
         </div>
       ) : (
@@ -100,21 +100,21 @@ export default function BriefingPage() {
           {/* Progress */}
           <div className="mb-8">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-[#888]">Pergunta {step + 1} de {QUESTIONS.length}</span>
-              <span className="text-[#888]">{progress}%</span>
+              <span className="text-[#a8a296]">Pergunta {step + 1} de {QUESTIONS.length}</span>
+              <span className="text-[#a8a296]">{progress}%</span>
             </div>
-            <div className="h-1.5 rounded-full" style={{ background: '#1a1a1a' }}>
-              <div className="h-1.5 rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: '#D5FF40' }} />
+            <div className="h-1.5 rounded-full" style={{ background: '#0f0f11' }}>
+              <div className="h-1.5 rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: '#e8b84b' }} />
             </div>
           </div>
 
           {/* Question */}
           <div className="flex-1">
-            <div className="rounded-2xl p-6" style={{ background: '#1a1a1a', border: '1px solid #252525' }}>
+            <div className="rounded-2xl p-6" style={{ background: '#0f0f11', border: '1px solid #161518' }}>
               <h2 className="text-lg font-bold text-white mb-1">
-                {q.label} {q.required && <span className="text-[#D5FF40]">*</span>}
+                {q.label} {q.required && <span className="text-[#e8b84b]">*</span>}
               </h2>
-              <p className="text-sm text-[#666] mb-4">{q.hint}</p>
+              <p className="text-sm text-[#6e6a60] mb-4">{q.hint}</p>
               {q.multiline ? (
                 <textarea
                   autoFocus
@@ -122,8 +122,8 @@ export default function BriefingPage() {
                   onChange={e => setAnswers(a => ({ ...a, [q.key]: e.target.value }))}
                   placeholder={q.hint}
                   rows={5}
-                  className="w-full rounded-xl p-4 text-sm text-white placeholder-[#444] outline-none focus:ring-2 focus:ring-[#D5FF40] resize-none transition-all"
-                  style={{ background: '#252525', border: '1px solid #333' }}
+                  className="w-full rounded-xl p-4 text-sm text-white placeholder-[rgba(255,255,255,0.16)] outline-none focus:ring-2 focus:ring-[#e8b84b] resize-none transition-all"
+                  style={{ background: '#161518', border: '1px solid rgba(255,255,255,0.1)' }}
                 />
               ) : (
                 <input
@@ -132,8 +132,8 @@ export default function BriefingPage() {
                   onChange={e => setAnswers(a => ({ ...a, [q.key]: e.target.value }))}
                   onKeyDown={e => e.key === 'Enter' && canNext && step < QUESTIONS.length - 1 && setStep(s => s + 1)}
                   placeholder={q.hint}
-                  className="w-full rounded-xl px-4 py-3 text-sm text-white placeholder-[#444] outline-none focus:ring-2 focus:ring-[#D5FF40] transition-all"
-                  style={{ background: '#252525', border: '1px solid #333' }}
+                  className="w-full rounded-xl px-4 py-3 text-sm text-white placeholder-[rgba(255,255,255,0.16)] outline-none focus:ring-2 focus:ring-[#e8b84b] transition-all"
+                  style={{ background: '#161518', border: '1px solid rgba(255,255,255,0.1)' }}
                 />
               )}
             </div>
@@ -144,7 +144,7 @@ export default function BriefingPage() {
             <button
               onClick={() => setStep(s => s - 1)}
               disabled={step === 0}
-              className="flex items-center gap-2 text-sm text-[#666] hover:text-white disabled:opacity-30 transition-colors"
+              className="flex items-center gap-2 text-sm text-[#6e6a60] hover:text-white disabled:opacity-30 transition-colors"
             >
               ← Anterior
             </button>
@@ -153,8 +153,8 @@ export default function BriefingPage() {
               <button
                 onClick={() => setStep(s => s + 1)}
                 disabled={!canNext}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 hover:opacity-90"
-                style={{ background: '#D5FF40', color: '#0f0f0f' }}
+                className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all disabled:opacity-40 hover:opacity-90"
+                style={{ background: '#e8b84b', color: '#0f0f11' }}
               >
                 Próxima →
               </button>
@@ -162,8 +162,8 @@ export default function BriefingPage() {
               <button
                 onClick={submit}
                 disabled={!canNext || submitting}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 hover:opacity-90"
-                style={{ background: '#D5FF40', color: '#0f0f0f' }}
+                className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all disabled:opacity-40 hover:opacity-90"
+                style={{ background: '#e8b84b', color: '#0f0f11' }}
               >
                 {submitting ? 'Enviando…' : '✉ Enviar Briefing'}
               </button>
@@ -172,7 +172,7 @@ export default function BriefingPage() {
         </div>
       )}
 
-      <footer className="text-center py-4 text-xs text-[#333]">
+      <footer className="text-center py-4 text-xs text-[rgba(255,255,255,0.1)]">
         Powered by Freela3D
       </footer>
     </div>

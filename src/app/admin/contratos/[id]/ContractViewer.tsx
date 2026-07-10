@@ -53,7 +53,7 @@ export function ContractViewer({ contract }: Props) {
           className="contract-paper w-full rounded-2xl p-12"
           style={{
             background: '#fff',
-            color: '#1a1a1a',
+            color: '#0f0f11',
             maxWidth: 800,
             boxShadow: '0 8px 40px rgba(0,0,0,0.4)',
             fontFamily: '"Times New Roman", Times, serif',
@@ -66,14 +66,14 @@ export function ContractViewer({ contract }: Props) {
             <button
               onClick={() => window.print()}
               className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all"
-              style={{ borderColor: '#ddd', color: '#666', background: '#f9f9f9' }}
+              style={{ borderColor: '#ddd', color: '#6e6a60', background: '#f9f9f9' }}
             >
               📄 Imprimir / Salvar PDF
             </button>
           </div>
 
           {/* Contract content */}
-          <div style={{ color: '#1a1a1a' }}>
+          <div style={{ color: '#0f0f11' }}>
             {lines.map((line, i) => {
               const trimmed = line.trim()
 

@@ -27,8 +27,8 @@ type PdfSettings = {
 
 const DEFAULTS: PdfSettings = {
   template: 'modern',
-  primaryColor: '#1E1E1E',
-  accentColor: '#D5FF40',
+  primaryColor: '#09090a',
+  accentColor: '#e8b84b',
   bgMode: 'light',
   bgColor: '#FFFFFF',
   textColor: '#1A1A1A',
@@ -67,9 +67,9 @@ function ImageUploadField({ label, value, onChange }: { label: string; value: st
   const inputRef = useRef<HTMLInputElement>(null)
   return (
     <div>
-      <label className="block text-xs text-[#888] mb-2 uppercase tracking-wide">{label}</label>
+      <label className="block text-xs text-[#a8a296] mb-2 uppercase tracking-wide font-mono">{label}</label>
       {value ? (
-        <div className="relative rounded-xl overflow-hidden border border-[#333]" style={{ maxHeight: 80 }}>
+        <div className="relative rounded-xl overflow-hidden border border-[rgba(255,255,255,0.1)]" style={{ maxHeight: 80 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={value} alt="" className="w-full object-cover" style={{ maxHeight: 80 }} />
           <button
@@ -81,8 +81,8 @@ function ImageUploadField({ label, value, onChange }: { label: string; value: st
       ) : (
         <button
           onClick={() => inputRef.current?.click()}
-          className="w-full py-3 rounded-xl border border-dashed text-sm flex items-center justify-center gap-2 text-[#555] hover:text-[#888] transition-colors"
-          style={{ borderColor: '#333' }}
+          className="w-full py-3 rounded-xl border border-dashed text-sm flex items-center justify-center gap-2 text-[#6e6a60] hover:text-[#a8a296] transition-colors"
+          style={{ borderColor: 'rgba(255,255,255,0.1)' }}
         >
           ↑ Enviar imagem (PNG/JPG até 4MB)
         </button>
@@ -105,8 +105,8 @@ function ImageUploadField({ label, value, onChange }: { label: string; value: st
 function ColorField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
     <div>
-      <label className="block text-xs text-[#888] mb-2 uppercase tracking-wide">{label}</label>
-      <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-[#333]" style={{ background: '#1E1E1E' }}>
+      <label className="block text-xs text-[#a8a296] mb-2 uppercase tracking-wide font-mono">{label}</label>
+      <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-[rgba(255,255,255,0.1)]" style={{ background: '#09090a' }}>
         <input
           type="color"
           value={value}
@@ -124,12 +124,12 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
     <button
       onClick={() => onChange(!checked)}
       className="flex items-center justify-between w-full py-3 border-b last:border-0"
-      style={{ borderColor: '#2a2a2a' }}
+      style={{ borderColor: '#1c1b1e' }}
     >
       <span className="text-sm text-white">{label}</span>
       <div
         className="w-10 h-6 rounded-full transition-colors relative"
-        style={{ background: checked ? '#D5FF40' : '#333' }}
+        style={{ background: checked ? '#e8b84b' : 'rgba(255,255,255,0.1)' }}
       >
         <div
           className="w-4 h-4 bg-white rounded-full absolute top-1 transition-all"
@@ -323,12 +323,12 @@ export default function PdfSettingsPage() {
     else alert('Erro ao salvar. Verifique se rodou migration_v9.sql no DbGate.')
   }
 
-  const inputCls = 'w-full px-3 py-2.5 rounded-xl text-sm text-white outline-none focus:ring-2 focus:ring-[#D5FF40]'
-  const inputStyle = { background: '#1E1E1E', border: '1px solid #333' }
+  const inputCls = 'w-full px-3 py-2.5 rounded-xl text-sm text-white outline-none focus:ring-2 focus:ring-[#e8b84b]'
+  const inputStyle = { background: '#09090a', border: '1px solid rgba(255,255,255,0.1)' }
   const sectionCls = 'rounded-2xl p-6 space-y-4'
-  const sectionStyle = { background: '#252525', border: '1px solid #333' }
+  const sectionStyle = { background: '#161518', border: '1px solid rgba(255,255,255,0.1)' }
 
-  if (loading) return <div className="p-8 text-[#555]">Carregando…</div>
+  if (loading) return <div className="p-8 text-[#6e6a60]">Carregando…</div>
 
   return (
     <div className="flex h-full overflow-hidden">
@@ -337,17 +337,17 @@ export default function PdfSettingsPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-4">
-            <Link href="/admin/orcamentos" className="text-[#555] hover:text-white text-xl leading-none transition-colors">←</Link>
+            <Link href="/admin/orcamentos" className="text-[#6e6a60] hover:text-white text-xl leading-none transition-colors">←</Link>
             <div>
               <h1 className="text-2xl font-bold text-white">Personalizar PDF</h1>
-              <p className="text-[#888] text-sm mt-0.5">Configurações aplicadas em todos os orçamentos</p>
+              <p className="text-[#a8a296] text-sm mt-0.5">Configurações aplicadas em todos os orçamentos</p>
             </div>
           </div>
           <button
             onClick={save}
             disabled={saving}
-            className="px-6 py-2.5 rounded-xl text-sm font-semibold text-[#1E1E1E] disabled:opacity-40 transition-all"
-            style={{ background: saved ? '#22c55e' : '#D5FF40' }}
+            className="px-6 py-2.5 rounded-xl text-sm font-semibold text-[#09090a] disabled:opacity-40 transition-all"
+            style={{ background: saved ? '#22c55e' : '#e8b84b' }}
           >
             {saving ? 'Salvando…' : saved ? '✓ Salvo' : 'Salvar'}
           </button>
@@ -357,7 +357,7 @@ export default function PdfSettingsPage() {
         <div className={sectionCls} style={sectionStyle}>
           <div>
             <h2 className="text-base font-semibold text-white">Cabeçalho do PDF</h2>
-            <p className="text-xs text-[#666] mt-0.5">Personalize a logo e o banner exibidos no topo do PDF.</p>
+            <p className="text-xs text-[#6e6a60] mt-0.5">Personalize a logo e o banner exibidos no topo do PDF.</p>
           </div>
           <ImageUploadField
             label="Logo do cabeçalho (substitui a do perfil)"
@@ -370,7 +370,7 @@ export default function PdfSettingsPage() {
             onChange={v => set('pdfBanner', v)}
           />
           {settings.pdfBanner && (
-            <p className="text-xs text-[#555]">Quando há banner, ele substitui a faixa colorida do topo. A logo (se houver) é sobreposta centralizada.</p>
+            <p className="text-xs text-[#6e6a60]">Quando há banner, ele substitui a faixa colorida do topo. A logo (se houver) é sobreposta centralizada.</p>
           )}
         </div>
 
@@ -378,11 +378,11 @@ export default function PdfSettingsPage() {
         <div className={sectionCls} style={sectionStyle}>
           <div>
             <h2 className="text-base font-semibold text-white">Estilo visual</h2>
-            <p className="text-xs text-[#666] mt-0.5">Escolha o template e as cores do seu PDF.</p>
+            <p className="text-xs text-[#6e6a60] mt-0.5">Escolha o template e as cores do seu PDF.</p>
           </div>
 
           <div>
-            <label className="block text-xs text-[#888] mb-2 uppercase tracking-wide">Template</label>
+            <label className="block text-xs text-[#a8a296] mb-2 uppercase tracking-wide font-mono">Template</label>
             <div className="grid grid-cols-3 gap-2">
               {TEMPLATES.map(t => (
                 <button
@@ -390,12 +390,12 @@ export default function PdfSettingsPage() {
                   onClick={() => set('template', t.key)}
                   className="p-3 rounded-xl text-left transition-all"
                   style={{
-                    background: settings.template === t.key ? '#D5FF4015' : '#1E1E1E',
-                    border: `1px solid ${settings.template === t.key ? '#D5FF40' : '#333'}`,
+                    background: settings.template === t.key ? '#e8b84b15' : '#09090a',
+                    border: `1px solid ${settings.template === t.key ? '#e8b84b' : 'rgba(255,255,255,0.1)'}`,
                   }}
                 >
                   <p className="text-xs font-semibold text-white mb-0.5">{t.label}</p>
-                  <p className="text-[10px] text-[#666]">{t.desc}</p>
+                  <p className="text-[10px] text-[#6e6a60]">{t.desc}</p>
                 </button>
               ))}
             </div>
@@ -411,11 +411,11 @@ export default function PdfSettingsPage() {
         <div className={sectionCls} style={sectionStyle}>
           <div>
             <h2 className="text-base font-semibold text-white">Fundo da página</h2>
-            <p className="text-xs text-[#666] mt-0.5">Cor de fundo, imagem/template e marca d&apos;água.</p>
+            <p className="text-xs text-[#6e6a60] mt-0.5">Cor de fundo, imagem/template e marca d&apos;água.</p>
           </div>
 
           <div>
-            <label className="block text-xs text-[#888] mb-2 uppercase tracking-wide">Modo do PDF</label>
+            <label className="block text-xs text-[#a8a296] mb-2 uppercase tracking-wide font-mono">Modo do PDF</label>
             <div className="grid grid-cols-3 gap-2">
               {([['light', '☀️', 'Claro'], ['dark', '🌙', 'Escuro'], ['cream', '●', 'Creme']] as const).map(([mode, icon, label]) => (
                 <button
@@ -423,9 +423,9 @@ export default function PdfSettingsPage() {
                   onClick={() => applyBgMode(mode)}
                   className="py-3 rounded-xl text-sm font-medium transition-all flex flex-col items-center gap-1"
                   style={{
-                    background: settings.bgMode === mode ? '#D5FF4015' : '#1E1E1E',
-                    border: `1px solid ${settings.bgMode === mode ? '#D5FF40' : '#333'}`,
-                    color: settings.bgMode === mode ? '#D5FF40' : '#888',
+                    background: settings.bgMode === mode ? '#e8b84b15' : '#09090a',
+                    border: `1px solid ${settings.bgMode === mode ? '#e8b84b' : 'rgba(255,255,255,0.1)'}`,
+                    color: settings.bgMode === mode ? '#e8b84b' : '#a8a296',
                   }}
                 >
                   <span className="text-lg">{icon}</span>
@@ -447,7 +447,7 @@ export default function PdfSettingsPage() {
           />
 
           <div>
-            <label className="block text-xs text-[#888] mb-2 uppercase tracking-wide">Marca d&apos;água</label>
+            <label className="block text-xs text-[#a8a296] mb-2 uppercase tracking-wide font-mono">Marca d&apos;água</label>
             <input
               className={inputCls}
               style={inputStyle}
@@ -462,11 +462,11 @@ export default function PdfSettingsPage() {
         <div className={sectionCls} style={sectionStyle}>
           <div>
             <h2 className="text-base font-semibold text-white">Textos personalizados</h2>
-            <p className="text-xs text-[#666] mt-0.5">Aparecem em todos os PDFs gerados.</p>
+            <p className="text-xs text-[#6e6a60] mt-0.5">Aparecem em todos os PDFs gerados.</p>
           </div>
 
           <div>
-            <label className="block text-xs text-[#888] mb-2 uppercase tracking-wide">Introdução (acima dos serviços)</label>
+            <label className="block text-xs text-[#a8a296] mb-2 uppercase tracking-wide font-mono">Introdução (acima dos serviços)</label>
             <textarea
               className={inputCls}
               style={{ ...inputStyle, resize: 'none' }}
@@ -478,7 +478,7 @@ export default function PdfSettingsPage() {
           </div>
 
           <div>
-            <label className="block text-xs text-[#888] mb-2 uppercase tracking-wide">Observações / termos (após pagamento)</label>
+            <label className="block text-xs text-[#a8a296] mb-2 uppercase tracking-wide font-mono">Observações / termos (após pagamento)</label>
             <textarea
               className={inputCls}
               style={{ ...inputStyle, resize: 'none' }}
@@ -490,7 +490,7 @@ export default function PdfSettingsPage() {
           </div>
 
           <div>
-            <label className="block text-xs text-[#888] mb-2 uppercase tracking-wide">Rodapé</label>
+            <label className="block text-xs text-[#a8a296] mb-2 uppercase tracking-wide font-mono">Rodapé</label>
             <input
               className={inputCls}
               style={inputStyle}
@@ -505,7 +505,7 @@ export default function PdfSettingsPage() {
         <div className={sectionCls} style={sectionStyle}>
           <div>
             <h2 className="text-base font-semibold text-white">Blocos exibidos</h2>
-            <p className="text-xs text-[#666] mt-0.5">Mostre ou oculte seções do PDF.</p>
+            <p className="text-xs text-[#6e6a60] mt-0.5">Mostre ou oculte seções do PDF.</p>
           </div>
           <div>
             <Toggle label="Logo no cabeçalho" checked={settings.blocks.logo} onChange={v => setBlock('logo', v)} />
@@ -520,8 +520,8 @@ export default function PdfSettingsPage() {
           <button
             onClick={save}
             disabled={saving}
-            className="px-8 py-3 rounded-xl text-sm font-semibold text-[#1E1E1E] disabled:opacity-40"
-            style={{ background: saved ? '#22c55e' : '#D5FF40' }}
+            className="px-8 py-3 rounded-xl text-sm font-semibold text-[#09090a] disabled:opacity-40"
+            style={{ background: saved ? '#22c55e' : '#e8b84b' }}
           >
             {saving ? 'Salvando…' : saved ? '✓ Configurações salvas!' : 'Salvar configurações'}
           </button>
@@ -529,10 +529,10 @@ export default function PdfSettingsPage() {
       </div>
 
       {/* Right: Live preview */}
-      <div className="w-[400px] shrink-0 border-l flex flex-col" style={{ borderColor: '#2a2a2a', background: '#181818' }}>
-        <div className="px-6 py-4 border-b shrink-0" style={{ borderColor: '#2a2a2a' }}>
+      <div className="w-[400px] shrink-0 border-l flex flex-col" style={{ borderColor: '#1c1b1e', background: '#161518' }}>
+        <div className="px-6 py-4 border-b shrink-0" style={{ borderColor: '#1c1b1e' }}>
           <p className="text-sm font-semibold text-white">Prévia ao vivo</p>
-          <p className="text-xs text-[#555]">Dados de exemplo</p>
+          <p className="text-xs text-[#6e6a60]">Dados de exemplo</p>
         </div>
         <div className="flex-1 overflow-y-auto p-6 flex items-start justify-center">
           <PdfPreview s={settings} />

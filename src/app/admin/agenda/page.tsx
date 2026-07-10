@@ -254,18 +254,18 @@ export default function AgendaPage() {
 
   const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
 
-  const inputCls = 'w-full px-3 py-2.5 rounded-xl text-sm text-white outline-none focus:ring-2 focus:ring-[#D5FF40]'
-  const inputStyle = { background: '#1E1E1E', border: '1px solid #333' }
+  const inputCls = 'w-full px-3 py-2.5 rounded-xl text-sm text-white outline-none focus:ring-2 focus:ring-[#e8b84b]'
+  const inputStyle = { background: '#09090a', border: '1px solid rgba(255,255,255,0.1)' }
 
   const COLORS = ['#60a5fa','#a78bfa','#f472b6','#fb923c','#facc15','#34d399','#f87171','#e2e8f0']
 
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between px-8 py-5 border-b shrink-0" style={{ borderColor: '#2a2a2a' }}>
+      <div className="flex items-center justify-between px-8 py-5 border-b shrink-0" style={{ borderColor: '#1c1b1e' }}>
         <div>
           <h1 className="text-2xl font-bold text-white">Agenda</h1>
-          <p className="text-[#888] text-sm mt-0.5">Calendário de eventos, tarefas e compromissos</p>
+          <p className="text-[#a8a296] text-sm mt-0.5">Calendário de eventos, tarefas e compromissos</p>
         </div>
         <div className="flex items-center gap-3">
           {/* Google Connect */}
@@ -279,8 +279,8 @@ export default function AgendaPage() {
           ) : (
             <a
               href="/api/agenda/google/auth"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-opacity hover:opacity-80"
-              style={{ background: '#252525', border: '1px solid #444', color: '#fff' }}
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-opacity hover:opacity-80"
+              style={{ background: '#161518', border: '1px solid rgba(255,255,255,0.16)', color: '#f5f1e8' }}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -293,8 +293,8 @@ export default function AgendaPage() {
           )}
           <button
             onClick={() => { setForm(EMPTY_FORM); setEditId(null); setModal('new') }}
-            className="px-4 py-2 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90"
-            style={{ background: '#D5FF40', color: '#1E1E1E' }}
+            className="px-4 py-2 rounded-full text-sm font-semibold transition-opacity hover:opacity-90"
+            style={{ background: '#e8b84b', color: '#09090a' }}
           >
             + Novo evento
           </button>
@@ -302,17 +302,17 @@ export default function AgendaPage() {
       </div>
 
       {/* Toggles + Nav */}
-      <div className="flex items-center justify-between px-8 py-3 border-b shrink-0" style={{ borderColor: '#2a2a2a' }}>
+      <div className="flex items-center justify-between px-8 py-3 border-b shrink-0" style={{ borderColor: '#1c1b1e' }}>
         {/* Month nav */}
         <div className="flex items-center gap-3">
-          <button onClick={prevMonth} className="w-8 h-8 flex items-center justify-center rounded-lg text-[#888] hover:text-white hover:bg-[#252525]">‹</button>
+          <button onClick={prevMonth} className="w-8 h-8 flex items-center justify-center rounded-lg text-[#a8a296] hover:text-white hover:bg-[#161518]">‹</button>
           <span className="text-white font-semibold text-base min-w-[160px] text-center">
             {MONTHS_PT[month - 1]} {year}
           </span>
-          <button onClick={nextMonth} className="w-8 h-8 flex items-center justify-center rounded-lg text-[#888] hover:text-white hover:bg-[#252525]">›</button>
+          <button onClick={nextMonth} className="w-8 h-8 flex items-center justify-center rounded-lg text-[#a8a296] hover:text-white hover:bg-[#161518]">›</button>
           <button
             onClick={() => { setYear(today.getFullYear()); setMonth(today.getMonth() + 1) }}
-            className="px-3 py-1 rounded-lg text-xs font-medium text-[#888] hover:text-white hover:bg-[#252525] ml-1"
+            className="px-3 py-1 rounded-lg text-xs font-medium text-[#a8a296] hover:text-white hover:bg-[#161518] ml-1"
           >
             Hoje
           </button>
@@ -331,16 +331,16 @@ export default function AgendaPage() {
               onClick={t.toggle}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all"
               style={{
-                background: t.active ? `${t.color}22` : '#252525',
-                border: `1px solid ${t.active ? t.color : '#333'}`,
-                color: t.active ? t.color : '#666',
+                background: t.active ? `${t.color}22` : '#161518',
+                border: `1px solid ${t.active ? t.color : 'rgba(255,255,255,0.1)'}`,
+                color: t.active ? t.color : '#6e6a60',
               }}
             >
-              <span className="w-2 h-2 rounded-full" style={{ background: t.active ? t.color : '#555' }} />
+              <span className="w-2 h-2 rounded-full" style={{ background: t.active ? t.color : '#6e6a60' }} />
               {t.label}
             </button>
           ))}
-          {gcalLoading && <span className="text-xs text-[#555]">sincronizando…</span>}
+          {gcalLoading && <span className="text-xs text-[#6e6a60]">sincronizando…</span>}
         </div>
       </div>
 
@@ -349,7 +349,7 @@ export default function AgendaPage() {
         {/* Day headers */}
         <div className="grid grid-cols-7 mb-2">
           {DAYS_PT.map(d => (
-            <div key={d} className="text-center text-xs font-semibold text-[#555] uppercase py-2">{d}</div>
+            <div key={d} className="text-center text-xs font-semibold text-[#6e6a60] uppercase py-2">{d}</div>
           ))}
         </div>
 
@@ -368,16 +368,16 @@ export default function AgendaPage() {
                 onClick={() => openNew(day)}
                 className="rounded-xl p-2 cursor-pointer group transition-all"
                 style={{
-                  background: isToday ? '#1a2a1a' : '#252525',
-                  border: `1px solid ${isToday ? '#D5FF4044' : '#2a2a2a'}`,
+                  background: isToday ? '#1a2a1a' : '#161518',
+                  border: `1px solid ${isToday ? '#e8b84b44' : '#1c1b1e'}`,
                 }}
               >
                 <div className="flex items-center justify-between mb-1">
                   <span
                     className="text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full"
                     style={{
-                      background: isToday ? '#D5FF40' : 'transparent',
-                      color: isToday ? '#1E1E1E' : '#888',
+                      background: isToday ? '#e8b84b' : 'transparent',
+                      color: isToday ? '#09090a' : '#a8a296',
                     }}
                   >
                     {day}
@@ -396,7 +396,7 @@ export default function AgendaPage() {
                     </div>
                   ))}
                   {dayEvents.length > MAX_SHOW && (
-                    <div className="text-[10px] text-[#666] px-1">+{dayEvents.length - MAX_SHOW} mais</div>
+                    <div className="text-[10px] text-[#6e6a60] px-1">+{dayEvents.length - MAX_SHOW} mais</div>
                   )}
                 </div>
               </div>
@@ -406,7 +406,7 @@ export default function AgendaPage() {
       </div>
 
       {/* Legend */}
-      <div className="px-8 py-3 border-t flex items-center gap-4 shrink-0" style={{ borderColor: '#2a2a2a' }}>
+      <div className="px-8 py-3 border-t flex items-center gap-4 shrink-0" style={{ borderColor: '#1c1b1e' }}>
         {[
           { label: 'Compromissos', color: TYPE_COLORS.appointment },
           { label: 'Tarefas', color: TYPE_COLORS.task },
@@ -417,7 +417,7 @@ export default function AgendaPage() {
         ].map(l => (
           <div key={l.label} className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-sm" style={{ background: l.color }} />
-            <span className="text-xs text-[#666]">{l.label}</span>
+            <span className="text-xs text-[#6e6a60]">{l.label}</span>
           </div>
         ))}
       </div>
@@ -425,15 +425,15 @@ export default function AgendaPage() {
       {/* Modal */}
       {(modal === 'new' || modal === 'edit') && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.7)' }}>
-          <div className="w-full max-w-md rounded-2xl p-6 space-y-5" style={{ background: '#1a1a1a', border: '1px solid #333' }}>
+          <div className="w-full max-w-md rounded-2xl p-6 space-y-5" style={{ background: '#0f0f11', border: '1px solid rgba(255,255,255,0.1)' }}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold text-white">{modal === 'edit' ? 'Editar evento' : 'Novo evento'}</h2>
-              <button onClick={() => setModal(null)} className="text-[#666] hover:text-white text-xl">×</button>
+              <button onClick={() => setModal(null)} className="text-[#6e6a60] hover:text-white text-xl">×</button>
             </div>
 
             <div className="space-y-3">
               <div>
-                <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Título</label>
+                <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Título</label>
                 <input
                   autoFocus
                   className={inputCls}
@@ -450,42 +450,42 @@ export default function AgendaPage() {
                     type="checkbox"
                     checked={form.allDay}
                     onChange={e => setForm(f => ({ ...f, allDay: e.target.checked }))}
-                    className="accent-[#D5FF40]"
+                    className="accent-[#e8b84b]"
                   />
-                  <span className="text-sm text-[#888]">Dia inteiro</span>
+                  <span className="text-sm text-[#a8a296]">Dia inteiro</span>
                 </label>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Data início</label>
+                  <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Data início</label>
                   <input type="date" className={inputCls} style={inputStyle} value={form.startAt} onChange={e => setForm(f => ({ ...f, startAt: e.target.value }))} />
                 </div>
                 {!form.allDay && (
                   <div>
-                    <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Hora início</label>
+                    <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Hora início</label>
                     <input type="time" className={inputCls} style={inputStyle} value={form.startTime} onChange={e => setForm(f => ({ ...f, startTime: e.target.value }))} />
                   </div>
                 )}
                 <div>
-                  <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Data fim</label>
+                  <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Data fim</label>
                   <input type="date" className={inputCls} style={inputStyle} value={form.endAt} onChange={e => setForm(f => ({ ...f, endAt: e.target.value }))} />
                 </div>
                 {!form.allDay && (
                   <div>
-                    <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Hora fim</label>
+                    <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Hora fim</label>
                     <input type="time" className={inputCls} style={inputStyle} value={form.endTime} onChange={e => setForm(f => ({ ...f, endTime: e.target.value }))} />
                   </div>
                 )}
               </div>
 
               <div>
-                <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Local</label>
+                <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Local</label>
                 <input className={inputCls} style={inputStyle} value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} placeholder="Endereço ou link" />
               </div>
 
               <div>
-                <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Descrição</label>
+                <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Descrição</label>
                 <textarea
                   className={inputCls}
                   style={{ ...inputStyle, resize: 'none' }}
@@ -497,7 +497,7 @@ export default function AgendaPage() {
               </div>
 
               <div>
-                <label className="block text-xs text-[#888] mb-2 uppercase tracking-wide">Cor</label>
+                <label className="block text-xs text-[#a8a296] mb-2 uppercase tracking-wide font-mono">Cor</label>
                 <div className="flex items-center gap-2">
                   {COLORS.map(c => (
                     <button
@@ -525,14 +525,14 @@ export default function AgendaPage() {
                 </button>
               )}
               <div className="flex-1" />
-              <button onClick={() => setModal(null)} className="px-4 py-2.5 rounded-xl text-sm text-[#888] hover:text-white">
+              <button onClick={() => setModal(null)} className="px-4 py-2.5 rounded-xl text-sm text-[#a8a296] hover:text-white">
                 Cancelar
               </button>
               <button
                 onClick={saveAppointment}
                 disabled={!form.title || !form.startAt || saving}
-                className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90 disabled:opacity-40"
-                style={{ background: '#D5FF40', color: '#1E1E1E' }}
+                className="px-5 py-2.5 rounded-full text-sm font-semibold transition-opacity hover:opacity-90 disabled:opacity-40"
+                style={{ background: '#e8b84b', color: '#09090a' }}
               >
                 {saving ? 'Salvando…' : modal === 'edit' ? 'Salvar' : 'Criar evento'}
               </button>

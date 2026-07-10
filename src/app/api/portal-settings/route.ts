@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server'
 export const DEFAULT_PORTAL_SETTINGS = {
   logo: null as string | null,
   favicon: null as string | null,
-  primaryColor: '#D5FF40',
+  primaryColor: '#e8b84b',
   secondaryColor: '#a3e635',
 }
 

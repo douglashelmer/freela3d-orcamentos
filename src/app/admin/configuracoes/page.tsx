@@ -179,29 +179,29 @@ export default function ConfiguracoesPage() {
 
   const set = (k: keyof Profile, v: string) => setProfile(p => ({ ...p, [k]: v }))
 
-  const inputCls = 'w-full px-4 py-3 rounded-xl text-sm text-white outline-none focus:ring-2 focus:ring-[#D5FF40] transition-all'
-  const inputStyle = { background: '#252525', border: '1px solid #333' }
+  const inputCls = 'w-full px-4 py-3 rounded-xl text-sm text-white outline-none focus:ring-2 focus:ring-[#e8b84b] transition-all'
+  const inputStyle = { background: '#161518', border: '1px solid rgba(255,255,255,0.1)' }
 
-  if (loading) return <div className="p-8 text-[#555]">Carregando…</div>
+  if (loading) return <div className="p-8 text-[#6e6a60]">Carregando…</div>
 
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="px-8 py-5 border-b shrink-0" style={{ borderColor: '#2a2a2a' }}>
+      <div className="px-8 py-5 border-b shrink-0" style={{ borderColor: '#1c1b1e' }}>
         <h1 className="text-2xl font-bold text-white">Configurações</h1>
-        <p className="text-[#888] text-sm mt-0.5">Personalize sua experiência no Freela3D</p>
+        <p className="text-[#a8a296] text-sm mt-0.5">Personalize sua experiência no Freela3D</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 px-8 py-3 border-b shrink-0" style={{ borderColor: '#2a2a2a' }}>
+      <div className="flex items-center gap-1 px-8 py-3 border-b shrink-0" style={{ borderColor: '#1c1b1e' }}>
         {TABS.map(t => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
             style={{
-              background: tab === t ? '#D5FF40' : 'transparent',
-              color: tab === t ? '#1E1E1E' : '#888',
+              background: tab === t ? '#e8b84b' : 'transparent',
+              color: tab === t ? '#09090a' : '#a8a296',
             }}
           >
             {t}
@@ -216,14 +216,14 @@ export default function ConfiguracoesPage() {
           {tab === 'Perfil' && (
             <>
               {/* Logo */}
-              <section className="rounded-2xl border p-6 space-y-4" style={{ background: '#252525', borderColor: '#333' }}>
-                <h2 className="text-sm font-semibold text-white uppercase tracking-wide">Logo</h2>
+              <section className="rounded-2xl border p-6 space-y-4" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
+                <h2 className="text-sm font-semibold text-white uppercase tracking-wide font-mono">Logo</h2>
                 <div className="flex items-center gap-6">
-                  <div className="w-24 h-24 rounded-xl flex items-center justify-center overflow-hidden" style={{ background: '#1E1E1E', border: '1px solid #333' }}>
+                  <div className="w-24 h-24 rounded-xl flex items-center justify-center overflow-hidden" style={{ background: '#09090a', border: '1px solid rgba(255,255,255,0.1)' }}>
                     {logoPreview ? (
                       <img src={logoPreview} alt="Logo" className="w-full h-full object-contain p-2" />
                     ) : (
-                      <span className="text-3xl text-[#444]">🖼️</span>
+                      <span className="text-3xl text-[rgba(255,255,255,0.16)]">🖼️</span>
                     )}
                   </div>
                   <div className="space-y-2">
@@ -237,73 +237,73 @@ export default function ConfiguracoesPage() {
                         reader.readAsDataURL(file)
                       }}
                     />
-                    <button onClick={() => fileRef.current?.click()} className="block px-4 py-2 rounded-lg text-sm font-medium hover:opacity-80 transition-opacity" style={{ background: '#D5FF40', color: '#1E1E1E' }}>
+                    <button onClick={() => fileRef.current?.click()} className="block px-4 py-2 rounded-full text-sm font-medium hover:opacity-80 transition-opacity" style={{ background: '#e8b84b', color: '#09090a' }}>
                       {logoPreview ? 'Trocar logo' : 'Fazer upload'}
                     </button>
                     {logoPreview && (
-                      <button onClick={() => { setLogoFile(null); setLogoPreview(null); set('logo', '') }} className="block text-xs text-[#666] hover:text-red-400">
+                      <button onClick={() => { setLogoFile(null); setLogoPreview(null); set('logo', '') }} className="block text-xs text-[#6e6a60] hover:text-red-400">
                         Remover
                       </button>
                     )}
-                    <p className="text-xs text-[#555]">PNG transparente recomendado</p>
+                    <p className="text-xs text-[#6e6a60]">PNG transparente recomendado</p>
                   </div>
                 </div>
               </section>
 
               {/* Dados pessoais */}
-              <section className="rounded-2xl border p-6 space-y-4" style={{ background: '#252525', borderColor: '#333' }}>
-                <h2 className="text-sm font-semibold text-white uppercase tracking-wide">Dados pessoais</h2>
+              <section className="rounded-2xl border p-6 space-y-4" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
+                <h2 className="text-sm font-semibold text-white uppercase tracking-wide font-mono">Dados pessoais</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Nome completo</label>
+                    <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Nome completo</label>
                     <input className={inputCls} style={inputStyle} value={profile.name} onChange={e => set('name', e.target.value)} />
                   </div>
                   <div>
-                    <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Empresa / Estúdio</label>
+                    <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Empresa / Estúdio</label>
                     <input className={inputCls} style={inputStyle} value={profile.company} onChange={e => set('company', e.target.value)} placeholder="Studio Vertex" />
                   </div>
                   <div>
-                    <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Telefone</label>
+                    <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Telefone</label>
                     <input className={inputCls} style={inputStyle} value={profile.phone} onChange={e => set('phone', e.target.value)} placeholder="(00) 00000-0000" />
                   </div>
                   <div>
-                    <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Meta mensal (R$)</label>
+                    <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Meta mensal (R$)</label>
                     <input className={inputCls} style={inputStyle} value={profile.monthlyGoal} onChange={e => set('monthlyGoal', e.target.value)} type="number" min="0" placeholder="10000" />
                   </div>
                 </div>
               </section>
 
               {/* Endereço */}
-              <section className="rounded-2xl border p-6 space-y-4" style={{ background: '#252525', borderColor: '#333' }}>
-                <h2 className="text-sm font-semibold text-white uppercase tracking-wide">Endereço</h2>
+              <section className="rounded-2xl border p-6 space-y-4" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
+                <h2 className="text-sm font-semibold text-white uppercase tracking-wide font-mono">Endereço</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">CEP</label>
+                    <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">CEP</label>
                     <div className="flex gap-2">
                       <input className={inputCls} style={inputStyle} value={profile.zipCode} onChange={e => set('zipCode', e.target.value)} onBlur={e => lookupCep(e.target.value)} placeholder="00000-000" maxLength={9} />
-                      {cepLoading && <span className="text-xs text-[#666] self-center">…</span>}
+                      {cepLoading && <span className="text-xs text-[#6e6a60] self-center">…</span>}
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Bairro</label>
+                    <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Bairro</label>
                     <input className={inputCls} style={inputStyle} value={profile.neighborhood} onChange={e => set('neighborhood', e.target.value)} />
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Endereço</label>
+                    <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Endereço</label>
                     <input className={inputCls} style={inputStyle} value={profile.address} onChange={e => set('address', e.target.value)} placeholder="Rua, Av…" />
                   </div>
                   <div>
-                    <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Cidade</label>
+                    <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Cidade</label>
                     <input className={inputCls} style={inputStyle} value={profile.city} onChange={e => set('city', e.target.value)} />
                   </div>
                   <div>
-                    <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Estado</label>
+                    <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Estado</label>
                     <input className={inputCls} style={inputStyle} value={profile.state} onChange={e => set('state', e.target.value)} maxLength={2} />
                   </div>
                 </div>
               </section>
 
-              <button onClick={save} disabled={saving} className="w-full py-3 rounded-xl font-semibold text-[#1E1E1E] transition-opacity hover:opacity-90 disabled:opacity-50" style={{ background: saved ? '#22c55e' : '#D5FF40' }}>
+              <button onClick={save} disabled={saving} className="w-full py-3 rounded-full font-semibold text-[#09090a] transition-opacity hover:opacity-90 disabled:opacity-50" style={{ background: saved ? '#22c55e' : '#e8b84b' }}>
                 {saving ? 'Salvando…' : saved ? '✓ Salvo!' : 'Salvar alterações'}
               </button>
             </>
@@ -312,10 +312,10 @@ export default function ConfiguracoesPage() {
           {/* ── NOTIFICAÇÕES ── */}
           {tab === 'Notificações' && (
             <>
-              <section className="rounded-2xl border p-6 space-y-5" style={{ background: '#252525', borderColor: '#333' }}>
+              <section className="rounded-2xl border p-6 space-y-5" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
                 <div>
-                  <h2 className="text-sm font-semibold text-white uppercase tracking-wide">Notificações</h2>
-                  <p className="text-xs text-[#666] mt-1">Gerencie como você recebe atualizações</p>
+                  <h2 className="text-sm font-semibold text-white uppercase tracking-wide font-mono">Notificações</h2>
+                  <p className="text-xs text-[#6e6a60] mt-1">Gerencie como você recebe atualizações</p>
                 </div>
 
                 {/* Push notifications toggle */}
@@ -328,15 +328,15 @@ export default function ConfiguracoesPage() {
                   { key: 'pagamentos', label: 'Pagamentos Recebidos', desc: 'Confirmação de pagamentos no financeiro' },
                   { key: 'dicas', label: 'Dicas e Sugestões', desc: 'Receba dicas semanais para melhorar sua gestão' },
                 ] as { key: keyof NotifPrefs; label: string; desc: string }[]).map(item => (
-                  <div key={item.key} className="flex items-center justify-between py-3 border-t" style={{ borderColor: '#333' }}>
+                  <div key={item.key} className="flex items-center justify-between py-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
                     <div>
                       <p className="text-sm font-medium text-white">{item.label}</p>
-                      <p className="text-xs text-[#666]">{item.desc}</p>
+                      <p className="text-xs text-[#6e6a60]">{item.desc}</p>
                     </div>
                     <button
                       onClick={() => setNotif(n => ({ ...n, [item.key]: !n[item.key] }))}
                       className="relative w-11 h-6 rounded-full transition-colors shrink-0"
-                      style={{ background: notif[item.key] ? '#D5FF40' : '#444' }}
+                      style={{ background: notif[item.key] ? '#e8b84b' : 'rgba(255,255,255,0.16)' }}
                     >
                       <span className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${notif[item.key] ? 'translate-x-6' : 'translate-x-1'}`} />
                     </button>
@@ -344,7 +344,7 @@ export default function ConfiguracoesPage() {
                 ))}
               </section>
 
-              <button onClick={saveNotif} disabled={saving} className="w-full py-3 rounded-xl font-semibold text-[#1E1E1E] transition-opacity hover:opacity-90 disabled:opacity-50" style={{ background: saved ? '#22c55e' : '#D5FF40' }}>
+              <button onClick={saveNotif} disabled={saving} className="w-full py-3 rounded-full font-semibold text-[#09090a] transition-opacity hover:opacity-90 disabled:opacity-50" style={{ background: saved ? '#22c55e' : '#e8b84b' }}>
                 {saving ? 'Salvando…' : saved ? '✓ Salvo!' : 'Salvar preferências'}
               </button>
             </>
@@ -354,8 +354,8 @@ export default function ConfiguracoesPage() {
           {tab === 'Integrações' && (
             <>
               {/* Google Calendar */}
-              <section className="rounded-2xl border p-6 space-y-4" style={{ background: '#252525', borderColor: '#333' }}>
-                <h2 className="text-sm font-semibold text-white uppercase tracking-wide">Google Agenda</h2>
+              <section className="rounded-2xl border p-6 space-y-4" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
+                <h2 className="text-sm font-semibold text-white uppercase tracking-wide font-mono">Google Agenda</h2>
                 {gcalError && (
                   <div className="rounded-xl p-3 text-xs text-red-400 break-all" style={{ background: '#3a1a1a', border: '1px solid #f8717133' }}>
                     <p className="font-semibold mb-1">Erro ao conectar:</p>
@@ -370,7 +370,7 @@ export default function ConfiguracoesPage() {
                       </div>
                       <div>
                         <p className="text-white text-sm font-medium">Google Calendar conectado</p>
-                        <p className="text-[#666] text-xs">Seus eventos do Google aparecem na Agenda</p>
+                        <p className="text-[#6e6a60] text-xs">Seus eventos do Google aparecem na Agenda</p>
                       </div>
                     </div>
                     <button onClick={disconnectGcal} disabled={gcalDisconnecting} className="px-4 py-2 rounded-xl text-xs font-medium text-red-400 hover:bg-red-400/10 transition-colors disabled:opacity-50">
@@ -381,9 +381,9 @@ export default function ConfiguracoesPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-white text-sm font-medium">Sincronizar com Google Calendar</p>
-                      <p className="text-[#666] text-xs">Visualize seus eventos do Google direto na Agenda</p>
+                      <p className="text-[#6e6a60] text-xs">Visualize seus eventos do Google direto na Agenda</p>
                     </div>
-                    <a href="/api/agenda/google/auth" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-opacity hover:opacity-80" style={{ background: '#D5FF40', color: '#1E1E1E' }}>
+                    <a href="/api/agenda/google/auth" className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-opacity hover:opacity-80" style={{ background: '#e8b84b', color: '#09090a' }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                         <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -397,13 +397,13 @@ export default function ConfiguracoesPage() {
               </section>
 
               {/* Meta Pixel */}
-              <section className="rounded-2xl border p-6 space-y-4" style={{ background: '#252525', borderColor: '#333' }}>
+              <section className="rounded-2xl border p-6 space-y-4" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
                 <div>
-                  <h2 className="text-sm font-semibold text-white uppercase tracking-wide">Meta Pixel</h2>
-                  <p className="text-xs text-[#666] mt-1">Rastreie visitas às páginas públicas dos seus orçamentos</p>
+                  <h2 className="text-sm font-semibold text-white uppercase tracking-wide font-mono">Meta Pixel</h2>
+                  <p className="text-xs text-[#6e6a60] mt-1">Rastreie visitas às páginas públicas dos seus orçamentos</p>
                 </div>
                 <div>
-                  <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">ID do Pixel</label>
+                  <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">ID do Pixel</label>
                   <input
                     className={inputCls} style={inputStyle}
                     value={profile.metaPixelId}
@@ -411,7 +411,7 @@ export default function ConfiguracoesPage() {
                     placeholder="1234567890123456"
                   />
                 </div>
-                <button onClick={saveInteg} disabled={saving} className="w-full py-3 rounded-xl font-semibold text-[#1E1E1E] transition-opacity hover:opacity-90 disabled:opacity-50" style={{ background: saved ? '#22c55e' : '#D5FF40' }}>
+                <button onClick={saveInteg} disabled={saving} className="w-full py-3 rounded-full font-semibold text-[#09090a] transition-opacity hover:opacity-90 disabled:opacity-50" style={{ background: saved ? '#22c55e' : '#e8b84b' }}>
                   {saving ? 'Salvando…' : saved ? '✓ Salvo!' : 'Salvar integrações'}
                 </button>
               </section>
@@ -420,22 +420,22 @@ export default function ConfiguracoesPage() {
 
           {/* ── SEGURANÇA ── */}
           {tab === 'Segurança' && (
-            <section className="rounded-2xl border p-6 space-y-5" style={{ background: '#252525', borderColor: '#333' }}>
+            <section className="rounded-2xl border p-6 space-y-5" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
               <div>
-                <h2 className="text-sm font-semibold text-white uppercase tracking-wide">Alterar Senha</h2>
-                <p className="text-xs text-[#666] mt-1">Digite sua senha atual e a nova senha para alterá-la</p>
+                <h2 className="text-sm font-semibold text-white uppercase tracking-wide font-mono">Alterar Senha</h2>
+                <p className="text-xs text-[#6e6a60] mt-1">Digite sua senha atual e a nova senha para alterá-la</p>
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Senha atual</label>
+                  <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Senha atual</label>
                   <input className={inputCls} style={inputStyle} type="password" value={pwd.current} onChange={e => setPwd(p => ({ ...p, current: e.target.value }))} placeholder="••••••••" />
                 </div>
                 <div>
-                  <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Nova senha</label>
+                  <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Nova senha</label>
                   <input className={inputCls} style={inputStyle} type="password" value={pwd.next} onChange={e => setPwd(p => ({ ...p, next: e.target.value }))} placeholder="Mínimo 6 caracteres" />
                 </div>
                 <div>
-                  <label className="block text-xs text-[#888] mb-1.5 uppercase tracking-wide">Confirmar nova senha</label>
+                  <label className="block text-xs text-[#a8a296] mb-1.5 uppercase tracking-wide font-mono">Confirmar nova senha</label>
                   <input className={inputCls} style={inputStyle} type="password" value={pwd.confirm} onChange={e => setPwd(p => ({ ...p, confirm: e.target.value }))} placeholder="••••••••" />
                 </div>
               </div>
@@ -444,7 +444,7 @@ export default function ConfiguracoesPage() {
                   {pwdMsg.text}
                 </div>
               )}
-              <button onClick={changePassword} disabled={pwdSaving} className="w-full py-3 rounded-xl font-semibold text-[#1E1E1E] transition-opacity hover:opacity-90 disabled:opacity-50" style={{ background: '#D5FF40' }}>
+              <button onClick={changePassword} disabled={pwdSaving} className="w-full py-3 rounded-full font-semibold text-[#09090a] transition-opacity hover:opacity-90 disabled:opacity-50" style={{ background: '#e8b84b' }}>
                 {pwdSaving ? 'Alterando…' : 'Atualizar Senha'}
               </button>
             </section>

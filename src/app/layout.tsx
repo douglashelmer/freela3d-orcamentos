@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist } from 'next/font/google'
+import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import { PwaRegister } from '@/components/ui/PwaRegister'
 import { PwaInstallPrompt } from '@/components/ui/PwaInstallPrompt'
 import './globals.css'
 
-const geist = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
+const inter = Inter({ variable: '--font-inter', subsets: ['latin'] })
+const spaceGrotesk = Space_Grotesk({ variable: '--font-space-grotesk', weight: ['500', '600', '700'], subsets: ['latin'] })
+const jetbrainsMono = JetBrains_Mono({ variable: '--font-jbmono', weight: ['400', '500'], subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Freela3D CRM',
@@ -27,21 +29,21 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: '#1E1E1E',
+  themeColor: '#09090a',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${geist.variable} h-full`}>
-      <body className="min-h-full bg-bg text-text antialiased">
+    <html lang="pt-BR" className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full`}>
+      <body className="min-h-full bg-bg text-text antialiased font-sans">
         <PwaRegister />
         <PwaInstallPrompt />
         {children}
         <Toaster
           position="top-right"
           toastOptions={{
-            style: { background: '#252525', color: '#fff', border: '1px solid #333' },
-            success: { iconTheme: { primary: '#D5FF40', secondary: '#1E1E1E' } },
+            style: { background: '#161518', color: '#f5f1e8', border: '1px solid rgba(255,255,255,0.1)' },
+            success: { iconTheme: { primary: '#e8b84b', secondary: '#09090a' } },
           }}
         />
       </body>

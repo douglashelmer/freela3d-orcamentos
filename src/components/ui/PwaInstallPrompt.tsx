@@ -80,8 +80,8 @@ export function PwaInstallPrompt() {
         style={{
           bottom: '50%',
           transform: 'translateY(50%)',
-          background: '#1a1a1a',
-          border: '1px solid #2a2a2a',
+          background: '#0f0f11',
+          border: '1px solid #1c1b1e',
           maxWidth: 400,
           margin: '0 auto',
         }}
@@ -93,27 +93,27 @@ export function PwaInstallPrompt() {
         </div>
 
         <h2 className="text-lg font-bold text-white text-center mb-1">Instalar Freela3D</h2>
-        <p className="text-sm text-center mb-5" style={{ color: '#888' }}>
+        <p className="text-sm text-center mb-5" style={{ color: '#a8a296' }}>
           Adicione à tela inicial para acesso rápido e notificações
         </p>
 
         {platform === 'ios' && (
           <>
-            <div className="rounded-2xl p-4 mb-4 text-sm" style={{ background: '#252525' }}>
+            <div className="rounded-2xl p-4 mb-4 text-sm" style={{ background: '#161518' }}>
               <p className="text-white mb-3 font-medium">Como instalar no iPhone / iPad:</p>
               <div className="flex items-start gap-3 mb-2">
                 <span className="text-xl shrink-0">1️⃣</span>
-                <p style={{ color: '#aaa' }}>Toque no ícone de compartilhar <span className="text-white font-bold">□↑</span> na barra do Safari</p>
+                <p style={{ color: '#a8a296' }}>Toque no ícone de compartilhar <span className="text-white font-bold">□↑</span> na barra do Safari</p>
               </div>
               <div className="flex items-start gap-3">
                 <span className="text-xl shrink-0">2️⃣</span>
-                <p style={{ color: '#aaa' }}>Toque em <span className="text-white font-bold">"Adicionar à Tela de Início"</span></p>
+                <p style={{ color: '#a8a296' }}>Toque em <span className="text-white font-bold">"Adicionar à Tela de Início"</span></p>
               </div>
             </div>
             <button
               onClick={dismiss}
-              className="w-full py-3.5 rounded-2xl text-sm font-semibold"
-              style={{ background: '#D5FF40', color: '#1E1E1E' }}
+              className="w-full py-3.5 rounded-full text-sm font-semibold"
+              style={{ background: '#e8b84b', color: '#09090a' }}
             >
               Entendi
             </button>
@@ -124,42 +124,42 @@ export function PwaInstallPrompt() {
           <>
             {!deferredPrompt ? (
               <>
-                <div className="rounded-2xl p-4 mb-4 text-sm" style={{ background: '#252525' }}>
+                <div className="rounded-2xl p-4 mb-4 text-sm" style={{ background: '#161518' }}>
                   <p className="text-white mb-3 font-medium">Como instalar no Android:</p>
                   <div className="flex items-start gap-3 mb-2">
                     <span className="text-xl shrink-0">1️⃣</span>
-                    <p style={{ color: '#aaa' }}>Toque no menu <span className="text-white font-bold">⋮</span> do Chrome</p>
+                    <p style={{ color: '#a8a296' }}>Toque no menu <span className="text-white font-bold">⋮</span> do Chrome</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-xl shrink-0">2️⃣</span>
-                    <p style={{ color: '#aaa' }}>Toque em <span className="text-white font-bold">"Adicionar à tela inicial"</span></p>
+                    <p style={{ color: '#a8a296' }}>Toque em <span className="text-white font-bold">"Adicionar à tela inicial"</span></p>
                   </div>
                 </div>
                 <button
                   onClick={dismiss}
-                  className="w-full py-3.5 rounded-2xl text-sm font-semibold"
-                  style={{ background: '#D5FF40', color: '#1E1E1E' }}
+                  className="w-full py-3.5 rounded-full text-sm font-semibold"
+                  style={{ background: '#e8b84b', color: '#09090a' }}
                 >
                   Entendi
                 </button>
               </>
             ) : (
               <>
-                <p className="text-sm text-center mb-4" style={{ color: '#aaa' }}>
+                <p className="text-sm text-center mb-4" style={{ color: '#a8a296' }}>
                   Acesse o CRM diretamente pelo ícone na tela inicial, sem abrir o navegador.
                 </p>
                 <div className="flex gap-3">
                   <button
                     onClick={dismiss}
                     className="flex-1 py-3.5 rounded-2xl text-sm font-medium"
-                    style={{ background: '#252525', color: '#666' }}
+                    style={{ background: '#161518', color: '#6e6a60' }}
                   >
                     Agora não
                   </button>
                   <button
                     onClick={install}
-                    className="flex-1 py-3.5 rounded-2xl text-sm font-semibold"
-                    style={{ background: '#D5FF40', color: '#1E1E1E' }}
+                    className="flex-1 py-3.5 rounded-full text-sm font-semibold"
+                    style={{ background: '#e8b84b', color: '#09090a' }}
                   >
                     Instalar
                   </button>
@@ -173,7 +173,7 @@ export function PwaInstallPrompt() {
         <button
           onClick={dismiss}
           className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full text-lg"
-          style={{ color: '#555', background: '#252525' }}
+          style={{ color: '#6e6a60', background: '#161518' }}
         >
           ✕
         </button>

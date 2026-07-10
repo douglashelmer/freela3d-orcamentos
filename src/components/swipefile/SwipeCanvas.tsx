@@ -14,7 +14,7 @@ export type SwipeCardData = {
   zIndex: number
 }
 
-const NOTE_COLORS = ['#D5FF40', '#60a5fa', '#f472b6', '#fb923c', '#a78bfa']
+const NOTE_COLORS = ['#e8b84b', '#60a5fa', '#f472b6', '#fb923c', '#a78bfa']
 
 export function SwipeCanvas({ folderId, initialCards }: { folderId: string; initialCards: SwipeCardData[] }) {
   const [cards, setCards] = useState<SwipeCardData[]>(initialCards)
@@ -163,11 +163,11 @@ export function SwipeCanvas({ folderId, initialCards }: { folderId: string; init
   return (
     <div className="flex flex-col h-full">
       {/* Toolbar */}
-      <div className="flex items-center gap-2 px-6 py-3 border-b shrink-0" style={{ borderColor: '#2a2a2a' }}>
+      <div className="flex items-center gap-2 px-6 py-3 border-b shrink-0" style={{ borderColor: '#1c1b1e' }}>
         <button
           onClick={addNote}
-          className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-opacity hover:opacity-90"
-          style={{ background: '#D5FF40', color: '#1E1E1E' }}
+          className="px-3 py-1.5 rounded-full text-xs font-semibold transition-opacity hover:opacity-90"
+          style={{ background: '#e8b84b', color: '#09090a' }}
         >
           + Nota
         </button>
@@ -175,7 +175,7 @@ export function SwipeCanvas({ folderId, initialCards }: { folderId: string; init
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
           className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white disabled:opacity-50"
-          style={{ background: '#333' }}
+          style={{ background: 'rgba(255,255,255,0.1)' }}
         >
           {uploading ? 'Enviando…' : '+ Imagem'}
         </button>
@@ -187,7 +187,7 @@ export function SwipeCanvas({ folderId, initialCards }: { folderId: string; init
           hidden
           onChange={e => e.target.files && uploadFiles(e.target.files)}
         />
-        <span className="text-xs text-[#555] ml-2">Cole (Ctrl+V) ou arraste imagens para o quadro</span>
+        <span className="text-xs text-[#6e6a60] ml-2">Cole (Ctrl+V) ou arraste imagens para o quadro</span>
       </div>
 
       {/* Canvas */}
@@ -195,8 +195,8 @@ export function SwipeCanvas({ folderId, initialCards }: { folderId: string; init
         ref={containerRef}
         className="flex-1 relative overflow-auto"
         style={{
-          background: '#181818',
-          backgroundImage: 'radial-gradient(#2a2a2a 1px, transparent 1px)',
+          background: '#161518',
+          backgroundImage: 'radial-gradient(#1c1b1e 1px, transparent 1px)',
           backgroundSize: '22px 22px',
         }}
         onPaste={onPaste}
@@ -207,7 +207,7 @@ export function SwipeCanvas({ folderId, initialCards }: { folderId: string; init
         <div className="relative" style={{ width: 2000, height: 1400 }}>
           {cards.length === 0 && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <p className="text-[#444] text-sm">Quadro vazio — adicione notas ou imagens de referência</p>
+              <p className="text-[rgba(255,255,255,0.16)] text-sm">Quadro vazio — adicione notas ou imagens de referência</p>
             </div>
           )}
           {cards.map(card => (
@@ -216,8 +216,8 @@ export function SwipeCanvas({ folderId, initialCards }: { folderId: string; init
               className="absolute rounded-xl shadow-lg group"
               style={{
                 left: card.x, top: card.y, width: card.w, height: card.h, zIndex: card.zIndex,
-                background: card.type === 'NOTE' ? (card.color ?? '#D5FF40') : '#252525',
-                border: card.type === 'IMAGE' ? '1px solid #333' : 'none',
+                background: card.type === 'NOTE' ? (card.color ?? '#e8b84b') : '#161518',
+                border: card.type === 'IMAGE' ? '1px solid rgba(255,255,255,0.1)' : 'none',
               }}
               onPointerDown={() => bringToFront(card.id)}
             >
@@ -230,7 +230,7 @@ export function SwipeCanvas({ folderId, initialCards }: { folderId: string; init
                   onPointerDown={e => e.stopPropagation()}
                   onClick={() => removeCard(card.id)}
                   className="w-4 h-4 rounded-full flex items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"
-                  style={{ background: 'rgba(0,0,0,0.25)', color: card.type === 'NOTE' ? '#1E1E1E' : '#fff' }}
+                  style={{ background: 'rgba(0,0,0,0.25)', color: card.type === 'NOTE' ? '#09090a' : '#fff' }}
                 >
                   ×
                 </button>
@@ -242,7 +242,7 @@ export function SwipeCanvas({ folderId, initialCards }: { folderId: string; init
                   onChange={e => updateContent(card.id, e.target.value)}
                   placeholder="Escreva aqui…"
                   className="w-full h-full bg-transparent resize-none outline-none px-3 pt-6 pb-3 text-sm font-medium"
-                  style={{ color: '#1E1E1E' }}
+                  style={{ color: '#09090a' }}
                   onPointerDown={e => e.stopPropagation()}
                 />
               ) : (

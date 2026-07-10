@@ -23,7 +23,7 @@ export function SignaturePad({ token, total, onSigned }: Props) {
     if (!canvasRef.current) return
     const pad = new SignaturePadLib(canvasRef.current, {
       backgroundColor: 'rgb(30, 30, 30)',
-      penColor: '#D5FF40',
+      penColor: '#e8b84b',
     })
     padRef.current = pad
     pad.addEventListener('endStroke', () => setIsEmpty(pad.isEmpty()))
@@ -71,46 +71,46 @@ export function SignaturePad({ token, total, onSigned }: Props) {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <p className="text-sm font-medium text-[#888] mb-3 uppercase tracking-wide">Assinatura Digital</p>
-        <p className="text-sm text-[#666] mb-4">
+        <p className="text-sm font-medium text-[#a8a296] mb-3 uppercase tracking-wide font-mono">Assinatura Digital</p>
+        <p className="text-sm text-[#6e6a60] mb-4">
           Ao assinar, você concorda com os termos e valores apresentados neste orçamento.
-          Valor total: <strong className="text-[#D5FF40]">{formatCurrency(total)}</strong>
+          Valor total: <strong className="text-[#e8b84b]">{formatCurrency(total)}</strong>
         </p>
       </div>
 
       {/* Canvas */}
-      <div className="rounded-2xl border-2 border-dashed border-[#333] overflow-hidden" style={{ height: 200 }}>
+      <div className="rounded-2xl border-2 border-dashed border-[rgba(255,255,255,0.1)] overflow-hidden" style={{ height: 200 }}>
         <canvas
           ref={canvasRef}
           className="sig-canvas w-full h-full"
-          style={{ background: '#1E1E1E' }}
+          style={{ background: '#09090a' }}
         />
       </div>
 
       <button
         onClick={clear}
-        className="self-start text-xs text-[#555] hover:text-[#888] transition-colors"
+        className="self-start text-xs text-[#6e6a60] hover:text-[#a8a296] transition-colors"
       >
         Limpar assinatura
       </button>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="text-xs text-[#666] mb-1.5 block">Nome completo *</label>
+          <label className="text-xs text-[#6e6a60] mb-1.5 block">Nome completo *</label>
           <input
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="Seu nome"
-            className="w-full h-11 rounded-xl border border-[#333] bg-[#252525] px-4 text-white text-sm placeholder-[#444] focus:outline-none focus:border-[#D5FF40] transition-colors"
+            className="w-full h-11 rounded-xl border border-[rgba(255,255,255,0.1)] bg-[#161518] px-4 text-white text-sm placeholder-[rgba(255,255,255,0.16)] focus:outline-none focus:border-[#e8b84b] transition-colors"
           />
         </div>
         <div>
-          <label className="text-xs text-[#666] mb-1.5 block">CPF / CNPJ</label>
+          <label className="text-xs text-[#6e6a60] mb-1.5 block">CPF / CNPJ</label>
           <input
             value={doc}
             onChange={e => setDoc(e.target.value)}
             placeholder="000.000.000-00"
-            className="w-full h-11 rounded-xl border border-[#333] bg-[#252525] px-4 text-white text-sm placeholder-[#444] focus:outline-none focus:border-[#D5FF40] transition-colors"
+            className="w-full h-11 rounded-xl border border-[rgba(255,255,255,0.1)] bg-[#161518] px-4 text-white text-sm placeholder-[rgba(255,255,255,0.16)] focus:outline-none focus:border-[#e8b84b] transition-colors"
           />
         </div>
       </div>
@@ -118,8 +118,8 @@ export function SignaturePad({ token, total, onSigned }: Props) {
       <button
         onClick={sign}
         disabled={signing || isEmpty || !name.trim()}
-        className="w-full h-14 rounded-2xl text-base font-bold text-[#1E1E1E] transition-all disabled:opacity-40"
-        style={{ background: '#D5FF40' }}
+        className="w-full h-14 rounded-full text-base font-bold text-[#09090a] transition-all disabled:opacity-40"
+        style={{ background: '#e8b84b' }}
       >
         {signing ? 'Assinando...' : '✓ Assinar e Aprovar Orçamento'}
       </button>

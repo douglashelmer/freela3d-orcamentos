@@ -12,7 +12,7 @@ type PortalSettings = {
 const DEFAULT: PortalSettings = {
   logo: null,
   favicon: null,
-  primaryColor: '#D5FF40',
+  primaryColor: '#e8b84b',
   secondaryColor: '#a3e635',
 }
 
@@ -43,13 +43,13 @@ function ImageUpload({
   return (
     <div className="mb-5">
       <div className="flex items-center justify-between mb-1">
-        <p className="text-sm text-[#aaa]">{label}</p>
-        <span className="text-xs text-[#555]">{size}</span>
+        <p className="text-sm text-[#a8a296]">{label}</p>
+        <span className="text-xs text-[#6e6a60]">{size}</span>
       </div>
-      <p className="text-xs text-[#666] mb-2">{hint}</p>
+      <p className="text-xs text-[#6e6a60] mb-2">{hint}</p>
       <div
-        className="rounded-xl border-2 border-dashed flex flex-col items-center justify-center py-6 cursor-pointer hover:border-[#555] transition-colors relative"
-        style={{ borderColor: '#333' }}
+        className="rounded-xl border-2 border-dashed flex flex-col items-center justify-center py-6 cursor-pointer hover:border-[#6e6a60] transition-colors relative"
+        style={{ borderColor: 'rgba(255,255,255,0.1)' }}
         onClick={() => ref.current?.click()}
         onDragOver={e => e.preventDefault()}
         onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) handleFile(f) }}
@@ -59,15 +59,15 @@ function ImageUpload({
           <img src={value} alt="" className="max-h-16 object-contain" />
         ) : (
           <>
-            <span className="text-2xl text-[#444] mb-2">🖼</span>
-            <p className="text-sm text-[#555]">Clique para fazer upload</p>
-            <p className="text-xs text-[#444] mt-1">PNG, JPG até 5MB</p>
+            <span className="text-2xl text-[rgba(255,255,255,0.16)] mb-2">🖼</span>
+            <p className="text-sm text-[#6e6a60]">Clique para fazer upload</p>
+            <p className="text-xs text-[rgba(255,255,255,0.16)] mt-1">PNG, JPG até 5MB</p>
           </>
         )}
         <input ref={ref} type="file" accept="image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f) }} />
       </div>
       {value && (
-        <button onClick={() => onChange(null)} className="text-xs text-[#666] hover:text-red-400 mt-1 transition-colors">
+        <button onClick={() => onChange(null)} className="text-xs text-[#6e6a60] hover:text-red-400 mt-1 transition-colors">
           Remover imagem
         </button>
       )}
@@ -79,9 +79,9 @@ function PortalPreview({ s }: { s: PortalSettings }) {
   const grad = `linear-gradient(135deg, ${s.primaryColor}, ${s.secondaryColor})`
 
   return (
-    <div className="rounded-2xl overflow-hidden border" style={{ background: '#141414', borderColor: '#2a2a2a', fontFamily: 'sans-serif' }}>
+    <div className="rounded-2xl overflow-hidden border" style={{ background: '#0f0f11', borderColor: '#1c1b1e', fontFamily: 'sans-serif' }}>
       {/* Mini header */}
-      <div className="px-4 py-3 border-b flex items-center justify-between" style={{ background: '#1a1a1a', borderColor: '#2a2a2a' }}>
+      <div className="px-4 py-3 border-b flex items-center justify-between" style={{ background: '#0f0f11', borderColor: '#1c1b1e' }}>
         {s.logo ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={s.logo} alt="" className="h-6 object-contain max-w-[100px]" />
@@ -101,13 +101,13 @@ function PortalPreview({ s }: { s: PortalSettings }) {
 
         {/* Title */}
         <h3 className="text-center text-sm font-bold text-white mb-0.5">Proposta de Design de Identidade Visual</h3>
-        <p className="text-center text-xs mb-4" style={{ color: '#666' }}>Orçamento #2024-001</p>
+        <p className="text-center text-xs mb-4" style={{ color: '#6e6a60' }}>Orçamento #2024-001</p>
 
         {/* Card */}
-        <div className="rounded-xl border p-3 mb-3" style={{ background: '#1a1a1a', borderColor: '#2a2a2a' }}>
+        <div className="rounded-xl border p-3 mb-3" style={{ background: '#0f0f11', borderColor: '#1c1b1e' }}>
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-semibold text-white">Detalhes da Proposta</span>
-            <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: '#2a2a2a', color: '#888' }}>Pendente</span>
+            <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: '#1c1b1e', color: '#a8a296' }}>Pendente</span>
           </div>
           <p className="text-xs font-medium text-white mb-2">Serviços Incluídos</p>
           {[
@@ -115,14 +115,14 @@ function PortalPreview({ s }: { s: PortalSettings }) {
             { name: 'Manual de Marca', price: 'R$ 800,00' },
             { name: 'Papelaria', price: 'R$ 500,00' },
           ].map(item => (
-            <div key={item.name} className="flex items-center justify-between py-1.5 border-b" style={{ borderColor: '#2a2a2a' }}>
-              <span className="text-xs text-[#888]">{item.name}</span>
+            <div key={item.name} className="flex items-center justify-between py-1.5 border-b" style={{ borderColor: '#1c1b1e' }}>
+              <span className="text-xs text-[#a8a296]">{item.name}</span>
               <span className="text-xs font-semibold" style={{ color: s.primaryColor }}>{item.price}</span>
             </div>
           ))}
           <div className="mt-2 pt-2 space-y-1">
-            <div className="flex justify-between text-xs"><span style={{ color: '#666' }}>Subtotal:</span><span className="text-white">R$ 2.800,00</span></div>
-            <div className="flex justify-between text-xs"><span style={{ color: '#666' }}>Desconto:</span><span className="text-red-400">- R$ 300,00</span></div>
+            <div className="flex justify-between text-xs"><span style={{ color: '#6e6a60' }}>Subtotal:</span><span className="text-white">R$ 2.800,00</span></div>
+            <div className="flex justify-between text-xs"><span style={{ color: '#6e6a60' }}>Desconto:</span><span className="text-red-400">- R$ 300,00</span></div>
             <div className="flex justify-between text-sm font-bold mt-1"><span className="text-white">Total:</span><span style={{ color: s.primaryColor }}>R$ 2.500,00</span></div>
           </div>
         </div>
@@ -177,21 +177,21 @@ export default function PortalSettingsPage() {
     }
   }
 
-  if (loading) return <div className="p-8 text-[#555] text-sm">Carregando...</div>
+  if (loading) return <div className="p-8 text-[#6e6a60] text-sm">Carregando...</div>
 
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-white">Personalizar Página de Orçamentos</h1>
-          <p className="text-[#888] text-sm mt-0.5">Customize a aparência da página que seus clientes veem</p>
+          <p className="text-[#a8a296] text-sm mt-0.5">Customize a aparência da página que seus clientes veem</p>
         </div>
       </div>
 
       <div className="flex gap-8">
         {/* Left: settings */}
         <div className="w-[460px] shrink-0 flex flex-col gap-0">
-          <div className="rounded-2xl border overflow-hidden" style={{ background: '#252525', borderColor: '#333' }}>
+          <div className="rounded-2xl border overflow-hidden" style={{ background: '#161518', borderColor: 'rgba(255,255,255,0.1)' }}>
 
             {/* Logo e Cores */}
             <div className="px-6 py-5">
@@ -217,16 +217,16 @@ export default function PortalSettingsPage() {
 
               {/* Palettes */}
               <div className="mt-2">
-                <p className="text-sm text-[#aaa] mb-3">Paletas de Cores Sugeridas</p>
+                <p className="text-sm text-[#a8a296] mb-3">Paletas de Cores Sugeridas</p>
                 <div className="grid grid-cols-2 gap-3">
                   {PALETTES.map(p => (
                     <button
                       key={p.name}
                       onClick={() => applyPalette(p)}
-                      className="rounded-xl border text-left overflow-hidden transition-all hover:border-[#555]"
+                      className="rounded-xl border text-left overflow-hidden transition-all hover:border-[#6e6a60]"
                       style={{
-                        borderColor: settings.primaryColor === p.primary && settings.secondaryColor === p.secondary ? '#ef4444' : '#333',
-                        background: '#1e1e1e',
+                        borderColor: settings.primaryColor === p.primary && settings.secondaryColor === p.secondary ? '#ef4444' : 'rgba(255,255,255,0.1)',
+                        background: '#09090a',
                       }}
                     >
                       <div className="flex h-10 overflow-hidden">
@@ -235,7 +235,7 @@ export default function PortalSettingsPage() {
                       </div>
                       <div className="px-2.5 py-2">
                         <p className="text-xs font-semibold text-white">{p.name}</p>
-                        <p className="text-[11px]" style={{ color: '#666' }}>{p.desc}</p>
+                        <p className="text-[11px]" style={{ color: '#6e6a60' }}>{p.desc}</p>
                       </div>
                     </button>
                   ))}
@@ -244,25 +244,25 @@ export default function PortalSettingsPage() {
 
               {/* Custom colors */}
               <div className="mt-5">
-                <p className="text-sm text-[#aaa] mb-3">Personalizar Cores</p>
+                <p className="text-sm text-[#a8a296] mb-3">Personalizar Cores</p>
                 <div className="flex flex-col gap-3">
                   <div>
-                    <label className="text-xs text-[#666] block mb-1">Cor Primária</label>
-                    <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border" style={{ background: '#1e1e1e', borderColor: '#333' }}>
+                    <label className="text-xs text-[#6e6a60] block mb-1">Cor Primária</label>
+                    <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border" style={{ background: '#09090a', borderColor: 'rgba(255,255,255,0.1)' }}>
                       <input type="color" value={settings.primaryColor} onChange={e => set('primaryColor', e.target.value)} className="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
                       <span className="text-sm text-white font-mono">{settings.primaryColor}</span>
                     </div>
                   </div>
                   <div>
-                    <label className="text-xs text-[#666] block mb-1">Cor Secundária</label>
-                    <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border" style={{ background: '#1e1e1e', borderColor: '#333' }}>
+                    <label className="text-xs text-[#6e6a60] block mb-1">Cor Secundária</label>
+                    <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border" style={{ background: '#09090a', borderColor: 'rgba(255,255,255,0.1)' }}>
                       <input type="color" value={settings.secondaryColor} onChange={e => set('secondaryColor', e.target.value)} className="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
                       <span className="text-sm text-white font-mono">{settings.secondaryColor}</span>
                     </div>
                   </div>
                   {/* Preview gradient */}
                   <div>
-                    <label className="text-xs text-[#666] block mb-1">Preview</label>
+                    <label className="text-xs text-[#6e6a60] block mb-1">Preview</label>
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-lg" style={{ background: settings.primaryColor }} />
                       <div className="w-8 h-8 rounded-lg" style={{ background: settings.secondaryColor }} />
@@ -274,7 +274,7 @@ export default function PortalSettingsPage() {
             </div>
 
             {/* Save button */}
-            <div className="px-6 py-4 border-t" style={{ borderColor: '#333' }}>
+            <div className="px-6 py-4 border-t" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
               <button
                 onClick={save}
                 disabled={saving}
@@ -289,9 +289,9 @@ export default function PortalSettingsPage() {
 
         {/* Right: live preview */}
         <div className="flex-1 sticky top-8 self-start">
-          <p className="text-xs text-[#555] uppercase tracking-wide mb-3 font-medium">Preview ao Vivo</p>
+          <p className="text-xs text-[#6e6a60] uppercase tracking-wide font-mono mb-3 font-medium">Preview ao Vivo</p>
           <PortalPreview s={settings} />
-          <p className="text-xs text-[#444] mt-3 text-center">
+          <p className="text-xs text-[rgba(255,255,255,0.16)] mt-3 text-center">
             As cores serão aplicadas na página que seus clientes veem ao acessar o link do orçamento.
           </p>
         </div>
