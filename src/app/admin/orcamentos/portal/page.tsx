@@ -86,7 +86,7 @@ function PortalPreview({ s }: { s: PortalSettings }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={s.logo} alt="" className="h-6 object-contain max-w-[100px]" />
         ) : (
-          <span className="text-sm font-bold text-white">Freela3D</span>
+          <span className="text-sm font-bold text-white">Atlaz</span>
         )}
         <span className="text-xs" style={{ color: s.primaryColor }}>#2024-001</span>
       </div>

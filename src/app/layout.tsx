@@ -10,13 +10,13 @@ const spaceGrotesk = Space_Grotesk({ variable: '--font-space-grotesk', weight: [
 const jetbrainsMono = JetBrains_Mono({ variable: '--font-jbmono', weight: ['400', '500'], subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Freela3D CRM',
+  title: 'Atlaz',
   description: 'Gestão completa para freelancers 3D',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Freela3D',
+    title: 'Atlaz',
   },
   icons: {
     icon: '/icon-atlaz.png',

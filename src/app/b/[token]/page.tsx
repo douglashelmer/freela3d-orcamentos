@@ -173,7 +173,7 @@ export default function BriefingPage() {
       )}
 
       <footer className="text-center py-4 text-xs text-[rgba(255,255,255,0.1)]">
-        Powered by Freela3D
+        Powered by Atlaz
       </footer>
     </div>
   )

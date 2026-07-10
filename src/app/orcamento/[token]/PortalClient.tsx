@@ -132,7 +132,7 @@ export function PortalClient({ quote, userLogo, userName, userContact, subtotal,
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={effectiveLogo} alt={userName ?? ''} className="h-8 object-contain max-w-[160px] pdf-header-logo" />
               ) : (
-                <span className="text-white font-bold text-lg pdf-header-logo">{userName ?? 'Freela3D'}</span>
+                <span className="text-white font-bold text-lg pdf-header-logo">{userName ?? 'Atlaz'}</span>
               )}
             </div>
             <div className="flex items-center gap-3">

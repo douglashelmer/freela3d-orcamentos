@@ -1,6 +1,6 @@
 {
-  "name": "Freela3D CRM",
-  "short_name": "Freela3D",
+  "name": "Atlaz",
+  "short_name": "Atlaz",
   "description": "Gestão completa para freelancers 3D",
   "start_url": "/admin",
   "scope": "/",

@@ -189,7 +189,7 @@ export default function ConfiguracoesPage() {
       {/* Header */}
       <div className="px-8 py-5 border-b shrink-0" style={{ borderColor: '#1c1b1e' }}>
         <h1 className="text-2xl font-bold text-white">Configurações</h1>
-        <p className="text-[#a8a296] text-sm mt-0.5">Personalize sua experiência no Freela3D</p>
+        <p className="text-[#a8a296] text-sm mt-0.5">Personalize sua experiência no Atlaz</p>
       </div>
 
       {/* Tabs */}

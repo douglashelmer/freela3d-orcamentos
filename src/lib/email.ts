@@ -3,13 +3,13 @@ import { Resend } from 'resend'
 export async function sendOtpEmail(to: string, code: string) {
   const resend = new Resend(process.env.RESEND_API_KEY)
   await resend.emails.send({
-    from: 'Freela3D <noreply@projetoatlaz.com>',
+    from: 'Atlaz <noreply@projetoatlaz.com>',
     to,
-    subject: `${code} — Código de acesso Freela3D`,
+    subject: `${code} — Código de acesso Atlaz`,
     html: `
       <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px">
         <h2 style="color:#111;margin-bottom:8px">Código de verificação</h2>
-        <p style="color:#6e6a60;margin-bottom:24px">Use o código abaixo para acessar o assistente Freela3D via WhatsApp:</p>
+        <p style="color:#6e6a60;margin-bottom:24px">Use o código abaixo para acessar o assistente Atlaz via WhatsApp:</p>
         <div style="background:#f4f4f5;border-radius:8px;padding:24px;text-align:center;letter-spacing:8px;font-size:32px;font-weight:700;color:#111">${code}</div>
         <p style="color:#a8a296;font-size:13px;margin-top:24px">Válido por 10 minutos. Não compartilhe este código.</p>
       </div>

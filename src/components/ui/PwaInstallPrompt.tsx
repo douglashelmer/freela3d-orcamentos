@@ -89,10 +89,10 @@ export function PwaInstallPrompt() {
         {/* Icon */}
         <div className="flex justify-center mb-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/icon-192.png" alt="Freela3D" width={72} height={72} className="rounded-2xl" />
+          <img src="/icon-atlaz.png" alt="Atlaz" width={72} height={72} className="rounded-2xl" />
         </div>
 
-        <h2 className="text-lg font-bold text-white text-center mb-1">Instalar Freela3D</h2>
+        <h2 className="text-lg font-bold text-white text-center mb-1">Instalar Atlaz</h2>
         <p className="text-sm text-center mb-5" style={{ color: '#a8a296' }}>
           Adicione à tela inicial para acesso rápido e notificações
         </p>
