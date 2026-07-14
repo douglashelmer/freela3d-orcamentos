@@ -1,6 +1,7 @@
 import { db } from './db'
 import { sendPushToUser } from './push'
 import { BR_TZ } from './tz'
+import { getValidGoogleToken, fetchGoogleEvents } from './google-calendar'
 
 function formatTime(date: Date) {
   return date.toLocaleTimeString('pt-BR', { timeZone: BR_TZ, hour: '2-digit', minute: '2-digit' })
@@ -59,6 +60,52 @@ async function checkAppointmentReminders() {
   }
 }
 
+async function checkGoogleCalendarReminders() {
+  const now = new Date()
+  const windows = [
+    { label: 'gcal-30min', minMs: 28 * 60_000, maxMs: 32 * 60_000, text: '30 minutos' },
+    { label: 'gcal-10min', minMs: 8 * 60_000, maxMs: 12 * 60_000, text: '10 minutos' },
+  ]
+
+  const users = await db.user.findMany({
+    where: { googleCalendarConnected: true },
+    select: { id: true },
+  })
+  if (!users.length) return
+
+  // Wide enough to cover both windows in one Calendar API call per user
+  const timeMin = new Date(now.getTime() + 5 * 60_000).toISOString()
+  const timeMax = new Date(now.getTime() + 35 * 60_000).toISOString()
+
+  for (const { id: userId } of users) {
+    try {
+      const token = await getValidGoogleToken(userId)
+      if (!token) continue
+      const events = await fetchGoogleEvents(token, timeMin, timeMax)
+
+      for (const event of events) {
+        if (event.allDay) continue
+        const startAt = new Date(event.start)
+        const msUntil = startAt.getTime() - now.getTime()
+
+        for (const { label, minMs, maxMs, text } of windows) {
+          if (msUntil < minMs || msUntil > maxMs) continue
+          const fresh = await markAndCheck(`google:${event.id}`, label)
+          if (!fresh) continue
+          const body = event.location ? `${formatTime(startAt)} — ${event.location}` : formatTime(startAt)
+          await sendPushToUser(userId, {
+            title: `⏰ ${event.title} em ${text}`,
+            body,
+            url: '/admin/agenda',
+          })
+        }
+      }
+    } catch {
+      // one user's Google API hiccup shouldn't block the others
+    }
+  }
+}
+
 async function checkTaskDeadlines() {
   const now = new Date()
   const windows = [
@@ -91,7 +138,7 @@ async function checkTaskDeadlines() {
 }
 
 async function tick() {
-  await Promise.allSettled([checkAppointmentReminders(), checkTaskDeadlines()])
+  await Promise.allSettled([checkAppointmentReminders(), checkGoogleCalendarReminders(), checkTaskDeadlines()])
 }
 
 let started = false
